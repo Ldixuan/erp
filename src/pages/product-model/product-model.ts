@@ -8,7 +8,6 @@ import { IonicPage, NavController, NavParams,ViewController } from 'ionic-angula
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-product-model',
   templateUrl: 'product-model.html',

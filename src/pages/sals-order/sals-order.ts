@@ -10,7 +10,7 @@ import { ProductModelPage } from '../product-model/product-model';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
 @Component({
   selector: 'page-sals-order',
   templateUrl: 'sals-order.html',
