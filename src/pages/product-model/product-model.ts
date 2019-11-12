@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,ViewController} from 'ionic-angular';
+import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 /**
  * Generated class for the ProductModelPage page.
@@ -15,27 +16,47 @@ import { IonicPage, NavController, NavParams,ViewController } from 'ionic-angula
 export class ProductModelPage {
 
   searchQuery: string = '';
-  items: Array<{index:number, name:string}>;
+  items: Array<{id:number, name:string, unit : string, typePrice : string}>;
+  gridShow = false;
+  productNotFound = false;
+  private product : FormGroup;
+  inputNameProduct : string;
+  inputUnit : string;
+  selectTypePrice : string;
+  
+  
 
-  constructor(public viewCtrl: ViewController) {
+  constructor(public viewCtrl: ViewController, private formBuilder: FormBuilder) {
     this.initializeItems();
+
+    this.product = this.formBuilder.group({
+      nameProduct: [''],
+      adresseProduct: [''],
+      nameOffical: [''],
+      numberProduct: [''],
+      unitProduct: [''],
+      priceProduct: [''],
+      typePriceProduct: [''],
+      amount:[''],
+      datePayProduct:[''],
+      hadPaidProduct:[''],
+      descriptProduct:['']
+    });
   }
 
-  dismiss() {
-    let data = { 'foo': 'bar' };
-    this.viewCtrl.dismiss(data);
-  }
 
   exit() {
     this.viewCtrl.dismiss();
   }
 
-  
+  logProductForm() {
+    this.viewCtrl.dismiss(this.product.value);
+  }
 
   initializeItems() {
     this.items = [
-      {index : 1, name : "foo"},
-      {index : 2, name : "bar"}
+      {id : 1, name : "foo", unit : "码", typePrice : "米价"},
+      {id : 2, name : "bar", unit : "码", typePrice : "米价"}
     ];
   }
 
@@ -51,6 +72,12 @@ export class ProductModelPage {
       this.items = this.items.filter((item) => {
         return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
+      if(this.items.length > 0){
+        this.gridShow = true;
+      }
+      else{
+        this.gridShow = false;
+      }
     }
   }
 
@@ -59,6 +86,28 @@ export class ProductModelPage {
   }
 
   select(item){
-    console.log(item);
+    this.inputNameProduct = item.name;
+    this.inputUnit = item.unit;
+    this.selectTypePrice = item.typePrice;
+    this.gridShow = false;
+    this.productNotFound = false;
+  }
+
+  endInputProduct(ev){
+    const val = ev.target.value;
+    if(val == ""){
+      this.gridShow = false;
+    }
+    for (let index = 0; index < this.items.length; index++) {
+      if(val == this.items[index].name){
+        this.productNotFound = false;
+        this.inputUnit = this.items[index].unit;
+        this.selectTypePrice = this.items[index].typePrice;
+        this.gridShow = false;
+        return;
+      }
+    }
+
+    this.productNotFound = true;
   }
 }

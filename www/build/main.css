@@ -25677,3 +25677,22 @@ ion-navbar.toolbar {
   min-height: calc(46px + constant(safe-area-inset-bottom));
   min-height: calc(46px + env(safe-area-inset-bottom));
 }
+
+page-product-model #productSearchList {
+  width: 90%;
+  border-style: solid;
+  border-top-width: 0px;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  padding-left: 5%;
+  margin-left: 7%;
+}
+
+page-sals-order #listProduct {
+  border-style: solid;
+  border-top-width: 1px;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}

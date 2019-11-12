@@ -1,8 +1,16 @@
 page-product-model {
-    ion-grid {
-        $grid-columns : 1;
-    }
     
+
+    #productSearchList{
+        width: 90%;
+        border-style: solid;
+        border-top-width: 0px;
+        border-left-width: 1px;
+        border-right-width: 1px;
+        border-bottom-width: 1px;
+        padding-left: 5%;
+        margin-left: 7%;
+    }    
 }
 
 

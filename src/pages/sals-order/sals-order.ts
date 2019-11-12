@@ -19,6 +19,8 @@ export class SalsOrderPage {
 
   private todo : FormGroup;
 
+  listProduct : Array<any>
+
   constructor(private formBuilder: FormBuilder, public modalCtrl: ModalController) {
     this.todo = this.formBuilder.group({
       title: ['', Validators.required],
@@ -29,7 +31,8 @@ export class SalsOrderPage {
       receiver: [''],
       faxReceiver: [''],
       telReceiver:[''],
-      descript:['']
+      descript:[''],
+      dept:['']
     });
 
   }
@@ -44,8 +47,11 @@ export class SalsOrderPage {
 
   presentModal() {
     const modal = this.modalCtrl.create(ProductModelPage);
-    modal.onDidDismiss(data => {
-      console.log(data)
+    modal.onDidDismiss((data) => {
+      console.log(data);
+      if(data != undefined){
+        console.log();
+      }
     })
     modal.present();
   }

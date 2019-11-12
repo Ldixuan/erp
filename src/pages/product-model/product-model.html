@@ -16,25 +16,78 @@
 
 
 <ion-content padding>
-  <ion-item>
-    <ion-label >货物名称:</ion-label>
-    <ion-input type="text" (input)="getItems($event)" ></ion-input>
-  </ion-item>
-    <ion-grid>
+  <form [formGroup]="product" (ngSubmit) = "logProductForm()">
+    <ion-item>
+      <ion-label floating>货物名称:</ion-label>
+      <ion-input type="text" (input)="getItems($event)" (change)="endInputProduct($event)" formControlName="nameProduct" [(ngModel)]="inputNameProduct" autocorrect="on"></ion-input>
+    </ion-item>
+    <ion-grid id="productSearchList" *ngIf="gridShow">
       <ion-row *ngFor="let item of items" (click)="select(item)">
-        <ion-col> {{item.index}}</ion-col>
-        <ion-col>{{item.name}}</ion-col>
+        <ion-col class="grid">{{item.name}}</ion-col>
       </ion-row>
     </ion-grid>
+    <p *ngIf="productNotFound">未找到对应货物</p>
+
+      <ion-list inset='true'>
+
+        <ion-item>
+          <ion-label floating>产地 :</ion-label>
+          <ion-input type="text" formControlName="adresseProduct"></ion-input>
+        </ion-item>
   
+        <ion-item>
+          <ion-label floating>官方品名 :</ion-label>
+          <ion-input type="text" formControlName="nameOffical"></ion-input>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label floating>数量 :</ion-label>
+          <ion-input type="number" formControlName="numberProduct" autocorrect="on"></ion-input>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label floating>单位 :</ion-label>
+          <ion-input type="text" formControlName="unitProduct" [(ngModel)]="inputUnit" autocorrect="on"></ion-input>
+        </ion-item>
 
-  <ion-buttons position>
-    <button ion-button (click)="dismiss()" start>
-        保存
-    </button>
-    <button ion-button (click)="exit()" end>
-        退出
-    </button>  
-</ion-buttons>
+        <ion-item>
+            <ion-label floating>单价 :</ion-label>
+            <ion-input type="number" formControlName="priceProduct" autocorrect="on"></ion-input>
+          </ion-item>
+    
+          <ion-item>
+            <ion-label floating>价类 :</ion-label>
+            <ion-select formControlName="typePriceProduct" [(ngModel)]="selectTypePrice">
+              <ion-option value="米价">米价</ion-option>
+              <ion-option value="单位价">单位价</ion-option>
+            </ion-select>
+          </ion-item>
+    
+          <ion-item>
+            <ion-label floating>金额 :</ion-label>
+            <ion-input type="number" formControlName="amount" autocorrect="on"></ion-input>
+          </ion-item>
+    
+          <ion-item>
+              <ion-label >交货日期</ion-label>
+              <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="datePayProduct" autocorrect="on"></ion-datetime>
+            </ion-item>
 
+          <ion-item>
+              <ion-label floating>已付数量 :</ion-label>
+              <ion-input type="text" formControlName="hadPaidProduct"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label floating>备注:</ion-label>
+                <ion-textarea formControlName="descriptProduct"></ion-textarea>
+            </ion-item>
+            <ion-buttons position>
+              <button ion-button type="submit" [disabled]="!product.valid" start>保存</button>
+              <button ion-button type="button" (click)="exit()" end>退出</button>  
+            </ion-buttons>
+  
+      </ion-list>
+    </form>
+    
 </ion-content>
