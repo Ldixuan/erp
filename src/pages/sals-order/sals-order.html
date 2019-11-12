@@ -19,9 +19,9 @@
 <ion-content padding>
 <h3>销售订单编辑</h3>
 <form [formGroup]="todo" (ngSubmit) = "logForm()">
-  <ion-list inset='true'>
+  <ion-list inset="true">
 
-      <ion-item>
+      <ion-item >
         <ion-label floating>订单编号</ion-label>
         <ion-input type="text" formControlName="title"></ion-input>
       </ion-item>
@@ -32,7 +32,7 @@
       </ion-item>
   </ion-list>
 
-  <ion-list inset='true'>
+  <ion-list inset="true">
 
       <ion-item>
         <ion-label floating>收取人 :</ion-label>
@@ -56,7 +56,7 @@
 
   </ion-list>
 
-  <ion-list inset='true'>
+  <ion-list inset="true">
 
       <ion-item>
         <ion-label floating>发送人 :</ion-label>
@@ -75,7 +75,7 @@
 
   </ion-list>
 
-  <ion-list inset='true'>
+  <ion-list inset="true">
       <ion-item>
           <ion-label floating>备注:</ion-label>
           <ion-textarea formControlName="descript"></ion-textarea>
@@ -86,22 +86,20 @@
       添加货物
   </a>
 
-  <ion-list *ngFor = "let product of listProduct" id="listProduct">
-    <ion-card>
+  <ion-list id="listProduct" >
+    <ion-card *ngFor="let product of listProduct"> 
       <ion-card-header>
         {{product.nameProduct}}
       </ion-card-header>
       <ion-card-content>
         <ion-grid>
-          <ion-row>
-            <ion-col>数量 : {{product.numberProduct}} ({{product.unitProduct}})</ion-col>
+          <ion-row inline>
+            <ion-col>数量 : {{product.numberProduct}} {{product.unitProduct}}</ion-col>
             <ion-col>单价 : {{product.priceProduct}}</ion-col>
+            <ion-col>金额 : {{product.amount}} 元</ion-col>
           </ion-row>
           <ion-row>
             <ion-col>交货日期 : {{product.datePayProduct}} </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>金额 : {{product.amount}} </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>备注 : {{product.descriptProduct}} </ion-col>

@@ -1,9 +1,6 @@
 page-sals-order {
     #listProduct{
-        border-style: solid;
-        border-top-width: 1px;
-        border-left-width: 1px;
-        border-right-width: 1px;
-        border-bottom-width: 1px;
+        overflow:scroll;
+        height: 200px;
     }
 }

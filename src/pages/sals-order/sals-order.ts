@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,ModalController } from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ProductModelPage } from '../product-model/product-model';
+import { Title } from '@angular/platform-browser';
 
 /**
  * Generated class for the SalsOrderPage page.
@@ -19,11 +20,11 @@ export class SalsOrderPage {
 
   private todo : FormGroup;
 
-  listProduct : Array<any>
+  listProduct : Array<any>;
 
   constructor(private formBuilder: FormBuilder, public modalCtrl: ModalController) {
     this.todo = this.formBuilder.group({
-      title: ['', Validators.required],
+      title: [''],
       date: [''],
       telSender: [''],
       faxSender: [''],
@@ -34,6 +35,7 @@ export class SalsOrderPage {
       descript:[''],
       dept:['']
     });
+    this.listProduct = new Array<any>();
 
   }
 
@@ -47,10 +49,9 @@ export class SalsOrderPage {
 
   presentModal() {
     const modal = this.modalCtrl.create(ProductModelPage);
-    modal.onDidDismiss((data) => {
-      console.log(data);
+    modal.onDidDismiss(data => {
       if(data != undefined){
-        console.log();
+        this.listProduct.push(data);
       }
     })
     modal.present();

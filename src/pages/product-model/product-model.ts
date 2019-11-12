@@ -86,9 +86,11 @@ export class ProductModelPage {
   }
 
   select(item){
-    this.inputNameProduct = item.name;
-    this.inputUnit = item.unit;
-    this.selectTypePrice = item.typePrice;
+    let productTmp = this.product.value;
+    productTmp["nameProduct"] = item.name;
+    productTmp["unitProduct"] = item.unit;
+    productTmp["typePriceProduct"] = item.typePrice;
+    this.product.setValue(productTmp);
     this.gridShow = false;
     this.productNotFound = false;
   }

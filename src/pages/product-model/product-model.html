@@ -6,17 +6,17 @@
 -->
 <ion-header>
 
-    <ion-navbar>
-        <ion-title>
-          Description
-        </ion-title>
-      </ion-navbar>
+    <ion-toolbar>
+      <ion-title>添加货物</ion-title>
+      <button ion-button (click)="exit()" color="light" icon-start><ion-icon name='arrow-back'></ion-icon>返回</button>
+      <button ion-button (click)="logProductForm()" [disabled]="!product.valid" class="rightButton">保存</button>
+      </ion-toolbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <form [formGroup]="product" (ngSubmit) = "logProductForm()">
+  <form [formGroup]="product">
     <ion-item>
       <ion-label floating>货物名称:</ion-label>
       <ion-input type="text" (input)="getItems($event)" (change)="endInputProduct($event)" formControlName="nameProduct" [(ngModel)]="inputNameProduct" autocorrect="on"></ion-input>
@@ -82,10 +82,6 @@
                 <ion-label floating>备注:</ion-label>
                 <ion-textarea formControlName="descriptProduct"></ion-textarea>
             </ion-item>
-            <ion-buttons position>
-              <button ion-button type="submit" [disabled]="!product.valid" start>保存</button>
-              <button ion-button type="button" (click)="exit()" end>退出</button>  
-            </ion-buttons>
   
       </ion-list>
     </form>
