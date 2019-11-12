@@ -20,13 +20,10 @@ export class ProductModelPage {
   gridShow = false;
   productNotFound = false;
   private product : FormGroup;
-  inputNameProduct : string;
-  inputUnit : string;
-  selectTypePrice : string;
   
   
 
-  constructor(public viewCtrl: ViewController, private formBuilder: FormBuilder) {
+  constructor(public viewCtrl: ViewController, private formBuilder: FormBuilder, public navParams: NavParams) {
     this.initializeItems();
 
     this.product = this.formBuilder.group({
@@ -42,6 +39,11 @@ export class ProductModelPage {
       hadPaidProduct:[''],
       descriptProduct:['']
     });
+
+    let infoProduct = this.navParams.get('infoProduct');
+    if(infoProduct != undefined){
+      this.product.setValue(infoProduct);
+    }
   }
 
 
@@ -102,9 +104,11 @@ export class ProductModelPage {
     }
     for (let index = 0; index < this.items.length; index++) {
       if(val == this.items[index].name){
-        this.productNotFound = false;
-        this.inputUnit = this.items[index].unit;
-        this.selectTypePrice = this.items[index].typePrice;
+        let productTmp = this.product.value;
+        productTmp["nameProduct"] = this.items[index].name;
+        productTmp["unitProduct"] = this.items[index].unit;
+        productTmp["typePriceProduct"] = this.items[index].typePrice;
+        this.product.setValue(productTmp);
         this.gridShow = false;
         return;
       }

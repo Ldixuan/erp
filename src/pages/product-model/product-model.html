@@ -1,15 +1,18 @@
 <!--
   Generated template for the ProductModelPage page.
 
+
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
 <ion-header>
 
     <ion-toolbar>
-      <ion-title>添加货物</ion-title>
-      <button ion-button (click)="exit()" color="light" icon-start><ion-icon name='arrow-back'></ion-icon>返回</button>
-      <button ion-button (click)="logProductForm()" [disabled]="!product.valid" class="rightButton">保存</button>
+        <ion-title>添加货物</ion-title>
+        <button ion-button (click)="exit()" color="light" icon-start><ion-icon name='arrow-back'></ion-icon>返回</button>
+        <button ion-button (click)="logProductForm()" [disabled]="!product.valid">保存</button>
+      
+      
       </ion-toolbar>
 
 </ion-header>
@@ -19,7 +22,7 @@
   <form [formGroup]="product">
     <ion-item>
       <ion-label floating>货物名称:</ion-label>
-      <ion-input type="text" (input)="getItems($event)" (change)="endInputProduct($event)" formControlName="nameProduct" [(ngModel)]="inputNameProduct" autocorrect="on"></ion-input>
+      <ion-input type="text" (input)="getItems($event)" (change)="endInputProduct($event)" formControlName="nameProduct" autocorrect="on"></ion-input>
     </ion-item>
     <ion-grid id="productSearchList" *ngIf="gridShow">
       <ion-row *ngFor="let item of items" (click)="select(item)">
@@ -47,7 +50,7 @@
   
         <ion-item>
           <ion-label floating>单位 :</ion-label>
-          <ion-input type="text" formControlName="unitProduct" [(ngModel)]="inputUnit" autocorrect="on"></ion-input>
+          <ion-input type="text" formControlName="unitProduct" autocorrect="on"></ion-input>
         </ion-item>
 
         <ion-item>
@@ -57,7 +60,7 @@
     
           <ion-item>
             <ion-label floating>价类 :</ion-label>
-            <ion-select formControlName="typePriceProduct" [(ngModel)]="selectTypePrice">
+            <ion-select formControlName="typePriceProduct">
               <ion-option value="米价">米价</ion-option>
               <ion-option value="单位价">单位价</ion-option>
             </ion-select>

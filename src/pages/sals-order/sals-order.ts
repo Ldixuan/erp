@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,ModalController, Modal } from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ProductModelPage } from '../product-model/product-model';
 import { Title } from '@angular/platform-browser';
@@ -47,10 +47,20 @@ export class SalsOrderPage {
     console.log('ionViewDidLoad SalsOrderPage');
   }
 
-  presentModal() {
-    const modal = this.modalCtrl.create(ProductModelPage);
+  presentModal(infoProduct?, index?) {
+    let modal;
+    console.log(infoProduct);
+    if(infoProduct == undefined){
+      modal = this.modalCtrl.create(ProductModelPage);
+    }else{
+      modal = this.modalCtrl.create(ProductModelPage, {infoProduct : infoProduct});
+    }
     modal.onDidDismiss(data => {
-      if(data != undefined){
+      if(index != undefined){
+        this.listProduct[index] = data;
+        return;
+      }
+      else if(data != undefined){
         this.listProduct.push(data);
       }
     })

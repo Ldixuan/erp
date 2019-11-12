@@ -87,7 +87,7 @@
   </a>
 
   <ion-list id="listProduct" >
-    <ion-card *ngFor="let product of listProduct"> 
+    <ion-card *ngFor="let product of listProduct" (click) = "presentModal(product, listProduct.indexOf(product))"> 
       <ion-card-header>
         {{product.nameProduct}}
       </ion-card-header>
