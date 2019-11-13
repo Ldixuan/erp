@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,ViewController} from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { RestProvider} from '../../providers/rest/rest'
 
 /**
  * Generated class for the ProductModelPage page.
@@ -23,7 +24,7 @@ export class ProductModelPage {
   
   
 
-  constructor(public viewCtrl: ViewController, private formBuilder: FormBuilder, public navParams: NavParams) {
+  constructor(public viewCtrl: ViewController, private formBuilder: FormBuilder, public navParams: NavParams, public rest: RestProvider) {
     this.initializeProduct();
 
     this.productForm = this.formBuilder.group({
@@ -71,6 +72,15 @@ export class ProductModelPage {
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
+      this.rest.GetCargoByName(val) // 填写url的参数
+          .subscribe(
+          f => {
+            console.log(f);
+          },
+          error => {
+            this.products = [{id:0, name:"请求错误",unit:"", typePrice:""}];
+          });
+
       this.products = this.products.filter((item) => {
         return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
