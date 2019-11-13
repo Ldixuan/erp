@@ -166,7 +166,10 @@ var SalsOrderPage = (function () {
     function SalsOrderPage(formBuilder, modalCtrl) {
         this.formBuilder = formBuilder;
         this.modalCtrl = modalCtrl;
-        this.todo = this.formBuilder.group({
+        this.gridShow = false;
+        this.productNotFound = false;
+        this.initializeDept();
+        this.orderForm = this.formBuilder.group({
             title: [''],
             date: [''],
             telSender: [''],
@@ -180,8 +183,14 @@ var SalsOrderPage = (function () {
         });
         this.listProduct = new Array();
     }
+    SalsOrderPage.prototype.initializeDept = function () {
+        this.depts = [
+            { name: "foo" },
+            { name: "bar" }
+        ];
+    };
     SalsOrderPage.prototype.logForm = function () {
-        console.log(this.todo.value);
+        console.log(this.orderForm.value);
     };
     SalsOrderPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad SalsOrderPage');
@@ -207,9 +216,51 @@ var SalsOrderPage = (function () {
         });
         modal.present();
     };
+    SalsOrderPage.prototype.getDept = function (ev) {
+        // Reset items back to all of the items
+        this.initializeDept();
+        // set val to the value of the searchbar
+        var val = ev.target.value;
+        // if the value is an empty string don't filter the items
+        if (val && val.trim() != '') {
+            this.depts = this.depts.filter(function (item) {
+                return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+            });
+            if (this.depts.length > 0) {
+                this.gridShow = true;
+            }
+            else {
+                this.gridShow = false;
+            }
+        }
+        console.log(this.gridShow);
+    };
+    SalsOrderPage.prototype.selectDept = function (item) {
+        var deptTmp = this.orderForm.value;
+        deptTmp["dept"] = item.name;
+        this.orderForm.setValue(deptTmp);
+        this.gridShow = false;
+        this.productNotFound = false;
+    };
+    SalsOrderPage.prototype.endInputDept = function (ev) {
+        var val = ev.target.value;
+        if (val == "") {
+            this.gridShow = false;
+        }
+        for (var index = 0; index < this.depts.length; index++) {
+            if (val == this.depts[index].name) {
+                var deptTmp = this.orderForm.value;
+                deptTmp["nameProduct"] = this.depts[index].name;
+                this.orderForm.setValue(deptTmp);
+                this.gridShow = false;
+                return;
+            }
+        }
+        this.productNotFound = true;
+    };
     SalsOrderPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-sals-order',template:/*ion-inline-start:"C:\Users\36394\projet\erp\src\pages\sals-order\sals-order.html"*/`<!--\n  Generated template for the SalsOrderPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n      <button ion-button menuToggle>\n        <ion-icon name="menu"></ion-icon>\n      </button>\n      <ion-title>销售订单</ion-title>\n    </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n<h3>销售订单编辑</h3>\n<form [formGroup]="todo" (ngSubmit) = "logForm()">\n  <ion-list inset="true">\n\n      <ion-item >\n        <ion-label floating>订单编号</ion-label>\n        <ion-input type="text" formControlName="title"></ion-input>\n      </ion-item>\n\n      <ion-item>\n        <ion-label >订单日期</ion-label>\n        <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="date" autocorrect="on"></ion-datetime>\n      </ion-item>\n  </ion-list>\n\n  <ion-list inset="true">\n\n      <ion-item>\n        <ion-label floating>收取人 :</ion-label>\n        <ion-input type="text" formControlName="sender" autocorrect="on"></ion-input>\n      </ion-item>\n\n      <ion-item>\n        <ion-label floating>传真 :</ion-label>\n        <ion-input type="tel" formControlName="faxSender" autocorrect="on"></ion-input>\n      </ion-item>\n\n      <ion-item>\n        <ion-label floating>电话 :</ion-label>\n        <ion-input type="tel" formControlName="telSender" autocorrect="on"></ion-input>\n      </ion-item>\n\n      <ion-item>\n        <ion-label floating>单位 :</ion-label>\n        <ion-input type="text" formControlName="dept"></ion-input>\n      </ion-item>\n\n  </ion-list>\n\n  <ion-list inset="true">\n\n      <ion-item>\n        <ion-label floating>发送人 :</ion-label>\n        <ion-input type="text" formControlName="receiver" autocorrect="on"></ion-input>\n      </ion-item>  \n\n      <ion-item>\n        <ion-label floating>传真 :</ion-label>\n        <ion-input type="tel" formControlName="faxReceiver" autocorrect="on"></ion-input>\n      </ion-item>\n\n      <ion-item>\n        <ion-label floating>电话 :</ion-label>\n        <ion-input type="tel" formControlName="telReceiver" autocorrect="on"></ion-input>\n      </ion-item>\n\n  </ion-list>\n\n  <ion-list inset="true">\n      <ion-item>\n          <ion-label floating>备注:</ion-label>\n          <ion-textarea formControlName="descript"></ion-textarea>\n      </ion-item>\n  </ion-list>\n\n  <a ion-item (click)="presentModal()">\n      添加货物\n  </a>\n\n  <ion-list id="listProduct" >\n    <ion-card *ngFor="let product of listProduct" (click) = "presentModal(product, listProduct.indexOf(product))"> \n      <ion-card-header>\n        {{product.nameProduct}}\n      </ion-card-header>\n      <ion-card-content>\n        <ion-grid>\n          <ion-row inline>\n            <ion-col>数量 : {{product.numberProduct}} {{product.unitProduct}}</ion-col>\n            <ion-col>单价 : {{product.priceProduct}}</ion-col>\n            <ion-col>金额 : {{product.amount}} 元</ion-col>\n          </ion-row>\n          <ion-row>\n            <ion-col>交货日期 : {{product.datePayProduct}} </ion-col>\n          </ion-row>\n          <ion-row>\n            <ion-col>备注 : {{product.descriptProduct}} </ion-col>\n          </ion-row>\n        </ion-grid>\n      </ion-card-content>\n    </ion-card>\n  </ion-list>\n  <button ion-button type="submit" [disabled]="!todo.valid" block>保存</button>\n</form>\n</ion-content>\n`/*ion-inline-end:"C:\Users\36394\projet\erp\src\pages\sals-order\sals-order.html"*/,
+            selector: 'page-sals-order',template:/*ion-inline-start:"C:\Users\36394\projet\erp\src\pages\sals-order\sals-order.html"*/`<!--\n\n  Generated template for the SalsOrderPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header>\n\n\n\n  <ion-navbar>\n\n      <button ion-button menuToggle>\n\n        <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n      <ion-title>销售订单</ion-title>\n\n    </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content>\n\n<form [formGroup]="orderForm" (ngSubmit) = "logForm()">\n\n  <ion-list inset="true">\n\n\n\n      <ion-item >\n\n        <ion-label color="primary" floating>订单编号</ion-label>\n\n        <ion-input type="text" formControlName="title"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary">订单日期</ion-label>\n\n        <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="date" autocorrect="on"></ion-datetime>\n\n      </ion-item>\n\n\n\n      <br>\n\n      <ion-item>\n\n        <ion-label color="primary" floating>收取人</ion-label>\n\n        <ion-input type="text" formControlName="sender" autocorrect="on"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>传真</ion-label>\n\n        <ion-input type="tel" formControlName="faxSender" autocorrect="on"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>电话</ion-label>\n\n        <ion-input type="tel" formControlName="telSender" autocorrect="on"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>单位</ion-label>\n\n        <ion-input type="text" formControlName="dept"  (input)="getDept($event)" (change)="endInputDept($event)"></ion-input>\n\n      </ion-item>\n\n      <ion-grid id="deptSearchList" *ngIf="gridShow">\n\n          <ion-row *ngFor="let dept of depts" (click)="selectDept(dept)">\n\n            <ion-col class="grid">{{dept.name}}</ion-col>\n\n          </ion-row>\n\n      </ion-grid>\n\n        <p *ngIf="productNotFound">未找到对应货物</p>\n\n\n\n      <br>\n\n      <ion-item>\n\n        <ion-label color="primary" floating>发送人</ion-label>\n\n        <ion-input type="text" formControlName="receiver" autocorrect="on"></ion-input>\n\n      </ion-item>  \n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>传真</ion-label>\n\n        <ion-input type="tel" formControlName="faxReceiver" autocorrect="on"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>电话</ion-label>\n\n        <ion-input type="tel" formControlName="telReceiver" autocorrect="on"></ion-input>\n\n      </ion-item>\n\n      <br>\n\n\n\n      <ion-item>\n\n          <ion-label color="primary" floating>备注</ion-label>\n\n          <ion-textarea formControlName="descript"></ion-textarea>\n\n      </ion-item>\n\n  </ion-list>\n\n\n\n  <a ion-item (click)="presentModal()">\n\n      添加货物\n\n  </a>\n\n\n\n  <ion-list id="listProduct" >\n\n    <ion-card *ngFor="let product of listProduct" (click) = "presentModal(product, listProduct.indexOf(product))"> \n\n      <ion-card-header>\n\n        {{product.nameProduct}}\n\n      </ion-card-header>\n\n      <ion-card-content>\n\n        <ion-grid>\n\n          <ion-row inline>\n\n            <ion-col>数量 : {{product.numberProduct}} {{product.unitProduct}}</ion-col>\n\n            <ion-col>单价 : {{product.priceProduct}}</ion-col>\n\n            <ion-col>金额 : {{product.amount}} 元</ion-col>\n\n          </ion-row>\n\n          <ion-row>\n\n            <ion-col>交货日期 : {{product.datePayProduct}} </ion-col>\n\n          </ion-row>\n\n          <ion-row>\n\n            <ion-col>备注 : {{product.descriptProduct}} </ion-col>\n\n          </ion-row>\n\n        </ion-grid>\n\n      </ion-card-content>\n\n    </ion-card>\n\n  </ion-list>\n\n  <button ion-button type="submit" [disabled]="!orderForm.valid" block>保存</button>\n\n</form>\n\n</ion-content>\n\n`/*ion-inline-end:"C:\Users\36394\projet\erp\src\pages\sals-order\sals-order.html"*/,
         }),
         __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* ModalController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* ModalController */]) === "function" && _b || Object])
     ], SalsOrderPage);
@@ -255,48 +306,48 @@ var ProductModelPage = (function () {
         this.searchQuery = '';
         this.gridShow = false;
         this.productNotFound = false;
-        this.initializeItems();
-        this.product = this.formBuilder.group({
-            nameProduct: [''],
+        this.initializeProduct();
+        this.productForm = this.formBuilder.group({
+            nameProduct: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required],
             adresseProduct: [''],
             nameOffical: [''],
-            numberProduct: [''],
-            unitProduct: [''],
-            priceProduct: [''],
+            numberProduct: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required],
+            unitProduct: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required],
+            priceProduct: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required],
             typePriceProduct: [''],
-            amount: [''],
+            amount: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required],
             datePayProduct: [''],
             hadPaidProduct: [''],
             descriptProduct: ['']
         });
         var infoProduct = this.navParams.get('infoProduct');
         if (infoProduct != undefined) {
-            this.product.setValue(infoProduct);
+            this.productForm.setValue(infoProduct);
         }
     }
     ProductModelPage.prototype.exit = function () {
         this.viewCtrl.dismiss();
     };
     ProductModelPage.prototype.logProductForm = function () {
-        this.viewCtrl.dismiss(this.product.value);
+        this.viewCtrl.dismiss(this.productForm.value);
     };
-    ProductModelPage.prototype.initializeItems = function () {
-        this.items = [
+    ProductModelPage.prototype.initializeProduct = function () {
+        this.products = [
             { id: 1, name: "foo", unit: "码", typePrice: "米价" },
             { id: 2, name: "bar", unit: "码", typePrice: "米价" }
         ];
     };
-    ProductModelPage.prototype.getItems = function (ev) {
+    ProductModelPage.prototype.getProduct = function (ev) {
         // Reset items back to all of the items
-        this.initializeItems();
+        this.initializeProduct();
         // set val to the value of the searchbar
         var val = ev.target.value;
         // if the value is an empty string don't filter the items
         if (val && val.trim() != '') {
-            this.items = this.items.filter(function (item) {
+            this.products = this.products.filter(function (item) {
                 return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
             });
-            if (this.items.length > 0) {
+            if (this.products.length > 0) {
                 this.gridShow = true;
             }
             else {
@@ -307,12 +358,12 @@ var ProductModelPage = (function () {
     ProductModelPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad ProductModelPage');
     };
-    ProductModelPage.prototype.select = function (item) {
-        var productTmp = this.product.value;
+    ProductModelPage.prototype.selectProduct = function (item) {
+        var productTmp = this.productForm.value;
         productTmp["nameProduct"] = item.name;
         productTmp["unitProduct"] = item.unit;
         productTmp["typePriceProduct"] = item.typePrice;
-        this.product.setValue(productTmp);
+        this.productForm.setValue(productTmp);
         this.gridShow = false;
         this.productNotFound = false;
     };
@@ -321,13 +372,13 @@ var ProductModelPage = (function () {
         if (val == "") {
             this.gridShow = false;
         }
-        for (var index = 0; index < this.items.length; index++) {
-            if (val == this.items[index].name) {
-                var productTmp = this.product.value;
-                productTmp["nameProduct"] = this.items[index].name;
-                productTmp["unitProduct"] = this.items[index].unit;
-                productTmp["typePriceProduct"] = this.items[index].typePrice;
-                this.product.setValue(productTmp);
+        for (var index = 0; index < this.products.length; index++) {
+            if (val == this.products[index].name) {
+                var productTmp = this.productForm.value;
+                productTmp["nameProduct"] = this.products[index].name;
+                productTmp["unitProduct"] = this.products[index].unit;
+                productTmp["typePriceProduct"] = this.products[index].typePrice;
+                this.productForm.setValue(productTmp);
                 this.gridShow = false;
                 return;
             }
@@ -336,7 +387,7 @@ var ProductModelPage = (function () {
     };
     ProductModelPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-product-model',template:/*ion-inline-start:"C:\Users\36394\projet\erp\src\pages\product-model\product-model.html"*/`<!--\n  Generated template for the ProductModelPage page.\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n    <ion-toolbar>\n        <ion-title>添加货物</ion-title>\n        <button ion-button (click)="exit()" color="light" icon-start><ion-icon name=\'arrow-back\'></ion-icon>返回</button>\n        <button ion-button (click)="logProductForm()" [disabled]="!product.valid">保存</button>\n      \n      \n      </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <form [formGroup]="product">\n    <ion-item>\n      <ion-label floating>货物名称:</ion-label>\n      <ion-input type="text" (input)="getItems($event)" (change)="endInputProduct($event)" formControlName="nameProduct" autocorrect="on"></ion-input>\n    </ion-item>\n    <ion-grid id="productSearchList" *ngIf="gridShow">\n      <ion-row *ngFor="let item of items" (click)="select(item)">\n        <ion-col class="grid">{{item.name}}</ion-col>\n      </ion-row>\n    </ion-grid>\n    <p *ngIf="productNotFound">未找到对应货物</p>\n\n      <ion-list inset=\'true\'>\n\n        <ion-item>\n          <ion-label floating>产地 :</ion-label>\n          <ion-input type="text" formControlName="adresseProduct"></ion-input>\n        </ion-item>\n  \n        <ion-item>\n          <ion-label floating>官方品名 :</ion-label>\n          <ion-input type="text" formControlName="nameOffical"></ion-input>\n        </ion-item>\n  \n        <ion-item>\n          <ion-label floating>数量 :</ion-label>\n          <ion-input type="number" formControlName="numberProduct" autocorrect="on"></ion-input>\n        </ion-item>\n  \n        <ion-item>\n          <ion-label floating>单位 :</ion-label>\n          <ion-input type="text" formControlName="unitProduct" autocorrect="on"></ion-input>\n        </ion-item>\n\n        <ion-item>\n            <ion-label floating>单价 :</ion-label>\n            <ion-input type="number" formControlName="priceProduct" autocorrect="on"></ion-input>\n          </ion-item>\n    \n          <ion-item>\n            <ion-label floating>价类 :</ion-label>\n            <ion-select formControlName="typePriceProduct">\n              <ion-option value="米价">米价</ion-option>\n              <ion-option value="单位价">单位价</ion-option>\n            </ion-select>\n          </ion-item>\n    \n          <ion-item>\n            <ion-label floating>金额 :</ion-label>\n            <ion-input type="number" formControlName="amount" autocorrect="on"></ion-input>\n          </ion-item>\n    \n          <ion-item>\n              <ion-label >交货日期</ion-label>\n              <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="datePayProduct" autocorrect="on"></ion-datetime>\n            </ion-item>\n\n          <ion-item>\n              <ion-label floating>已付数量 :</ion-label>\n              <ion-input type="text" formControlName="hadPaidProduct"></ion-input>\n            </ion-item>\n\n            <ion-item>\n                <ion-label floating>备注:</ion-label>\n                <ion-textarea formControlName="descriptProduct"></ion-textarea>\n            </ion-item>\n  \n      </ion-list>\n    </form>\n    \n</ion-content>\n`/*ion-inline-end:"C:\Users\36394\projet\erp\src\pages\product-model\product-model.html"*/,
+            selector: 'page-product-model',template:/*ion-inline-start:"C:\Users\36394\projet\erp\src\pages\product-model\product-model.html"*/`<!--\n\n  Generated template for the ProductModelPage page.\n\n\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header>\n\n\n\n  <ion-navbar>\n\n      <ion-buttons>\n\n      <button ion-button (click)="exit()" icon-start>\n\n        <ion-icon name=\'arrow-back\'></ion-icon> 返回\n\n      </button>\n\n    </ion-buttons>\n\n    <ion-title text-center>添加货物</ion-title>\n\n    <ion-buttons end> <button ion-button (click)="logProductForm()" \n\n      [disabled]="!productForm.valid" color="black">保存</button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content >\n\n  <form [formGroup]="productForm">\n\n    <ion-list inset=\'true\'>\n\n      <ion-item>\n\n        <ion-label color="primary" floating>货物名称</ion-label>\n\n        <ion-input type="text" (input)="getProduct($event)" (change)="endInputProduct($event)"\n\n         formControlName="nameProduct"></ion-input>\n\n      </ion-item>\n\n      <ion-grid id="productSearchList" *ngIf="gridShow">\n\n        <ion-row *ngFor="let product of products" (click)="selectProduct(product)">\n\n          <ion-col class="grid">{{product.name}}</ion-col>\n\n        </ion-row>\n\n      </ion-grid>\n\n      <p *ngIf="productNotFound">未找到对应货物</p>\n\n\n\n    \n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>产地</ion-label>\n\n        <ion-input type="text" formControlName="adresseProduct"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>官方品名</ion-label>\n\n        <ion-input type="text" formControlName="nameOffical"></ion-input>\n\n      </ion-item>\n\n\n\n      <br>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>数量</ion-label>\n\n        <ion-input type="number" formControlName="numberProduct"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>单位</ion-label>\n\n        <ion-input type="text" formControlName="unitProduct"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>单价</ion-label>\n\n        <ion-input type="number" formControlName="priceProduct"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>价类</ion-label>\n\n        <ion-select formControlName="typePriceProduct">\n\n          <ion-option value="米价">米价</ion-option>\n\n          <ion-option value="单位价">单位价</ion-option>\n\n        </ion-select>\n\n      </ion-item>\n\n\n\n      <br>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>金额</ion-label>\n\n        <ion-input type="number" formControlName="amount"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" >交货日期</ion-label>\n\n        <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="datePayProduct"\n\n          autocorrect="on"></ion-datetime>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>已付数量</ion-label>\n\n        <ion-input type="text" formControlName="hadPaidProduct"></ion-input>\n\n      </ion-item>\n\n\n\n      <br>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>备注</ion-label>\n\n        <ion-textarea formControlName="descriptProduct"></ion-textarea>\n\n      </ion-item>\n\n\n\n    </ion-list>\n\n  </form>\n\n\n\n</ion-content>\n\n`/*ion-inline-end:"C:\Users\36394\projet\erp\src\pages\product-model\product-model.html"*/,
         }),
         __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* ViewController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* ViewController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _c || Object])
     ], ProductModelPage);

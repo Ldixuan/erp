@@ -16,25 +16,25 @@ import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 export class ProductModelPage {
 
   searchQuery: string = '';
-  items: Array<{id:number, name:string, unit : string, typePrice : string}>;
+  products: Array<{id:number, name:string, unit : string, typePrice : string}>;
   gridShow = false;
   productNotFound = false;
-  private product : FormGroup;
+  private productForm : FormGroup;
   
   
 
   constructor(public viewCtrl: ViewController, private formBuilder: FormBuilder, public navParams: NavParams) {
-    this.initializeItems();
+    this.initializeProduct();
 
-    this.product = this.formBuilder.group({
-      nameProduct: [''],
+    this.productForm = this.formBuilder.group({
+      nameProduct: ['', Validators.required],
       adresseProduct: [''],
       nameOffical: [''],
-      numberProduct: [''],
-      unitProduct: [''],
-      priceProduct: [''],
+      numberProduct: ['', Validators.required],
+      unitProduct: ['', Validators.required],
+      priceProduct: ['', Validators.required],
       typePriceProduct: [''],
-      amount:[''],
+      amount:['', Validators.required],
       datePayProduct:[''],
       hadPaidProduct:[''],
       descriptProduct:['']
@@ -42,7 +42,7 @@ export class ProductModelPage {
 
     let infoProduct = this.navParams.get('infoProduct');
     if(infoProduct != undefined){
-      this.product.setValue(infoProduct);
+      this.productForm.setValue(infoProduct);
     }
   }
 
@@ -52,29 +52,29 @@ export class ProductModelPage {
   }
 
   logProductForm() {
-    this.viewCtrl.dismiss(this.product.value);
+    this.viewCtrl.dismiss(this.productForm.value);
   }
 
-  initializeItems() {
-    this.items = [
+  initializeProduct() {
+    this.products = [
       {id : 1, name : "foo", unit : "码", typePrice : "米价"},
       {id : 2, name : "bar", unit : "码", typePrice : "米价"}
     ];
   }
 
-  getItems(ev) {
+  getProduct(ev) {
     // Reset items back to all of the items
-    this.initializeItems();
+    this.initializeProduct();
 
     // set val to the value of the searchbar
     const val = ev.target.value;
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      this.items = this.items.filter((item) => {
+      this.products = this.products.filter((item) => {
         return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
-      if(this.items.length > 0){
+      if(this.products.length > 0){
         this.gridShow = true;
       }
       else{
@@ -87,12 +87,12 @@ export class ProductModelPage {
     console.log('ionViewDidLoad ProductModelPage');
   }
 
-  select(item){
-    let productTmp = this.product.value;
+  selectProduct(item){
+    let productTmp = this.productForm.value;
     productTmp["nameProduct"] = item.name;
     productTmp["unitProduct"] = item.unit;
     productTmp["typePriceProduct"] = item.typePrice;
-    this.product.setValue(productTmp);
+    this.productForm.setValue(productTmp);
     this.gridShow = false;
     this.productNotFound = false;
   }
@@ -102,13 +102,13 @@ export class ProductModelPage {
     if(val == ""){
       this.gridShow = false;
     }
-    for (let index = 0; index < this.items.length; index++) {
-      if(val == this.items[index].name){
-        let productTmp = this.product.value;
-        productTmp["nameProduct"] = this.items[index].name;
-        productTmp["unitProduct"] = this.items[index].unit;
-        productTmp["typePriceProduct"] = this.items[index].typePrice;
-        this.product.setValue(productTmp);
+    for (let index = 0; index < this.products.length; index++) {
+      if(val == this.products[index].name){
+        let productTmp = this.productForm.value;
+        productTmp["nameProduct"] = this.products[index].name;
+        productTmp["unitProduct"] = this.products[index].unit;
+        productTmp["typePriceProduct"] = this.products[index].typePrice;
+        this.productForm.setValue(productTmp);
         this.gridShow = false;
         return;
       }

@@ -16,68 +16,66 @@
 </ion-header>
 
 
-<ion-content padding>
-<h3>销售订单编辑</h3>
-<form [formGroup]="todo" (ngSubmit) = "logForm()">
+<ion-content>
+<form [formGroup]="orderForm" (ngSubmit) = "logForm()">
   <ion-list inset="true">
 
       <ion-item >
-        <ion-label floating>订单编号</ion-label>
+        <ion-label color="primary" floating>订单编号</ion-label>
         <ion-input type="text" formControlName="title"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label >订单日期</ion-label>
+        <ion-label color="primary">订单日期</ion-label>
         <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="date" autocorrect="on"></ion-datetime>
       </ion-item>
-  </ion-list>
 
-  <ion-list inset="true">
-
+      <br>
       <ion-item>
-        <ion-label floating>收取人 :</ion-label>
+        <ion-label color="primary" floating>收取人</ion-label>
         <ion-input type="text" formControlName="sender" autocorrect="on"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label floating>传真 :</ion-label>
+        <ion-label color="primary" floating>传真</ion-label>
         <ion-input type="tel" formControlName="faxSender" autocorrect="on"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label floating>电话 :</ion-label>
+        <ion-label color="primary" floating>电话</ion-label>
         <ion-input type="tel" formControlName="telSender" autocorrect="on"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label floating>单位 :</ion-label>
-        <ion-input type="text" formControlName="dept"></ion-input>
+        <ion-label color="primary" floating>单位</ion-label>
+        <ion-input type="text" formControlName="dept"  (input)="getDept($event)" (change)="endInputDept($event)"></ion-input>
       </ion-item>
+      <ion-grid id="deptSearchList" *ngIf="gridShow">
+          <ion-row *ngFor="let dept of depts" (click)="selectDept(dept)">
+            <ion-col class="grid">{{dept.name}}</ion-col>
+          </ion-row>
+      </ion-grid>
+        <p *ngIf="productNotFound">未找到对应货物</p>
 
-  </ion-list>
-
-  <ion-list inset="true">
-
+      <br>
       <ion-item>
-        <ion-label floating>发送人 :</ion-label>
+        <ion-label color="primary" floating>发送人</ion-label>
         <ion-input type="text" formControlName="receiver" autocorrect="on"></ion-input>
       </ion-item>  
 
       <ion-item>
-        <ion-label floating>传真 :</ion-label>
+        <ion-label color="primary" floating>传真</ion-label>
         <ion-input type="tel" formControlName="faxReceiver" autocorrect="on"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label floating>电话 :</ion-label>
+        <ion-label color="primary" floating>电话</ion-label>
         <ion-input type="tel" formControlName="telReceiver" autocorrect="on"></ion-input>
       </ion-item>
+      <br>
 
-  </ion-list>
-
-  <ion-list inset="true">
       <ion-item>
-          <ion-label floating>备注:</ion-label>
+          <ion-label color="primary" floating>备注</ion-label>
           <ion-textarea formControlName="descript"></ion-textarea>
       </ion-item>
   </ion-list>
@@ -108,6 +106,6 @@
       </ion-card-content>
     </ion-card>
   </ion-list>
-  <button ion-button type="submit" [disabled]="!todo.valid" block>保存</button>
+  <button ion-button type="submit" [disabled]="!orderForm.valid" block>保存</button>
 </form>
 </ion-content>

@@ -7,86 +7,99 @@
 -->
 <ion-header>
 
-    <ion-toolbar>
-        <ion-title>添加货物</ion-title>
-        <button ion-button (click)="exit()" color="light" icon-start><ion-icon name='arrow-back'></ion-icon>返回</button>
-        <button ion-button (click)="logProductForm()" [disabled]="!product.valid">保存</button>
-      
-      
-      </ion-toolbar>
+  <ion-navbar>
+      <ion-buttons>
+      <button ion-button (click)="exit()" icon-start>
+        <ion-icon name='arrow-back'></ion-icon> 返回
+      </button>
+    </ion-buttons>
+    <ion-title text-center>添加货物</ion-title>
+    <ion-buttons end> <button ion-button (click)="logProductForm()" 
+      [disabled]="!productForm.valid" color="black">保存</button>
+    </ion-buttons>
+  </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-  <form [formGroup]="product">
-    <ion-item>
-      <ion-label floating>货物名称:</ion-label>
-      <ion-input type="text" (input)="getItems($event)" (change)="endInputProduct($event)" formControlName="nameProduct" autocorrect="on"></ion-input>
-    </ion-item>
-    <ion-grid id="productSearchList" *ngIf="gridShow">
-      <ion-row *ngFor="let item of items" (click)="select(item)">
-        <ion-col class="grid">{{item.name}}</ion-col>
-      </ion-row>
-    </ion-grid>
-    <p *ngIf="productNotFound">未找到对应货物</p>
+<ion-content >
+  <form [formGroup]="productForm">
+    <ion-list inset='true'>
+      <ion-item>
+        <ion-label color="primary" floating>货物名称</ion-label>
+        <ion-input type="text" (input)="getProduct($event)" (change)="endInputProduct($event)"
+         formControlName="nameProduct"></ion-input>
+      </ion-item>
+      <ion-grid id="productSearchList" *ngIf="gridShow">
+        <ion-row *ngFor="let product of products" (click)="selectProduct(product)">
+          <ion-col class="grid">{{product.name}}</ion-col>
+        </ion-row>
+      </ion-grid>
+      <p *ngIf="productNotFound">未找到对应货物</p>
 
-      <ion-list inset='true'>
-
-        <ion-item>
-          <ion-label floating>产地 :</ion-label>
-          <ion-input type="text" formControlName="adresseProduct"></ion-input>
-        </ion-item>
-  
-        <ion-item>
-          <ion-label floating>官方品名 :</ion-label>
-          <ion-input type="text" formControlName="nameOffical"></ion-input>
-        </ion-item>
-  
-        <ion-item>
-          <ion-label floating>数量 :</ion-label>
-          <ion-input type="number" formControlName="numberProduct" autocorrect="on"></ion-input>
-        </ion-item>
-  
-        <ion-item>
-          <ion-label floating>单位 :</ion-label>
-          <ion-input type="text" formControlName="unitProduct" autocorrect="on"></ion-input>
-        </ion-item>
-
-        <ion-item>
-            <ion-label floating>单价 :</ion-label>
-            <ion-input type="number" formControlName="priceProduct" autocorrect="on"></ion-input>
-          </ion-item>
     
-          <ion-item>
-            <ion-label floating>价类 :</ion-label>
-            <ion-select formControlName="typePriceProduct">
-              <ion-option value="米价">米价</ion-option>
-              <ion-option value="单位价">单位价</ion-option>
-            </ion-select>
-          </ion-item>
-    
-          <ion-item>
-            <ion-label floating>金额 :</ion-label>
-            <ion-input type="number" formControlName="amount" autocorrect="on"></ion-input>
-          </ion-item>
-    
-          <ion-item>
-              <ion-label >交货日期</ion-label>
-              <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="datePayProduct" autocorrect="on"></ion-datetime>
-            </ion-item>
 
-          <ion-item>
-              <ion-label floating>已付数量 :</ion-label>
-              <ion-input type="text" formControlName="hadPaidProduct"></ion-input>
-            </ion-item>
+      <ion-item>
+        <ion-label color="primary" floating>产地</ion-label>
+        <ion-input type="text" formControlName="adresseProduct"></ion-input>
+      </ion-item>
 
-            <ion-item>
-                <ion-label floating>备注:</ion-label>
-                <ion-textarea formControlName="descriptProduct"></ion-textarea>
-            </ion-item>
-  
-      </ion-list>
-    </form>
-    
+      <ion-item>
+        <ion-label color="primary" floating>官方品名</ion-label>
+        <ion-input type="text" formControlName="nameOffical"></ion-input>
+      </ion-item>
+
+      <br>
+
+      <ion-item>
+        <ion-label color="primary" floating>数量</ion-label>
+        <ion-input type="number" formControlName="numberProduct"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="primary" floating>单位</ion-label>
+        <ion-input type="text" formControlName="unitProduct"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="primary" floating>单价</ion-label>
+        <ion-input type="number" formControlName="priceProduct"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="primary" floating>价类</ion-label>
+        <ion-select formControlName="typePriceProduct">
+          <ion-option value="米价">米价</ion-option>
+          <ion-option value="单位价">单位价</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <br>
+
+      <ion-item>
+        <ion-label color="primary" floating>金额</ion-label>
+        <ion-input type="number" formControlName="amount"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="primary" >交货日期</ion-label>
+        <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="datePayProduct"
+          autocorrect="on"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="primary" floating>已付数量</ion-label>
+        <ion-input type="text" formControlName="hadPaidProduct"></ion-input>
+      </ion-item>
+
+      <br>
+
+      <ion-item>
+        <ion-label color="primary" floating>备注</ion-label>
+        <ion-textarea formControlName="descriptProduct"></ion-textarea>
+      </ion-item>
+
+    </ion-list>
+  </form>
+
 </ion-content>

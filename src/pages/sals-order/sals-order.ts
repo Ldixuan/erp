@@ -18,12 +18,16 @@ import { Title } from '@angular/platform-browser';
 })
 export class SalsOrderPage {
 
-  private todo : FormGroup;
+  private orderForm : FormGroup;
 
   listProduct : Array<any>;
+  gridShow = false;
+  productNotFound = false;
+  depts: Array<{name:string}>;
 
   constructor(private formBuilder: FormBuilder, public modalCtrl: ModalController) {
-    this.todo = this.formBuilder.group({
+    this.initializeDept();
+    this.orderForm = this.formBuilder.group({
       title: [''],
       date: [''],
       telSender: [''],
@@ -39,8 +43,15 @@ export class SalsOrderPage {
 
   }
 
+  initializeDept() {
+    this.depts = [
+      {name : "foo"},
+      {name : "bar"}
+    ];
+  }
+
   logForm() {
-    console.log(this.todo.value);
+    console.log(this.orderForm.value);
   }
 
   ionViewDidLoad() {
@@ -65,6 +76,55 @@ export class SalsOrderPage {
       }
     })
     modal.present();
+  }
+
+  getDept(ev) {
+    // Reset items back to all of the items
+    this.initializeDept();
+    
+
+    // set val to the value of the searchbar
+    const val = ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      this.depts = this.depts.filter((item) => {
+        return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+      if(this.depts.length > 0){
+        this.gridShow = true;
+      }
+      else{
+        this.gridShow = false;
+      }
+    }
+    console.log(this.gridShow);
+  }
+
+  selectDept(item){
+    let deptTmp = this.orderForm.value;
+    deptTmp["dept"] = item.name;
+    this.orderForm.setValue(deptTmp);
+    this.gridShow = false;
+    this.productNotFound = false;
+  }
+
+  endInputDept(ev){
+    const val = ev.target.value;
+    if(val == ""){
+      this.gridShow = false;
+    }
+    for (let index = 0; index < this.depts.length; index++) {
+      if(val == this.depts[index].name){
+        let deptTmp = this.orderForm.value;
+        deptTmp["nameProduct"] = this.depts[index].name;
+        this.orderForm.setValue(deptTmp);
+        this.gridShow = false;
+        return;
+      }
+    }
+
+    this.productNotFound = true;
   }
 
 }
