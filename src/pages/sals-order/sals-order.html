@@ -17,8 +17,7 @@
 
 
 <ion-content>
-<form [formGroup]="orderForm" (ngSubmit) = "logForm()">
-  <ion-list inset="true">
+  <ion-item-group inset="true" [formGroup]="orderForm" >
 
       <ion-item >
         <ion-label color="primary" floating>订单编号</ion-label>
@@ -78,7 +77,9 @@
           <ion-label color="primary" floating>备注</ion-label>
           <ion-textarea formControlName="descript"></ion-textarea>
       </ion-item>
-  </ion-list>
+
+      <ion-item></ion-item>
+  </ion-item-group>
 
   <a ion-item (click)="presentModal()">
       添加货物
@@ -106,6 +107,6 @@
       </ion-card-content>
     </ion-card>
   </ion-list>
-  <button ion-button type="submit" [disabled]="!orderForm.valid" block>保存</button>
-</form>
+  
+  <button ion-button [disabled]="!orderForm.valid" (click) = "logForm()" block>保存</button>
 </ion-content>

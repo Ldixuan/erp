@@ -23,8 +23,7 @@
 
 
 <ion-content >
-  <form [formGroup]="productForm">
-    <ion-list inset='true'>
+    <ion-item-group [formGroup]="productForm" inset='true'>
       <ion-item>
         <ion-label color="primary" floating>货物名称</ion-label>
         <ion-input type="text" (input)="getProduct($event)" (change)="endInputProduct($event)"
@@ -98,8 +97,7 @@
         <ion-label color="primary" floating>备注</ion-label>
         <ion-textarea formControlName="descriptProduct"></ion-textarea>
       </ion-item>
-
-    </ion-list>
-  </form>
+      <ion-item></ion-item>
+    </ion-item-group>
 
 </ion-content>
