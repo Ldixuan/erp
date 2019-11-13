@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams,ModalController, Modal } from 'ioni
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ProductModelPage } from '../product-model/product-model';
 import { Title } from '@angular/platform-browser';
+import { RestProvider} from '../../providers/rest/rest'
 
 /**
  * Generated class for the SalsOrderPage page.
@@ -25,7 +26,7 @@ export class SalsOrderPage {
   productNotFound = false;
   depts: Array<{name:string}>;
 
-  constructor(private formBuilder: FormBuilder, public modalCtrl: ModalController) {
+  constructor(private formBuilder: FormBuilder, public modalCtrl: ModalController, public rest: RestProvider) {
     this.initializeDept();
     this.orderForm = this.formBuilder.group({
       title: [''],
@@ -125,6 +126,18 @@ export class SalsOrderPage {
     }
 
     this.productNotFound = true;
+  }
+
+  // 例子
+  getApiExample(){
+    this.rest.GetCargoByName('') // 填写url的参数
+    .subscribe(
+      f => {
+        // 回调函数
+      },
+    error => {
+     //执行错误提醒
+    });
   }
 
 }
