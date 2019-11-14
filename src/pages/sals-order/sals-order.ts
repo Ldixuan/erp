@@ -26,7 +26,7 @@ export class SalsOrderPage {
   productNotFound = false;
   depts: Array<{name:string}>;
 
-  constructor(private formBuilder: FormBuilder, public modalCtrl: ModalController, public rest: RestProvider) {
+  constructor(private formBuilder: FormBuilder, public modalCtrl: ModalController, public rest: RestProvider, public navParams: NavParams) {
     this.initializeDept();
     this.orderForm = this.formBuilder.group({
       title: [''],
@@ -41,6 +41,11 @@ export class SalsOrderPage {
       dept:['']
     });
     this.listProduct = new Array<any>();
+    let infoOrder = this.navParams.get('orderData');
+    if(infoOrder != undefined){
+      this.orderForm.setValue(infoOrder.orderData);
+      this.listProduct = infoOrder.Products;
+    }
 
   }
 
@@ -89,9 +94,6 @@ export class SalsOrderPage {
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      this.depts = this.depts.filter((item) => {
-        return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
-      })
       if(this.depts.length > 0){
         this.gridShow = true;
       }
@@ -126,18 +128,6 @@ export class SalsOrderPage {
     }
 
     this.productNotFound = true;
-  }
-
-  // 例子
-  getApiExample(){
-    this.rest.GetCargoByName('') // 填写url的参数
-    .subscribe(
-      f => {
-        // 回调函数
-      },
-    error => {
-     //执行错误提醒
-    });
   }
 
 }

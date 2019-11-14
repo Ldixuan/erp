@@ -6,20 +6,20 @@
   </ion-header>
 
   <ion-content>
-    <ion-list>
-      <ion-item-group *ngFor="let p of pages">
+      <ion-item-group *ngFor="let p of pages" class="firstMenu">
         <ion-item (click)="listShow[p.title]=!listShow[p.title]">
           {{p.title}}
           <ion-icon name="ios-arrow-down" item-right  *ngIf="listShow[p.title]"></ion-icon>
           <ion-icon name="ios-arrow-forward" item-right *ngIf="!listShow[p.title]"></ion-icon>
         </ion-item>
-        <ion-list *ngIf="listShow[p.title]">
-            <button menuClose ion-item *ngFor="let i of p.componentPages" (click)="openPage(i)" small>
+        <ion-grid *ngIf="listShow[p.title]" >
+            <ion-row *ngFor="let i of p.componentPages" class="secondMenu">
+            <ion-col><a menuClose ion-item (click)="openPage(i)" class="fontSecondMenu">
                 {{i.pageTitle}}
-            </button>
-        </ion-list>
+             </a> </ion-col>
+          </ion-row>
+        </ion-grid>
     </ion-item-group>
-    </ion-list>
   </ion-content>
 
 </ion-menu>

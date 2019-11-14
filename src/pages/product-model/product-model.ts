@@ -25,7 +25,6 @@ export class ProductModelPage {
   
 
   constructor(public viewCtrl: ViewController, private formBuilder: FormBuilder, public navParams: NavParams, public rest: RestProvider) {
-    this.initializeProduct();
 
     this.productForm = this.formBuilder.group({
       nameProduct: ['', Validators.required],
@@ -40,6 +39,8 @@ export class ProductModelPage {
       hadPaidProduct:[''],
       descriptProduct:['']
     });
+
+    this.products = [];
 
     let infoProduct = this.navParams.get('infoProduct');
     if(infoProduct != undefined){
@@ -56,34 +57,21 @@ export class ProductModelPage {
     this.viewCtrl.dismiss(this.productForm.value);
   }
 
-  initializeProduct() {
-    this.products = [
-      {id : 1, name : "foo", unit : "码", typePrice : "米价"},
-      {id : 2, name : "bar", unit : "码", typePrice : "米价"}
-    ];
-  }
 
   getProduct(ev) {
-    // Reset items back to all of the items
-    this.initializeProduct();
-
-    // set val to the value of the searchbar
     const val = ev.target.value;
 
-    // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      this.rest.GetCargoByName(val) // 填写url的参数
+
+      this.rest.GetCargoByName(val,5) // 填写url的参数
           .subscribe(
           f => {
             console.log(f);
           },
           error => {
-            this.products = [{id:0, name:"请求错误",unit:"", typePrice:""}];
+            this.products = [{id:-1, name:"请求错误",unit:"", typePrice:""}];
           });
 
-      this.products = this.products.filter((item) => {
-        return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
-      })
       if(this.products.length > 0){
         this.gridShow = true;
       }
@@ -98,13 +86,15 @@ export class ProductModelPage {
   }
 
   selectProduct(item){
-    let productTmp = this.productForm.value;
-    productTmp["nameProduct"] = item.name;
-    productTmp["unitProduct"] = item.unit;
-    productTmp["typePriceProduct"] = item.typePrice;
-    this.productForm.setValue(productTmp);
-    this.gridShow = false;
-    this.productNotFound = false;
+    if(item.id != -1){
+      let productTmp = this.productForm.value;
+      productTmp["nameProduct"] = item.name;
+      productTmp["unitProduct"] = item.unit;
+      productTmp["typePriceProduct"] = item.typePrice;
+      this.productForm.setValue(productTmp);
+      this.gridShow = false;
+      this.productNotFound = false;
+    }
   }
 
   endInputProduct(ev){

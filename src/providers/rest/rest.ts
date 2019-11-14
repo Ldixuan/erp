@@ -19,11 +19,11 @@ export class RestProvider {
    
   }
 
-  private apiUrlGetCargoByName = 'http://localhost:5000/api/cargo';
+  private apiUrlGetCargoByName = 'http://localhost:52808/api/cargo';
  
 
-  GetCargoByName(keyword):Observable<string[]>{
-      return this.getUrlReturn(this.apiUrlGetCargoByName+"?keyword="+keyword);
+  GetCargoByName(keyword:string, limit:number):Observable<string[]>{
+      return this.getUrlReturn(this.apiUrlGetCargoByName+"?keyword="+keyword+"&limit="+limit);
   }
   
   private getUrlReturn(url: string): Observable<string[]> {
