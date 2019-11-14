@@ -17,7 +17,7 @@ import { RestProvider} from '../../providers/rest/rest'
 export class ProductModelPage {
 
   searchQuery: string = '';
-  products: Array<{id:number, name:string, unit : string, typePrice : string}>;
+  products: Array<{id:string, name:string, unit : string, typePrice : string}>;
   gridShow = false;
   productNotFound = false;
   private productForm : FormGroup;
@@ -66,10 +66,11 @@ export class ProductModelPage {
       this.rest.GetCargoByName(val,5) // 填写url的参数
           .subscribe(
           f => {
-            console.log(f);
+            this.products = f;
+            console.log(this.products);
           },
           error => {
-            this.products = [{id:-1, name:"请求错误",unit:"", typePrice:""}];
+            this.products = [{id:'-1', name:"请求错误",unit:"", typePrice:""}];
           });
 
       if(this.products.length > 0){
@@ -86,7 +87,7 @@ export class ProductModelPage {
   }
 
   selectProduct(item){
-    if(item.id != -1){
+    if(item.id != '-1'){
       let productTmp = this.productForm.value;
       productTmp["nameProduct"] = item.name;
       productTmp["unitProduct"] = item.unit;

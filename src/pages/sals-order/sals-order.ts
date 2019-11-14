@@ -40,7 +40,9 @@ export class SalsOrderPage {
       faxReceiver: [''],
       telReceiver:[''],
       descript:[''],
-      dept:['']
+      dept:[''],
+      products:[''],
+      userId : ['123']
     });
     this.listProduct = new Array<any>();
     let infoOrder = this.navParams.get('orderData');
@@ -64,6 +66,9 @@ export class SalsOrderPage {
   }
 
   logForm() {
+    let dataTmp = this.orderForm.value;
+    dataTmp.products = this.listProduct;
+    this.orderForm.setValue(dataTmp);
     if(this.readModel){
       this.viewCtrl.dismiss({action: 2, content : this.orderForm.value})
     }

@@ -16,10 +16,10 @@ import { SalsOrderPage } from '../sals-order/sals-order';
 })
 export class ReadSqlsOrderPage {
 
-  private salsOrders : Array<{orderData:any, Products:any}>;
+  private salsOrders : Array<any>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public modalCtrl: ModalController) {
-    this.salsOrders = [];
+    this.initSalsOrdersData()
   }
 
   initSalsOrdersData(){

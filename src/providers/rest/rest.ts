@@ -34,7 +34,7 @@ export class RestProvider {
 
   private extractData(res: Response) {
     let body = res.json();
-    return JSON.parse(body) || {};
+    return body || {};
   }
 
   private handleError(error: Response | any) {
