@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ModalController, Modal } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,ModalController, Modal,ViewController } from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ProductModelPage } from '../product-model/product-model';
 import { Title } from '@angular/platform-browser';
 import { RestProvider} from '../../providers/rest/rest'
+import { Action } from 'rxjs/scheduler/Action';
 
 /**
  * Generated class for the SalsOrderPage page.
@@ -25,8 +26,9 @@ export class SalsOrderPage {
   gridShow = false;
   productNotFound = false;
   depts: Array<{name:string}>;
+  readModel = false;
 
-  constructor(private formBuilder: FormBuilder, public modalCtrl: ModalController, public rest: RestProvider, public navParams: NavParams) {
+  constructor(private formBuilder: FormBuilder, public viewCtrl: ViewController, public modalCtrl: ModalController, public rest: RestProvider, public navParams: NavParams) {
     this.initializeDept();
     this.orderForm = this.formBuilder.group({
       title: [''],
@@ -45,8 +47,13 @@ export class SalsOrderPage {
     if(infoOrder != undefined){
       this.orderForm.setValue(infoOrder.orderData);
       this.listProduct = infoOrder.Products;
+      this.readModel = true;
     }
 
+  }
+
+  removeOrder(){
+    this.viewCtrl.dismiss({action:1, content : {}});
   }
 
   initializeDept() {
@@ -57,6 +64,9 @@ export class SalsOrderPage {
   }
 
   logForm() {
+    if(this.readModel){
+      this.viewCtrl.dismiss({action: 2, content : this.orderForm.value})
+    }
     console.log(this.orderForm.value);
   }
 

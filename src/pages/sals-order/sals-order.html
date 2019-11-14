@@ -6,12 +6,22 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar *ngIf="!readModel">
       <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
       <ion-title>销售订单</ion-title>
     </ion-navbar>
+  
+    <ion-navbar *ngIf="readModel">
+        <button ion-button (click)="exit()" icon-start>
+            <ion-icon name='arrow-back' color = "light"></ion-icon> 返回
+          </button>
+        <ion-title text-center>销售订单</ion-title>
+        <ion-buttons end> <button ion-button (click)="removeOrder()" 
+          color="primary">删除</button>
+        </ion-buttons>
+      </ion-navbar>
 
 </ion-header>
 
