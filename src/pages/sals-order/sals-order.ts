@@ -25,7 +25,7 @@ export class SalsOrderPage {
   listProduct : Array<any>;
   gridShow = false;
   productNotFound = false;
-  depts: Array<{id : string, name:string}>;
+  depts: any;
   readModel = false;
 
   constructor(private formBuilder: FormBuilder, public viewCtrl: ViewController, public modalCtrl: ModalController, public rest: RestProvider, public navParams: NavParams) {

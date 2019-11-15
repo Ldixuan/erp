@@ -17,7 +17,7 @@ import { RestProvider} from '../../providers/rest/rest'
 export class ProductModelPage {
 
   searchQuery: string = '';
-  products: Array<{id:string, name:string, unit : string, typePrice : string}>;
+  products: any;
   gridShow = false;
   productNotFound = false;
   private productForm : FormGroup;

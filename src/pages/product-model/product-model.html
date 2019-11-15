@@ -8,9 +8,12 @@
 <ion-header>
 
   <ion-navbar>
-      <button ion-button (click)="exit()" icon-start>
-        <ion-icon name='arrow-back' color = "light"></ion-icon> 返回
-      </button>
+      <ion-buttons>
+          <button ion-button (click)="exit()" >
+              <ion-icon name='arrow-back' color = "light"></ion-icon> 返回
+            <ion-icon name="md-close" showWhen="android"></ion-icon>
+          </button>
+        </ion-buttons>
     <ion-title text-center>添加货物</ion-title>
     <ion-buttons end> <button ion-button (click)="logProductForm()" 
       [disabled]="!productForm.valid" color="primary">保存</button>
