@@ -47,9 +47,9 @@ export class SalsOrderPage {
     this.listProduct = new Array<any>();
     let title = this.navParams.get('title');
     if(title != undefined){
-      let infoOrder = this.get(title);
-      this.orderForm.setValue(infoOrder.orderData);
-      this.listProduct = infoOrder.Products;
+      //let infoOrder = this.get(title);
+      //this.orderForm.setValue(infoOrder.orderData);
+      //this.listProduct = infoOrder.Products;
       this.readModel = true;
     }
 
@@ -156,6 +156,10 @@ export class SalsOrderPage {
     }
 
     this.productNotFound = true;
+  }
+
+  exit(){
+    this.viewCtrl.dismiss();
   }
 
 }

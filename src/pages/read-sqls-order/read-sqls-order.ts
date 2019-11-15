@@ -42,7 +42,7 @@ export class ReadSqlsOrderPage {
   }
 
   presentOrderPage(infoOrder, index:number){
-    const modal = this.modalCtrl.create(SalsOrderPage, {title : infoOrder.title});
+    const modal = this.modalCtrl.create(SalsOrderPage, {title : infoOrder.commandeId});
 
     modal.onDidDismiss(data => {
       if(data != undefined ){

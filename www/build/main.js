@@ -134,7 +134,7 @@ var ReadSqlsOrderPage = (function () {
     };
     ReadSqlsOrderPage.prototype.presentOrderPage = function (infoOrder, index) {
         var _this = this;
-        var modal = this.modalCtrl.create(__WEBPACK_IMPORTED_MODULE_2__sals_order_sals_order__["a" /* SalsOrderPage */], { title: infoOrder.title });
+        var modal = this.modalCtrl.create(__WEBPACK_IMPORTED_MODULE_2__sals_order_sals_order__["a" /* SalsOrderPage */], { title: infoOrder.commandeId });
         modal.onDidDismiss(function (data) {
             if (data != undefined) {
                 if (data.action == 1) {
@@ -357,9 +357,9 @@ var SalsOrderPage = (function () {
         this.listProduct = new Array();
         var title = this.navParams.get('title');
         if (title != undefined) {
-            var infoOrder = this.get(title);
-            this.orderForm.setValue(infoOrder.orderData);
-            this.listProduct = infoOrder.Products;
+            //let infoOrder = this.get(title);
+            //this.orderForm.setValue(infoOrder.orderData);
+            //this.listProduct = infoOrder.Products;
             this.readModel = true;
         }
     }
@@ -453,6 +453,9 @@ var SalsOrderPage = (function () {
             }
         }
         this.productNotFound = true;
+    };
+    SalsOrderPage.prototype.exit = function () {
+        this.viewCtrl.dismiss();
     };
     SalsOrderPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
