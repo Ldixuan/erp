@@ -25,14 +25,13 @@ export class SalsOrderPage {
   listProduct : Array<any>;
   gridShow = false;
   productNotFound = false;
-  depts: Array<{name:string}>;
+  depts: Array<{id : string, name:string}>;
   readModel = false;
 
   constructor(private formBuilder: FormBuilder, public viewCtrl: ViewController, public modalCtrl: ModalController, public rest: RestProvider, public navParams: NavParams) {
-    this.initializeDept();
     this.orderForm = this.formBuilder.group({
       title: [''],
-      date: [''],
+      date: ['', Validators.required],
       telSender: [''],
       faxSender: [''],
       sender: [''],
@@ -40,13 +39,15 @@ export class SalsOrderPage {
       faxReceiver: [''],
       telReceiver:[''],
       descript:[''],
-      dept:[''],
+      dept:['', Validators.required],
       products:[''],
-      userId : ['123']
+      userId : ['Admi']
     });
+    this.depts = [];
     this.listProduct = new Array<any>();
-    let infoOrder = this.navParams.get('orderData');
-    if(infoOrder != undefined){
+    let title = this.navParams.get('title');
+    if(title != undefined){
+      let infoOrder = this.get(title);
       this.orderForm.setValue(infoOrder.orderData);
       this.listProduct = infoOrder.Products;
       this.readModel = true;
@@ -54,16 +55,14 @@ export class SalsOrderPage {
 
   }
 
+  get(title :string):any{
+    return {};
+  }
+
   removeOrder(){
     this.viewCtrl.dismiss({action:1, content : {}});
   }
 
-  initializeDept() {
-    this.depts = [
-      {name : "foo"},
-      {name : "bar"}
-    ];
-  }
 
   logForm() {
     let dataTmp = this.orderForm.value;
@@ -89,11 +88,15 @@ export class SalsOrderPage {
     }
     modal.onDidDismiss(data => {
       if(index != undefined){
-        this.listProduct[index] = data;
+        if(data.action == 1){
+          this.listProduct[index] = data.content;
+        }else if(data.action == 0){
+          this.listProduct.splice(index, 1);
+        }
         return;
       }
       else if(data != undefined){
-        this.listProduct.push(data);
+        this.listProduct.push(data.content);
       }
     })
     modal.present();
@@ -101,14 +104,22 @@ export class SalsOrderPage {
 
   getDept(ev) {
     // Reset items back to all of the items
-    this.initializeDept();
-    
+
 
     // set val to the value of the searchbar
     const val = ev.target.value;
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
+      this.rest.GetDeptByName(val) // 填写url的参数
+          .subscribe(
+          f => {
+            this.depts = f;
+          },
+          error => {
+            this.depts = [{id : "-1", name:"请求错误"}];
+          });
+      
       if(this.depts.length > 0){
         this.gridShow = true;
       }
@@ -120,11 +131,13 @@ export class SalsOrderPage {
   }
 
   selectDept(item){
-    let deptTmp = this.orderForm.value;
-    deptTmp["dept"] = item.name;
-    this.orderForm.setValue(deptTmp);
-    this.gridShow = false;
-    this.productNotFound = false;
+    if(item.id != "-1"){
+      let deptTmp = this.orderForm.value;
+      deptTmp["dept"] = item.name;
+      this.orderForm.setValue(deptTmp);
+      this.gridShow = false;
+      this.productNotFound = false;
+    }
   }
 
   endInputDept(ev){

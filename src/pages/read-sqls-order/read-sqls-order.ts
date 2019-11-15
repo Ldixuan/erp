@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,ModalController } from 'ionic-angular';
 import { SalsOrderPage } from '../sals-order/sals-order'; 
+import { RestProvider} from '../../providers/rest/rest'
 
 /**
  * Generated class for the ReadSqlsOrderPage page.
@@ -17,13 +18,23 @@ import { SalsOrderPage } from '../sals-order/sals-order';
 export class ReadSqlsOrderPage {
 
   private salsOrders : Array<any>;
+  private userId : string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public modalCtrl: ModalController,public rest: RestProvider) {
+    this.userId = "Admi";
     this.initSalsOrdersData()
   }
 
   initSalsOrdersData(){
-
+    this.rest.GetOrdersByUserId(this.userId)
+        .subscribe(
+          f => {
+            this.salsOrders = f;
+          },
+          error => {
+            alert("请求失败");
+          }
+        );
   }
 
   ionViewDidLoad() {
@@ -31,7 +42,7 @@ export class ReadSqlsOrderPage {
   }
 
   presentOrderPage(infoOrder, index:number){
-    const modal = this.modalCtrl.create(SalsOrderPage, {infoProduct : infoOrder});
+    const modal = this.modalCtrl.create(SalsOrderPage, {title : infoOrder.title});
 
     modal.onDidDismiss(data => {
       if(data != undefined ){
@@ -41,6 +52,7 @@ export class ReadSqlsOrderPage {
           this.salsOrders[index] = data.content;
         }
       }
+
     })
 
     modal.present();

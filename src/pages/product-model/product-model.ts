@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ViewController} from 'ionic-angular';
+import { IonicPage, AlertController, NavParams,ViewController} from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { RestProvider} from '../../providers/rest/rest'
 
@@ -21,10 +21,12 @@ export class ProductModelPage {
   gridShow = false;
   productNotFound = false;
   private productForm : FormGroup;
+  modifMod = false;
   
   
 
-  constructor(public viewCtrl: ViewController, private formBuilder: FormBuilder, public navParams: NavParams, public rest: RestProvider) {
+  constructor(public viewCtrl: ViewController, private formBuilder: FormBuilder, 
+    public navParams: NavParams, public rest: RestProvider,public alerCtrl: AlertController) {
 
     this.productForm = this.formBuilder.group({
       nameProduct: ['', Validators.required],
@@ -35,7 +37,7 @@ export class ProductModelPage {
       priceProduct: ['', Validators.required],
       typePriceProduct: [''],
       amount:['', Validators.required],
-      datePayProduct:[''],
+      datePayProduct:['',Validators.required],
       hadPaidProduct:[''],
       descriptProduct:['']
     });
@@ -45,6 +47,7 @@ export class ProductModelPage {
     let infoProduct = this.navParams.get('infoProduct');
     if(infoProduct != undefined){
       this.productForm.setValue(infoProduct);
+      this.modifMod = true;
     }
   }
 
@@ -54,7 +57,29 @@ export class ProductModelPage {
   }
 
   logProductForm() {
-    this.viewCtrl.dismiss(this.productForm.value);
+    this.viewCtrl.dismiss({action : 1, content : this.productForm.value});
+  }
+
+  removeProduct(){
+    let confirm = this.alerCtrl.create({
+      title: '提示',
+      message: '确认删除此商品吗?',
+      buttons: [
+        {
+          text: '确认',
+          handler: () => {
+            this.viewCtrl.dismiss({action : 0, content : {}});
+          }
+        },
+        {
+          text: '取消',
+          handler: () => {
+          }
+        }
+      ]
+    });
+    confirm.present()
+    
   }
 
 

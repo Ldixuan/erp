@@ -23,7 +23,7 @@
 <ion-content >
     <ion-item-group [formGroup]="productForm" inset='true'>
       <ion-item>
-        <ion-label color="primary" floating>货物名称</ion-label>
+        <ion-label color="primary" floating>*货物名称</ion-label>
         <ion-input type="text" (input)="getProduct($event)" (change)="endInputProduct($event)"
          formControlName="nameProduct"></ion-input>
       </ion-item>
@@ -32,7 +32,7 @@
           <ion-col class="grid">{{product.name}}</ion-col>
         </ion-row>
       </ion-grid>
-      <p *ngIf="productNotFound">未找到对应货物</p>
+      <p *ngIf="productNotFound" class="notFoundMsg">未找到对应货物</p>
 
     
 
@@ -49,17 +49,17 @@
       <br>
 
       <ion-item>
-        <ion-label color="primary" floating>数量</ion-label>
+        <ion-label color="primary" floating>*数量</ion-label>
         <ion-input type="number" formControlName="numberProduct"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label color="primary" floating>单位</ion-label>
+        <ion-label color="primary" floating>*单位</ion-label>
         <ion-input type="text" formControlName="unitProduct"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label color="primary" floating>单价</ion-label>
+        <ion-label color="primary" floating>*单价</ion-label>
         <ion-input type="number" formControlName="priceProduct"></ion-input>
       </ion-item>
 
@@ -74,12 +74,12 @@
       <br>
 
       <ion-item>
-        <ion-label color="primary" floating>金额</ion-label>
+        <ion-label color="primary" floating>*金额</ion-label>
         <ion-input type="number" formControlName="amount"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label color="primary" >交货日期</ion-label>
+        <ion-label color="primary" >*交货日期</ion-label>
         <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="datePayProduct"
           autocorrect="on"></ion-datetime>
       </ion-item>
@@ -97,5 +97,7 @@
       </ion-item>
       <ion-item></ion-item>
     </ion-item-group>
+
+    <button ion-button *ngIf="modifMod" (click) = "removeProduct()" block>删除</button>
 
 </ion-content>

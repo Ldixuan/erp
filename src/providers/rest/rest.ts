@@ -20,10 +20,21 @@ export class RestProvider {
   }
 
   private apiUrlGetCargoByName = 'http://localhost:52808/api/cargo';
+  private apiUrlGetOrdersByUserId = 'http://localhost:52808/api/SalesOrder/GetSalesOrderByUserId';
+  private apiUrlGetDeptByName = 'http://localhost:52808/api/Client';
+
  
 
   GetCargoByName(keyword:string, limit:number):Observable<string[]>{
       return this.getUrlReturn(this.apiUrlGetCargoByName+"?keyword="+keyword+"&limit="+limit);
+  }
+
+  GetOrdersByUserId(userId:string):Observable<string[]>{
+    return this.getUrlReturn(this.apiUrlGetOrdersByUserId+"?userId="+userId);
+  }
+
+  GetDeptByName(keyword : string):Observable<string[]>{
+    return this.getUrlReturn(this.apiUrlGetDeptByName+"?name="+keyword);
   }
   
   private getUrlReturn(url: string): Observable<string[]> {

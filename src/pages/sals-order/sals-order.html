@@ -35,7 +35,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-label color="primary">订单日期</ion-label>
+        <ion-label color="primary">*订单日期</ion-label>
         <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="date" autocorrect="on"></ion-datetime>
       </ion-item>
 
@@ -56,7 +56,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-label color="primary" floating>单位</ion-label>
+        <ion-label color="primary" floating>*单位</ion-label>
         <ion-input type="text" formControlName="dept"  (input)="getDept($event)" (change)="endInputDept($event)"></ion-input>
       </ion-item>
       <ion-grid id="deptSearchList" *ngIf="gridShow">
@@ -64,7 +64,7 @@
             <ion-col class="grid">{{dept.name}}</ion-col>
           </ion-row>
       </ion-grid>
-        <p *ngIf="productNotFound">未找到对应货物</p>
+        <p *ngIf="productNotFound" class="notFoundMsg">未找到对应单位</p>
 
       <br>
       <ion-item>
