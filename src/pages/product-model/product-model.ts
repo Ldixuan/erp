@@ -29,6 +29,7 @@ export class ProductModelPage {
     public navParams: NavParams, public rest: RestProvider,public alerCtrl: AlertController) {
 
     this.productForm = this.formBuilder.group({
+      idProduct: [''],
       nameProduct: ['', Validators.required],
       adresseProduct: [''],
       nameOffical: [''],
@@ -90,7 +91,7 @@ export class ProductModelPage {
 
       this.rest.GetCargoByName(val,5) // 填写url的参数
           .subscribe(
-          f => {
+          (f : any) => {
             this.products = f;
             console.log(this.products);
           },

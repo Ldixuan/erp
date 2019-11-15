@@ -14,7 +14,12 @@
     </ion-navbar>
   
     <ion-navbar *ngIf="readModel">
- 
+      <ion-buttons>
+        <button ion-button (click)="exit()" >
+            <ion-icon name='arrow-back' color = "light"></ion-icon> 返回
+          <ion-icon name="md-close" showWhen="android"></ion-icon>
+        </button>
+      </ion-buttons>
         <ion-title text-center>销售订单</ion-title>
         <ion-buttons end> <button ion-button (click)="removeOrder()" 
           color="primary">删除</button>

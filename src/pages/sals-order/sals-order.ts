@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ModalController, Modal,ViewController } from 'ionic-angular';
+import { IonicPage, AlertController,NavController, NavParams,ModalController, Modal,ViewController } from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ProductModelPage } from '../product-model/product-model';
 import { Title } from '@angular/platform-browser';
@@ -28,7 +28,8 @@ export class SalsOrderPage {
   depts: any;
   readModel = false;
 
-  constructor(private formBuilder: FormBuilder, public viewCtrl: ViewController, public modalCtrl: ModalController, public rest: RestProvider, public navParams: NavParams) {
+  constructor(private formBuilder: FormBuilder, public viewCtrl: ViewController,
+    public alerCtrl: AlertController, public modalCtrl: ModalController, public rest: RestProvider, public navParams: NavParams) {
     this.orderForm = this.formBuilder.group({
       title: [''],
       date: ['', Validators.required],
@@ -41,26 +42,100 @@ export class SalsOrderPage {
       descript:[''],
       dept:['', Validators.required],
       products:[''],
-      userId : ['Admi']
+      userId : ['Admi'],
+      deptId : [''],
+      status : [''],
+      messageForAuditor : ['']
     });
     this.depts = [];
     this.listProduct = new Array<any>();
     let title = this.navParams.get('title');
     if(title != undefined){
-      //let infoOrder = this.get(title);
-      //this.orderForm.setValue(infoOrder.orderData);
-      //this.listProduct = infoOrder.Products;
+      this.initOrderInfo(title);
       this.readModel = true;
     }
 
   }
 
-  get(title :string):any{
-    return {};
+  initOrderInfo(title :string){
+    this.rest.GetSalesOrderByOrderId(title)
+        .subscribe(
+          (f : any) => {
+            let orderDetail = f.salesOrderDetail;
+            let temp = this.orderForm.value;
+            temp.title = orderDetail.commandeId;
+            temp.date = orderDetail.commandeCreateDate;
+            temp.telSender = orderDetail.senderTelephoneNumber;
+            temp.faxReceiver = orderDetail.senderFax;
+            temp.sender = orderDetail.sender;
+            temp.receiver = orderDetail.receiver;
+            temp.faxReceiver = orderDetail.receiverFax;
+            temp.telReceiver = orderDetail.receiverTelephoneNumber;
+            temp.descript = orderDetail.Remark1 + orderDetail.Remark2 + orderDetail.Remark3
+            + orderDetail.Remark4 + orderDetail.Remark5 + orderDetail.Remark6 + orderDetail.Remark7;
+            temp.dept = orderDetail.departmentLabel;
+            temp.userId = orderDetail.commandCreator;
+            temp.deptId = orderDetail.departmentId;
+            temp.status = orderDetail.status;
+            temp.messageForAuditor = orderDetail.messageForAuditor;
+            this.orderForm.setValue(temp);
+
+            let productsInfo = f.cargo;
+            for (let index = 0; index < productsInfo.length; index++) {
+              let productTemp = {
+                idProduct: "",
+                nameProduct: "",
+                adresseProduct: "",
+                nameOffical: "",
+                numberProduct: "",
+                unitProduct: "",
+                priceProduct: "",
+                typePriceProduct: "",
+                amount:"",
+                datePayProduct:"",
+                hadPaidProduct:"",
+                descriptProduct:""
+              };
+              productTemp['idProduct'] = productsInfo[index].cargoId;
+              productTemp['nameProduct'] = productsInfo[index].cargoName;
+              productTemp['numberProduct'] = productsInfo[index].cargoQuantity;
+              productTemp['unitProduct'] = productsInfo[index].cargoUnit;
+              productTemp['priceProduct'] = productsInfo[index].cargoUnitPrice;
+              productTemp['datePayProduct'] = productsInfo[index].scheduleCargoDate;
+              productTemp['adresseProduct'] = "";
+              productTemp['nameOffical'] = "";
+              productTemp['typePriceProduct'] = "";
+              productTemp['amount'] = "";
+              productTemp['hadPaidProduct'] = "";
+              productTemp['descriptProduct'] = "";
+              this.listProduct.push(productTemp);
+            }
+          },
+          error => {
+            alert("请求失败");
+          }
+        )
   }
 
   removeOrder(){
-    this.viewCtrl.dismiss({action:1, content : {}});
+    let confirm = this.alerCtrl.create({
+      title: '提示',
+      message: '确认删除此订单吗?',
+      buttons: [
+        {
+          text: '确认',
+          handler: () => {
+            this.viewCtrl.dismiss({action:1, content : {}});
+          }
+        },
+        {
+          text: '取消',
+          handler: () => {
+          }
+        }
+      ]
+    });
+    confirm.present()
   }
 
 
@@ -88,12 +163,13 @@ export class SalsOrderPage {
     }
     modal.onDidDismiss(data => {
       if(index != undefined){
-        if(data.action == 1){
-          this.listProduct[index] = data.content;
-        }else if(data.action == 0){
-          this.listProduct.splice(index, 1);
+        if(data != undefined){
+          if(data.action == 1){
+            this.listProduct[index] = data.content;
+          }else if(data.action == 0){
+            this.listProduct.splice(index, 1);
+          }
         }
-        return;
       }
       else if(data != undefined){
         this.listProduct.push(data.content);
@@ -113,7 +189,7 @@ export class SalsOrderPage {
     if (val && val.trim() != '') {
       this.rest.GetDeptByName(val) // 填写url的参数
           .subscribe(
-          f => {
+          (f : any) => {
             this.depts = f;
           },
           error => {
