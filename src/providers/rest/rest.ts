@@ -19,10 +19,11 @@ export class RestProvider {
    
   }
 
-  private apiUrlGetCargoByName = 'http://localhost:52808/api/cargo';
-  private apiUrlGetOrdersByUserId = 'http://localhost:52808/api/SalesOrder/GetSalesOrderByUserId';
-  private apiUrlGetDeptByName = 'http://localhost:52808/api/Client';
-  private apiUrlGetSalesOrderByOrderId = "http://localhost:52808/api/SalesOrder/GetSalesOrderByOrderId";
+  private host = "http://47.100.137.77/";
+  private apiUrlGetCargoByName = this.host + 'api/cargo';
+  private apiUrlGetOrdersByUserId = this.host + 'api/SalesOrder/GetSalesOrderByUserId';
+  private apiUrlGetDeptByName = this.host + 'api/Client';
+  private apiUrlGetSalesOrderByOrderId = this.host + "api/SalesOrder/GetSalesOrderByOrderId";
 
  
 

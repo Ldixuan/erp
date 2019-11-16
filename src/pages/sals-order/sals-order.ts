@@ -61,6 +61,7 @@ export class SalsOrderPage {
     this.rest.GetSalesOrderByOrderId(title)
         .subscribe(
           (f : any) => {
+            console.log(f);
             let orderDetail = f.salesOrderDetail;
             let temp = this.orderForm.value;
             temp.title = orderDetail.commandeId;
