@@ -25,7 +25,6 @@
           color="primary">删除</button>
         </ion-buttons>
       </ion-navbar>
-
 </ion-header>
 
 
@@ -45,22 +44,22 @@
       <br>
       <ion-item>
         <ion-label color="primary" floating>收取人</ion-label>
-        <ion-input type="text" formControlName="sender" autocorrect="on"></ion-input>
+        <ion-input type="text" formControlName="sender"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label color="primary" floating>传真</ion-label>
-        <ion-input type="tel" formControlName="faxSender" autocorrect="on"></ion-input>
+        <ion-input type="tel" formControlName="faxSender"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label color="primary" floating>电话</ion-label>
-        <ion-input type="tel" formControlName="telSender" autocorrect="on"></ion-input>
+        <ion-input type="tel" formControlName="telSender"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label color="primary" floating>*单位</ion-label>
-        <ion-input type="text" formControlName="dept"  (input)="getDept($event)" (change)="endInputDept($event)"></ion-input>
+        <ion-input type="text" formControlName="dept"  (input)="getDept($event)" (blur)="onBlur($event)" (change)="endInputDept($event)"></ion-input>
       </ion-item>
       <ion-grid id="deptSearchList" *ngIf="gridShow">
           <ion-row *ngFor="let dept of depts" (click)="selectDept(dept)">

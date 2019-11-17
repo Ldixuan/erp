@@ -19,7 +19,8 @@ export class RestProvider {
    
   }
 
-  private host = "http://47.100.137.77/";
+  //private host = "http://47.100.137.77/";
+  private host = "http://localhost/LjWebApplication/";
   private apiUrlGetCargoByName = this.host + 'api/cargo';
   private apiUrlGetOrdersByUserId = this.host + 'api/SalesOrder/GetSalesOrderByUserId';
   private apiUrlGetDeptByName = this.host + 'api/Client';
@@ -27,24 +28,24 @@ export class RestProvider {
 
  
 
-  GetCargoByName(keyword:string, limit:number):Observable<string[]>{
+  GetCargoByName(keyword:string, limit:number):Observable<any>{
       return this.getUrlReturn(this.apiUrlGetCargoByName+"?keyword="+keyword+"&limit="+limit);
   }
 
-  GetOrdersByUserId(userId:string):Observable<string[]>{
+  GetOrdersByUserId(userId:string):Observable<any>{
     return this.getUrlReturn(this.apiUrlGetOrdersByUserId+"?userId="+userId);
   }
 
-  GetDeptByName(keyword : string):Observable<string[]>{
-    return this.getUrlReturn(this.apiUrlGetDeptByName+"?name="+keyword);
+  GetDeptByName(keyword:string, limit:number):Observable<any>{
+    return this.getUrlReturn(this.apiUrlGetDeptByName+"?name="+keyword+"&limit="+limit);
   }
 
-  GetSalesOrderByOrderId(orderId : string):Observable<string[]>{
+  GetSalesOrderByOrderId(orderId : string):Observable<any>{
     return this.getUrlReturn(this. apiUrlGetSalesOrderByOrderId+"?orderId="+orderId);
   }
 
   
-  private getUrlReturn(url: string): Observable<string[]> {
+  private getUrlReturn(url: string): Observable<any> {
     return this.http.get(url)
       .map(this.extractData)
       .catch(this.handleError);

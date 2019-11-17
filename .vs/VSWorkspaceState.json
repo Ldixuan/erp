@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\pages",
+    "\\src\\pages\\product-model"
   ],
+  "SelectedNode": "\\src\\pages\\product-model\\product-model.html",
   "PreviewInSolutionExplorer": false
 }

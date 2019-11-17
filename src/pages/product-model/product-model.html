@@ -27,7 +27,7 @@
     <ion-item-group [formGroup]="productForm" inset='true'>
       <ion-item>
         <ion-label color="primary" floating>*货物名称</ion-label>
-        <ion-input type="text" (input)="getProduct($event)" (change)="endInputProduct($event)"
+        <ion-input type="text" (input)="getProduct($event)" (blur)="onBlur($event)" (change)="endInputProduct($event)"
          formControlName="nameProduct"></ion-input>
       </ion-item>
       <ion-grid id="productSearchList" *ngIf="gridShow">

@@ -28,7 +28,7 @@ export class ReadSqlsOrderPage {
   initSalsOrdersData(){
     this.rest.GetOrdersByUserId(this.userId)
         .subscribe(
-          f => {
+          (f : any) => {
             this.salsOrders = f;
           },
           error => {

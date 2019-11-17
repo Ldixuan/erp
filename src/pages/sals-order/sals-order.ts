@@ -57,11 +57,12 @@ export class SalsOrderPage {
 
   }
 
+
+
   initOrderInfo(title :string){
     this.rest.GetSalesOrderByOrderId(title)
         .subscribe(
           (f : any) => {
-            console.log(f);
             let orderDetail = f.salesOrderDetail;
             let temp = this.orderForm.value;
             temp.title = orderDetail.commandeId;
@@ -147,7 +148,6 @@ export class SalsOrderPage {
     if(this.readModel){
       this.viewCtrl.dismiss({action: 2, content : this.orderForm.value})
     }
-    console.log(this.orderForm.value);
   }
 
   ionViewDidLoad() {
@@ -156,7 +156,6 @@ export class SalsOrderPage {
 
   presentModal(infoProduct?, index?) {
     let modal;
-    console.log(infoProduct);
     if(infoProduct == undefined){
       modal = this.modalCtrl.create(ProductModelPage);
     }else{
@@ -184,30 +183,33 @@ export class SalsOrderPage {
 
 
     // set val to the value of the searchbar
+
+    ev.stopPropagation();
     const val = ev.target.value;
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      this.rest.GetDeptByName(val) // 填写url的参数
+      this.rest.GetDeptByName(val, 5) // 填写url的参数
           .subscribe(
-          (f : any) => {
+          f => {
+            console.log(f);
             this.depts = f;
+            if(this.depts.length > 0){
+              this.gridShow = true;
+            }else{
+              this.gridShow = false;
+            }
           },
+            
           error => {
             this.depts = [{id : "-1", name:"请求错误"}];
           });
       
-      if(this.depts.length > 0){
-        this.gridShow = true;
-      }
-      else{
-        this.gridShow = false;
-      }
     }
-    console.log(this.gridShow);
   }
 
   selectDept(item){
+    console.log(item);
     if(item.id != "-1"){
       let deptTmp = this.orderForm.value;
       deptTmp["dept"] = item.name;
@@ -216,17 +218,21 @@ export class SalsOrderPage {
       this.productNotFound = false;
     }
   }
-
-  endInputDept(ev){
+/**
+ *
+ *
+ * @param {*} ev
+ * @returns
+ * @memberof SalsOrderPage
+ */
+endInputDept(ev){
     const val = ev.target.value;
-    if(val == ""){
-      this.gridShow = false;
-    }
     for (let index = 0; index < this.depts.length; index++) {
       if(val == this.depts[index].name){
         let deptTmp = this.orderForm.value;
-        deptTmp["nameProduct"] = this.depts[index].name;
+        deptTmp["dept"] = this.depts[index].name;
         this.orderForm.setValue(deptTmp);
+        this.productNotFound = false;
         this.gridShow = false;
         return;
       }
@@ -237,6 +243,17 @@ export class SalsOrderPage {
 
   exit(){
     this.viewCtrl.dismiss();
+  }
+
+  onBlur(event){
+    const val = event.target.value;
+    //this.gridShow = false;
+    if (val == '') {
+      this.gridShow = false;
+    }
+    if(val == this.depts[0].name){
+      this.gridShow = false;
+    }
   }
 
 }

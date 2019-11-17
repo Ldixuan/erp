@@ -52,6 +52,17 @@ export class ProductModelPage {
     }
   }
 
+  onBlur(event){
+    const val = event.target.value;
+    //this.gridShow = false;
+    if (val == '') {
+      this.gridShow = false;
+    }
+    if(val == this.products[0].name){
+      this.gridShow = false;
+    }
+  }
+
 
   exit() {
     this.viewCtrl.dismiss();
@@ -87,6 +98,8 @@ export class ProductModelPage {
   getProduct(ev) {
     const val = ev.target.value;
 
+    ev.stopPropagation();
+
     if (val && val.trim() != '') {
 
       this.rest.GetCargoByName(val,5) // 填写url的参数
@@ -94,17 +107,13 @@ export class ProductModelPage {
           (f : any) => {
             this.products = f;
             console.log(this.products);
+            if(this.products.length > 0){
+              this.gridShow = true;
+            }
           },
           error => {
             this.products = [{id:'-1', name:"请求错误",unit:"", typePrice:""}];
           });
-
-      if(this.products.length > 0){
-        this.gridShow = true;
-      }
-      else{
-        this.gridShow = false;
-      }
     }
   }
 
@@ -126,9 +135,8 @@ export class ProductModelPage {
 
   endInputProduct(ev){
     const val = ev.target.value;
-    if(val == ""){
-      this.gridShow = false;
-    }
+    console.log(val);
+    
     for (let index = 0; index < this.products.length; index++) {
       if(val == this.products[index].name){
         let productTmp = this.productForm.value;
@@ -136,7 +144,7 @@ export class ProductModelPage {
         productTmp["unitProduct"] = this.products[index].unit;
         productTmp["typePriceProduct"] = this.products[index].typePrice;
         this.productForm.setValue(productTmp);
-        this.gridShow = false;
+        this.productNotFound = false;
         return;
       }
     }
