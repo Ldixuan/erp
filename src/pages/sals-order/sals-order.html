@@ -57,17 +57,20 @@
         <ion-input type="tel" formControlName="telSender"></ion-input>
       </ion-item>
 
-      <ion-item>
-        <ion-label color="primary" floating>*单位</ion-label>
-        <ion-input type="text" formControlName="dept"  (input)="getDept($event)" (blur)="onBlur($event)" (change)="endInputDept($event)"></ion-input>
-      </ion-item>
-      <ion-grid id="deptSearchList" *ngIf="gridShow">
-          <ion-row *ngFor="let dept of depts" (click)="selectDept(dept)">
-            <ion-col class="grid">{{dept.name}}</ion-col>
-          </ion-row>
-      </ion-grid>
-        <p *ngIf="productNotFound" class="notFoundMsg">未找到对应单位</p>
 
+      <ion-item>
+        <ion-label>*单位</ion-label>
+        <ionic-selectable
+          item-content 
+          [(ngModel)]="deptSelect"
+          [ngModelOptions]="{standalone: true}"
+          [items]="depts"
+          itemTextField="name"
+          [canSearch]="true"
+          (click) = "initDepts()"
+          (onChange) = "changeDept()">
+        </ionic-selectable>
+      </ion-item>
       <br>
       <ion-item>
         <ion-label color="primary" floating>发送人</ion-label>

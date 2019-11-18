@@ -10,7 +10,7 @@
   <ion-navbar>
       <ion-buttons>
           <button ion-button (click)="exit()" icon-only>
-              <ion-icon name='arrow-back' color = "primary"></ion-icon>
+              <ion-icon name='arrow-back' showWhen="ios" color = "primary"></ion-icon>
             <ion-icon name="md-close" showWhen="android"></ion-icon>
           </button>
         </ion-buttons>
@@ -25,18 +25,20 @@
 
 <ion-content >
     <ion-item-group [formGroup]="productForm" inset='true'>
-      <ion-item>
-        <ion-label color="primary" floating>*货物名称</ion-label>
-        <ion-input type="text" (input)="getProduct($event)" (blur)="onBlur($event)" (change)="endInputProduct($event)"
-         formControlName="nameProduct"></ion-input>
-      </ion-item>
-      <ion-grid id="productSearchList" *ngIf="gridShow">
-        <ion-row *ngFor="let product of products" (click)="selectProduct(product)">
-          <ion-col class="grid">{{product.name}}</ion-col>
-        </ion-row>
-      </ion-grid>
-      <p *ngIf="productNotFound" class="notFoundMsg">未找到对应货物</p>
 
+      <ion-item>
+          <ion-label>*货物名称</ion-label>
+          <ionic-selectable
+            item-content 
+            [(ngModel)]="productSelect"
+            [ngModelOptions]="{standalone: true}"
+            [items]="products"
+            itemTextField="name"
+            [canSearch]="true"
+            (click) = "initProducts()"
+            (onChange) = "changeProduct()">
+          </ionic-selectable>
+        </ion-item>
     
 
       <ion-item>

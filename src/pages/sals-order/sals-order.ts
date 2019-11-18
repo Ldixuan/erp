@@ -2,10 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, AlertController,NavController, NavParams,ModalController, Modal,ViewController } from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ProductModelPage } from '../product-model/product-model';
-import { Title } from '@angular/platform-browser';
 import { RestProvider} from '../../providers/rest/rest'
-import { Action } from 'rxjs/scheduler/Action';
-
 /**
  * Generated class for the SalsOrderPage page.
  *
@@ -27,6 +24,7 @@ export class SalsOrderPage {
   productNotFound = false;
   depts: any;
   readModel = false;
+  deptSelect : any;
 
   constructor(private formBuilder: FormBuilder, public viewCtrl: ViewController,
     public alerCtrl: AlertController, public modalCtrl: ModalController, public rest: RestProvider, public navParams: NavParams) {
@@ -57,7 +55,18 @@ export class SalsOrderPage {
 
   }
 
-
+  initDepts(){
+    this.rest.GetDeptByName("广州", -1) // 填写url的参数
+          .subscribe(
+          f => {
+            console.log(f);
+            this.depts = f;
+          },
+            
+          error => {
+            this.depts = [{id : "-1", name:"请求错误"}];
+          });
+  }
 
   initOrderInfo(title :string){
     this.rest.GetSalesOrderByOrderId(title)
@@ -81,6 +90,8 @@ export class SalsOrderPage {
             temp.status = orderDetail.status;
             temp.messageForAuditor = orderDetail.messageForAuditor;
             this.orderForm.setValue(temp);
+
+            this.deptSelect = {id : orderDetail.departmentId, name:orderDetail.departmentLabel};
 
             let productsInfo = f.cargo;
             for (let index = 0; index < productsInfo.length; index++) {
@@ -178,82 +189,17 @@ export class SalsOrderPage {
     modal.present();
   }
 
-  getDept(ev) {
-    // Reset items back to all of the items
-
-
-    // set val to the value of the searchbar
-
-    ev.stopPropagation();
-    const val = ev.target.value;
-
-    // if the value is an empty string don't filter the items
-    if (val && val.trim() != '') {
-      this.rest.GetDeptByName(val, 5) // 填写url的参数
-          .subscribe(
-          f => {
-            console.log(f);
-            this.depts = f;
-            if(this.depts.length > 0){
-              this.gridShow = true;
-            }else{
-              this.gridShow = false;
-            }
-          },
-            
-          error => {
-            this.depts = [{id : "-1", name:"请求错误"}];
-          });
-      
-    }
+  changeDept(){
+    let temp = this.orderForm.value;
+    temp.deptId = this.deptSelect.id;
+    temp.dept = this.deptSelect.name;
+    this.orderForm.setValue(temp); 
+    console.log(temp);
   }
 
-  selectDept(item){
-    console.log(item);
-    if(item.id != "-1"){
-      let deptTmp = this.orderForm.value;
-      deptTmp["dept"] = item.name;
-      this.orderForm.setValue(deptTmp);
-      this.gridShow = false;
-      this.productNotFound = false;
-    }
-  }
-/**
- *
- *
- * @param {*} ev
- * @returns
- * @memberof SalsOrderPage
- */
-endInputDept(ev){
-    const val = ev.target.value;
-    for (let index = 0; index < this.depts.length; index++) {
-      if(val == this.depts[index].name){
-        let deptTmp = this.orderForm.value;
-        deptTmp["dept"] = this.depts[index].name;
-        this.orderForm.setValue(deptTmp);
-        this.productNotFound = false;
-        this.gridShow = false;
-        return;
-      }
-    }
-
-    this.productNotFound = true;
-  }
-
-  exit(){
+  exit() {
     this.viewCtrl.dismiss();
   }
 
-  onBlur(event){
-    const val = event.target.value;
-    //this.gridShow = false;
-    if (val == '') {
-      this.gridShow = false;
-    }
-    if(val == this.depts[0].name){
-      this.gridShow = false;
-    }
-  }
 
 }

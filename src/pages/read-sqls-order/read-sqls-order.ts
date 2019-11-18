@@ -20,6 +20,8 @@ export class ReadSqlsOrderPage {
   private salsOrders : Array<any>;
   private userId : string;
 
+  loading = true;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,public modalCtrl: ModalController,public rest: RestProvider) {
     this.userId = "Admi";
     this.initSalsOrdersData()
@@ -30,6 +32,7 @@ export class ReadSqlsOrderPage {
         .subscribe(
           (f : any) => {
             this.salsOrders = f;
+            this.loading = false;
           },
           error => {
             alert("请求失败");

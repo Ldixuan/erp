@@ -22,6 +22,7 @@ export class ProductModelPage {
   productNotFound = false;
   private productForm : FormGroup;
   modifMod = false;
+  productSelect : any;
   
   
 
@@ -48,19 +49,34 @@ export class ProductModelPage {
     let infoProduct = this.navParams.get('infoProduct');
     if(infoProduct != undefined){
       this.productForm.setValue(infoProduct);
+      this.productSelect = {
+        id:infoProduct.idProduct,
+        name:infoProduct.nameProduct,
+        unit:infoProduct.unitProduct,
+        typePrice:infoProduct.typePriceProduct
+      };
       this.modifMod = true;
     }
   }
 
-  onBlur(event){
-    const val = event.target.value;
-    //this.gridShow = false;
-    if (val == '') {
-      this.gridShow = false;
-    }
-    if(val == this.products[0].name){
-      this.gridShow = false;
-    }
+  initProducts(){
+    this.rest.GetCargoByName("C",-1) // 填写url的参数
+          .subscribe(
+          (f : any) => {
+            this.products = f;
+            console.log(this.products);
+          },
+          error => {
+            this.products = [{id:'-1', name:"请求错误",unit:"", typePrice:""}];
+          });
+  }
+
+  changeProduct(){
+    let productTmp = this.productForm.value;
+      productTmp["nameProduct"] = this.productSelect.name;
+      productTmp["unitProduct"] = this.productSelect.unit;
+      productTmp["typePriceProduct"] = this.productSelect.typePrice;
+      this.productForm.setValue(productTmp);
   }
 
 
@@ -95,60 +111,9 @@ export class ProductModelPage {
   }
 
 
-  getProduct(ev) {
-    const val = ev.target.value;
-
-    ev.stopPropagation();
-
-    if (val && val.trim() != '') {
-
-      this.rest.GetCargoByName(val,5) // 填写url的参数
-          .subscribe(
-          (f : any) => {
-            this.products = f;
-            console.log(this.products);
-            if(this.products.length > 0){
-              this.gridShow = true;
-            }
-          },
-          error => {
-            this.products = [{id:'-1', name:"请求错误",unit:"", typePrice:""}];
-          });
-    }
-  }
-
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProductModelPage');
   }
 
-  selectProduct(item){
-    if(item.id != '-1'){
-      let productTmp = this.productForm.value;
-      productTmp["nameProduct"] = item.name;
-      productTmp["unitProduct"] = item.unit;
-      productTmp["typePriceProduct"] = item.typePrice;
-      this.productForm.setValue(productTmp);
-      this.gridShow = false;
-      this.productNotFound = false;
-    }
-  }
 
-  endInputProduct(ev){
-    const val = ev.target.value;
-    console.log(val);
-    
-    for (let index = 0; index < this.products.length; index++) {
-      if(val == this.products[index].name){
-        let productTmp = this.productForm.value;
-        productTmp["nameProduct"] = this.products[index].name;
-        productTmp["unitProduct"] = this.products[index].unit;
-        productTmp["typePriceProduct"] = this.products[index].typePrice;
-        this.productForm.setValue(productTmp);
-        this.productNotFound = false;
-        return;
-      }
-    }
-
-    this.productNotFound = true;
-  }
 }

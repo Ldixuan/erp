@@ -16,7 +16,10 @@
 </ion-header>
 
 
+
+
 <ion-content padding>
+    <ion-spinner icon="dots" *ngIf="loading" class="spinner-dark" ></ion-spinner>
     <ion-card *ngFor="let order of salsOrders" (click) = "presentOrderPage(order, salsOrders.indexOf(order))"> 
         <ion-card-header>
           订单编号 : {{order.commandeId}}

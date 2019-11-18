@@ -37,3 +37,7 @@ UserInterfaceState.xcuserstate
 /.sourcemaps
 /www/build
 /.sourcemaps
+/www
+/node_modules
+/node_modules
+
