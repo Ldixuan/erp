@@ -52,6 +52,7 @@ export class SalsOrderPage {
       this.initOrderInfo(title);
       this.readModel = true;
     }
+    this.initDepts();
 
   }
 

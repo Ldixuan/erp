@@ -28,7 +28,8 @@ export class ProductModelPage {
 
   constructor(public viewCtrl: ViewController, private formBuilder: FormBuilder, 
     public navParams: NavParams, public rest: RestProvider,public alerCtrl: AlertController) {
-
+    
+    this.initProducts();
     this.productForm = this.formBuilder.group({
       idProduct: [''],
       nameProduct: ['', Validators.required],
