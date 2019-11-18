@@ -31,17 +31,17 @@
 <ion-content>
   <ion-item-group inset="true" [formGroup]="orderForm" >
 
-      <ion-item >
+      <ion-item *ngIf="readModel">
         <ion-label color="primary" floating>订单编号</ion-label>
-        <ion-input type="text" formControlName="title"></ion-input>
-      </ion-item>
+        <ion-input type="text"  [disabled]="true" formControlName="title"></ion-input>
+     </ion-item>
 
       <ion-item>
-        <ion-label color="primary">*订单日期</ion-label>
+        <ion-label color="primary" *ngIf="orderForm.value.date==''">订单日期*</ion-label>
+        <ion-label color="primary" *ngIf="orderForm.value.date!=''" stacked>订单日期*</ion-label>
         <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="date" autocorrect="on"></ion-datetime>
       </ion-item>
-
-      <br>
+      
       <ion-item>
         <ion-label color="primary" floating>收取人</ion-label>
         <ion-input type="text" formControlName="sender"></ion-input>
@@ -59,7 +59,7 @@
 
 
       <ion-item>
-        <ion-label>*单位</ion-label>
+        <ion-label color="primary" floating>单位*</ion-label>
         <ionic-selectable
           item-content 
           [(ngModel)]="deptSelect"
@@ -67,10 +67,10 @@
           [items]="depts"
           itemTextField="name"
           [canSearch]="true"
-          (onChange) = "changeDept()">
+          (onChange) = "changeDept()"
+          >
         </ionic-selectable>
       </ion-item>
-      <br>
       <ion-item>
         <ion-label color="primary" floating>发送人</ion-label>
         <ion-input type="text" formControlName="receiver" autocorrect="on"></ion-input>
@@ -85,7 +85,6 @@
         <ion-label color="primary" floating>电话</ion-label>
         <ion-input type="tel" formControlName="telReceiver" autocorrect="on"></ion-input>
       </ion-item>
-      <br>
 
       <ion-item>
           <ion-label color="primary" floating>备注</ion-label>

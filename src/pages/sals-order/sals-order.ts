@@ -57,7 +57,7 @@ export class SalsOrderPage {
   }
 
   initDepts(){
-    this.rest.GetDeptByName("广州", -1) // 填写url的参数
+    this.rest.GetDeptByName(-1) // 填写url的参数
           .subscribe(
           f => {
             console.log(f);
@@ -65,7 +65,7 @@ export class SalsOrderPage {
           },
             
           error => {
-            this.depts = [{id : "-1", name:"请求错误"}];
+            alert(error);  
           });
   }
 
@@ -105,7 +105,6 @@ export class SalsOrderPage {
                 unitProduct: "",
                 priceProduct: "",
                 typePriceProduct: "",
-                amount:"",
                 datePayProduct:"",
                 hadPaidProduct:"",
                 descriptProduct:""
@@ -119,14 +118,13 @@ export class SalsOrderPage {
               productTemp['adresseProduct'] = "";
               productTemp['nameOffical'] = "";
               productTemp['typePriceProduct'] = "";
-              productTemp['amount'] = "";
               productTemp['hadPaidProduct'] = "";
               productTemp['descriptProduct'] = "";
               this.listProduct.push(productTemp);
             }
           },
           error => {
-            alert("请求失败");
+            alert(error);
           }
         )
   }
@@ -201,6 +199,5 @@ export class SalsOrderPage {
   exit() {
     this.viewCtrl.dismiss();
   }
-
 
 }

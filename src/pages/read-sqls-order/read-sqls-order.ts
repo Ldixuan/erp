@@ -35,7 +35,7 @@ export class ReadSqlsOrderPage {
             this.loading = false;
           },
           error => {
-            alert("请求失败");
+            alert(error);
           }
         );
   }

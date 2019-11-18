@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Input } from '@angular/compiler/src/core';
 import { Http, Response } from '@angular/http';
-import { Form } from 'ionic-angular';
 import 'rxjs/add/operator/catch';
 import 'rxjs/Rx';
 /*
@@ -19,8 +18,8 @@ export class RestProvider {
    
   }
 
-  private host = "http://47.100.137.77/";
-  //private host = "http://localhost/LjWebApplication/";
+  //private host = "http://47.100.137.77/";
+  private host = "http://localhost/LjWebApplication/";
   private apiUrlGetCargoByName = this.host + 'api/cargo';
   private apiUrlGetOrdersByUserId = this.host + 'api/SalesOrder/GetSalesOrderByUserId';
   private apiUrlGetDeptByName = this.host + 'api/Client';
@@ -28,16 +27,16 @@ export class RestProvider {
 
  
 
-  GetCargoByName(keyword:string, limit:number):Observable<any>{
-      return this.getUrlReturn(this.apiUrlGetCargoByName+"?keyword="+keyword+"&limit="+limit);
+  GetCargoByName(limit:number):Observable<any>{
+      return this.getUrlReturn(this.apiUrlGetCargoByName+"?limit="+limit);
   }
 
   GetOrdersByUserId(userId:string):Observable<any>{
     return this.getUrlReturn(this.apiUrlGetOrdersByUserId+"?userId="+userId);
   }
 
-  GetDeptByName(keyword:string, limit:number):Observable<any>{
-    return this.getUrlReturn(this.apiUrlGetDeptByName+"?name="+keyword+"&limit="+limit);
+  GetDeptByName(limit:number):Observable<any>{
+    return this.getUrlReturn(this.apiUrlGetDeptByName+"?limit="+limit);
   }
 
   GetSalesOrderByOrderId(orderId : string):Observable<any>{
@@ -58,15 +57,17 @@ export class RestProvider {
 
   private handleError(error: Response | any) {
     let errMsg: string;
-    if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = body.error || JSON.stringify(body);
-      errMsg = `${error.status}-${error.statusText || ''} ${err}`;
-    }
-    else {
-      errMsg = error.message ? error.message : error.tostring();
-    }
-    console.error(errMsg);
-    return Observable.throw(errMsg);
+    // if (error instanceof Response) {
+    //   const body = error.json() || '';
+    //   const err = body.error || JSON.stringify(body);
+    //   errMsg = `${error.status}-${error.statusText || ''} ${err}`;
+    // }
+    // else {
+    //   errMsg = error.message ? error.message : error.tostring();
+    // }
+    // console.error(errMsg);
+    // return Observable.throw(errMsg);
+    console.log(JSON.stringify(error));
+    return Observable.throw(JSON.stringify(error));
   }
 }

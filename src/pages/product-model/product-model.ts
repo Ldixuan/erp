@@ -39,7 +39,6 @@ export class ProductModelPage {
       unitProduct: ['', Validators.required],
       priceProduct: ['', Validators.required],
       typePriceProduct: [''],
-      amount:['', Validators.required],
       datePayProduct:['',Validators.required],
       hadPaidProduct:[''],
       descriptProduct:['']
@@ -61,14 +60,14 @@ export class ProductModelPage {
   }
 
   initProducts(){
-    this.rest.GetCargoByName("C",-1) // 填写url的参数
+    this.rest.GetCargoByName(-1) // 填写url的参数
           .subscribe(
           (f : any) => {
             this.products = f;
             console.log(this.products);
           },
           error => {
-            this.products = [{id:'-1', name:"请求错误",unit:"", typePrice:""}];
+            alert(error);
           });
   }
 
