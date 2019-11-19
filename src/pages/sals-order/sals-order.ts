@@ -39,11 +39,12 @@ export class SalsOrderPage {
       telReceiver:[''],
       descript:[''],
       dept:['', Validators.required],
-      products:[''],
       userId : ['Admi'],
       deptId : [''],
       status : [''],
-      messageForAuditor : ['']
+      statusCode : [''],
+      messageForAuditor : [''],
+      remarkfeedback : ['']
     });
     this.depts = [];
     this.listProduct = new Array<any>();
@@ -78,7 +79,7 @@ export class SalsOrderPage {
             temp.title = orderDetail.commandeId;
             temp.date = orderDetail.commandeCreateDate;
             temp.telSender = orderDetail.senderTelephoneNumber;
-            temp.faxReceiver = orderDetail.senderFax;
+            temp.faxSender = orderDetail.senderFax;
             temp.sender = orderDetail.sender;
             temp.receiver = orderDetail.receiver;
             temp.faxReceiver = orderDetail.receiverFax;
@@ -90,6 +91,8 @@ export class SalsOrderPage {
             temp.deptId = orderDetail.departmentId;
             temp.status = orderDetail.status;
             temp.messageForAuditor = orderDetail.messageForAuditor;
+            temp.statusCode = "";
+            temp.remarkfeedback = orderDetail.remarkfeedback;
             this.orderForm.setValue(temp);
 
             this.deptSelect = {id : orderDetail.departmentId, name:orderDetail.departmentLabel};
@@ -104,7 +107,6 @@ export class SalsOrderPage {
                 numberProduct: "",
                 unitProduct: "",
                 priceProduct: "",
-                typePriceProduct: "",
                 datePayProduct:"",
                 hadPaidProduct:"",
                 descriptProduct:""
@@ -117,7 +119,6 @@ export class SalsOrderPage {
               productTemp['datePayProduct'] = productsInfo[index].scheduleCargoDate;
               productTemp['adresseProduct'] = "";
               productTemp['nameOffical'] = "";
-              productTemp['typePriceProduct'] = "";
               productTemp['hadPaidProduct'] = "";
               productTemp['descriptProduct'] = "";
               this.listProduct.push(productTemp);
@@ -152,9 +153,21 @@ export class SalsOrderPage {
 
 
   logForm() {
-    let dataTmp = this.orderForm.value;
-    dataTmp.products = this.listProduct;
-    this.orderForm.setValue(dataTmp);
+    this.rest.InsertSalesOrderByOrderId(this.orderForm.value, this.listProduct)
+        .subscribe(
+          f => {
+            console.log(f);
+            // if(f.status == "0"){
+            //   alert("保存成功");
+            // }else{
+            //   alert("保存失敗 : "+f.msg);
+            // }
+          },
+          error => {
+            alert(error);
+          }
+
+        )
     if(this.readModel){
       this.viewCtrl.dismiss({action: 2, content : this.orderForm.value})
     }
