@@ -38,7 +38,6 @@ export class ProductModelPage {
       numberProduct: ['', Validators.required],
       unitProduct: ['', Validators.required],
       priceProduct: ['', Validators.required],
-      typePriceProduct: [''],
       datePayProduct:['',Validators.required],
       hadPaidProduct:[''],
       descriptProduct:['']
@@ -52,8 +51,7 @@ export class ProductModelPage {
       this.productSelect = {
         id:infoProduct.idProduct,
         name:infoProduct.nameProduct,
-        unit:infoProduct.unitProduct,
-        typePrice:infoProduct.typePriceProduct
+        unit:infoProduct.unitProduct
       };
       this.modifMod = true;
     }
@@ -75,7 +73,6 @@ export class ProductModelPage {
     let productTmp = this.productForm.value;
       productTmp["nameProduct"] = this.productSelect.name;
       productTmp["unitProduct"] = this.productSelect.unit;
-      productTmp["typePriceProduct"] = this.productSelect.typePrice;
       this.productForm.setValue(productTmp);
   }
 

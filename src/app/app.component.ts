@@ -6,7 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { SalsOrderPage } from '../pages/sals-order/sals-order'
-import { ReadSqlsOrderPage } from '../pages/read-sqls-order/read-sqls-order'
+import { ReadSalsOrderPage } from '../pages/read-sals-order/read-sals-order'
 
 
 @Component({
@@ -28,7 +28,7 @@ export class MyApp {
     this.pages = [
       { title: '销售管理', componentPages: [
         {pageTitle: '销售订单', component: SalsOrderPage},
-        {pageTitle: '查看订单', component: ReadSqlsOrderPage}
+        {pageTitle: '查看订单', component: ReadSalsOrderPage}
       ] },
       { title: 'Home', componentPages: [
         {pageTitle: 'Home', component : HomePage}

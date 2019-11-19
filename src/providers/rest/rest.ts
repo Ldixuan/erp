@@ -24,6 +24,7 @@ export class RestProvider {
   private apiUrlGetOrdersByUserId = this.host + 'api/SalesOrder/GetSalesOrderByUserId';
   private apiUrlGetDeptByName = this.host + 'api/Client';
   private apiUrlGetSalesOrderByOrderId = this.host + "api/SalesOrder/GetSalesOrderByOrderId";
+  private apiUrlInsertSalesOrderByOrderId = this.host + "api/SalesOrder/InsertSalesOrderByOrderId";
 
  
 
@@ -41,6 +42,10 @@ export class RestProvider {
 
   GetSalesOrderByOrderId(orderId : string):Observable<any>{
     return this.getUrlReturn(this. apiUrlGetSalesOrderByOrderId+"?orderId="+orderId);
+  }
+
+  InsertSalesOrderByOrderId(orderInfo, products : Array<any>){
+    return this.getUrlReturn(this.apiUrlInsertSalesOrderByOrderId+"?orderInfo="+orderInfo+"&products="+products);
   }
 
   
