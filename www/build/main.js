@@ -155,7 +155,8 @@ var SalsOrderPage = (function () {
         confirm.present();
     };
     SalsOrderPage.prototype.logForm = function () {
-        this.rest.InsertSalesOrderByOrderId(this.orderForm.value, this.listProduct)
+        //this.rest.InsertSalesOrderByOrderId(this.orderForm.value, this.listProduct)
+        this.rest.InsertSalesOrderByOrderId({ text: "123" }, [{ text: "123" }])
             .subscribe(function (f) {
             console.log(f);
             // if(f.status == "0"){
@@ -869,10 +870,15 @@ var RestProvider = (function () {
         return this.getUrlReturn(this.apiUrlGetSalesOrderByOrderId + "?orderId=" + orderId);
     };
     RestProvider.prototype.InsertSalesOrderByOrderId = function (orderInfo, products) {
-        return this.getUrlReturn(this.apiUrlInsertSalesOrderByOrderId + "?orderInfo=" + orderInfo + "&products=" + products);
+        return this.postUrl(this.apiUrlInsertSalesOrderByOrderId, { orderInfo: orderInfo, products: products });
     };
     RestProvider.prototype.getUrlReturn = function (url) {
         return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    };
+    RestProvider.prototype.postUrl = function (url, body) {
+        return this.http.post(url, body)
             .map(this.extractData)
             .catch(this.handleError);
     };
@@ -897,9 +903,10 @@ var RestProvider = (function () {
     };
     RestProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */]) === "function" && _a || Object])
     ], RestProvider);
     return RestProvider;
+    var _a;
 }());
 
 //# sourceMappingURL=rest.js.map
