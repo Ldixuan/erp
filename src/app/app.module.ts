@@ -15,7 +15,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { ProductModelPage } from '../pages/product-model/product-model';
 import { from } from 'rxjs/observable/from';
 import { RestProvider } from '../providers/rest/rest';
-import { ReadSqlsOrderPage } from '../pages/read-sqls-order/read-sqls-order'
+import { ReadSalsOrderPage } from '../pages/read-sals-order/read-sals-order'
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { ReadSqlsOrderPage } from '../pages/read-sqls-order/read-sqls-order'
     TestPage,
     SalsOrderPage,
     ProductModelPage,
-    ReadSqlsOrderPage
+    ReadSalsOrderPage
   ],
   imports: [
     BrowserModule,
@@ -41,7 +41,7 @@ import { ReadSqlsOrderPage } from '../pages/read-sqls-order/read-sqls-order'
     TestPage,
     SalsOrderPage,
     ProductModelPage,
-    ReadSqlsOrderPage
+    ReadSalsOrderPage
   ],
   providers: [
     StatusBar,

@@ -52,11 +52,12 @@ var SalsOrderPage = (function () {
             telReceiver: [''],
             descript: [''],
             dept: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required],
-            products: [''],
             userId: ['Admi'],
             deptId: [''],
             status: [''],
-            messageForAuditor: ['']
+            statusCode: [''],
+            messageForAuditor: [''],
+            remarkfeedback: ['']
         });
         this.depts = [];
         this.listProduct = new Array();
@@ -86,7 +87,7 @@ var SalsOrderPage = (function () {
             temp.title = orderDetail.commandeId;
             temp.date = orderDetail.commandeCreateDate;
             temp.telSender = orderDetail.senderTelephoneNumber;
-            temp.faxReceiver = orderDetail.senderFax;
+            temp.faxSender = orderDetail.senderFax;
             temp.sender = orderDetail.sender;
             temp.receiver = orderDetail.receiver;
             temp.faxReceiver = orderDetail.receiverFax;
@@ -98,6 +99,8 @@ var SalsOrderPage = (function () {
             temp.deptId = orderDetail.departmentId;
             temp.status = orderDetail.status;
             temp.messageForAuditor = orderDetail.messageForAuditor;
+            temp.statusCode = "";
+            temp.remarkfeedback = orderDetail.remarkfeedback;
             _this.orderForm.setValue(temp);
             _this.deptSelect = { id: orderDetail.departmentId, name: orderDetail.departmentLabel };
             var productsInfo = f.cargo;
@@ -110,7 +113,6 @@ var SalsOrderPage = (function () {
                     numberProduct: "",
                     unitProduct: "",
                     priceProduct: "",
-                    typePriceProduct: "",
                     datePayProduct: "",
                     hadPaidProduct: "",
                     descriptProduct: ""
@@ -123,7 +125,6 @@ var SalsOrderPage = (function () {
                 productTemp['datePayProduct'] = productsInfo[index].scheduleCargoDate;
                 productTemp['adresseProduct'] = "";
                 productTemp['nameOffical'] = "";
-                productTemp['typePriceProduct'] = "";
                 productTemp['hadPaidProduct'] = "";
                 productTemp['descriptProduct'] = "";
                 _this.listProduct.push(productTemp);
@@ -154,9 +155,17 @@ var SalsOrderPage = (function () {
         confirm.present();
     };
     SalsOrderPage.prototype.logForm = function () {
-        var dataTmp = this.orderForm.value;
-        dataTmp.products = this.listProduct;
-        this.orderForm.setValue(dataTmp);
+        this.rest.InsertSalesOrderByOrderId(this.orderForm.value, this.listProduct)
+            .subscribe(function (f) {
+            console.log(f);
+            // if(f.status == "0"){
+            //   alert("保存成功");
+            // }else{
+            //   alert("保存失敗 : "+f.msg);
+            // }
+        }, function (error) {
+            alert(error);
+        });
         if (this.readModel) {
             this.viewCtrl.dismiss({ action: 2, content: this.orderForm.value });
         }
@@ -218,7 +227,7 @@ var SalsOrderPage = (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ReadSqlsOrderPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ReadSalsOrderPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sals_order_sals_order__ = __webpack_require__(112);
@@ -242,8 +251,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-var ReadSqlsOrderPage = (function () {
-    function ReadSqlsOrderPage(navCtrl, navParams, modalCtrl, rest) {
+var ReadSalsOrderPage = (function () {
+    function ReadSalsOrderPage(navCtrl, navParams, modalCtrl, rest) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.modalCtrl = modalCtrl;
@@ -252,7 +261,7 @@ var ReadSqlsOrderPage = (function () {
         this.userId = "Admi";
         this.initSalsOrdersData();
     }
-    ReadSqlsOrderPage.prototype.initSalsOrdersData = function () {
+    ReadSalsOrderPage.prototype.initSalsOrdersData = function () {
         var _this = this;
         this.rest.GetOrdersByUserId(this.userId)
             .subscribe(function (f) {
@@ -262,10 +271,10 @@ var ReadSqlsOrderPage = (function () {
             alert(error);
         });
     };
-    ReadSqlsOrderPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad ReadSqlsOrderPage');
+    ReadSalsOrderPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad ReadSalsOrderPage');
     };
-    ReadSqlsOrderPage.prototype.presentOrderPage = function (infoOrder, index) {
+    ReadSalsOrderPage.prototype.presentOrderPage = function (infoOrder, index) {
         var _this = this;
         var modal = this.modalCtrl.create(__WEBPACK_IMPORTED_MODULE_2__sals_order_sals_order__["a" /* SalsOrderPage */], { title: infoOrder.commandeId });
         modal.onDidDismiss(function (data) {
@@ -280,17 +289,16 @@ var ReadSqlsOrderPage = (function () {
         });
         modal.present();
     };
-    ReadSqlsOrderPage = __decorate([
+    ReadSalsOrderPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-read-sqls-order',template:/*ion-inline-start:"C:\Users\36394\projet\erp\src\pages\read-sqls-order\read-sqls-order.html"*/`<!--\n  Generated template for the ReadSqlsOrderPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>查看订单</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n<ion-content padding>\n    <ion-spinner icon="dots" *ngIf="loading" class="spinner-dark" ></ion-spinner>\n    <ion-card *ngFor="let order of salsOrders" (click) = "presentOrderPage(order, salsOrders.indexOf(order))"> \n        <ion-card-header>\n          订单编号 : {{order.commandeId}}\n        </ion-card-header>\n        <ion-card-content>\n          <ion-grid>\n            <ion-row inline>\n              <ion-col>收取人 : {{order.receiver}}</ion-col>\n            </ion-row>\n            <ion-row>\n              <ion-col>单位 : {{order.type}}</ion-col>\n            </ion-row>\n            <ion-row>\n              <ion-col>订单日期 : {{order.commandeCreateDate}} </ion-col>\n            </ion-row>\n            <ion-row>\n                <ion-col>订单创建人 : {{userId}} </ion-col>\n                <ion-col>订单状态 : {{order.status}} </ion-col>\n            </ion-row>\n            \n          </ion-grid>\n        </ion-card-content>\n      </ion-card>\n\n</ion-content>\n`/*ion-inline-end:"C:\Users\36394\projet\erp\src\pages\read-sqls-order\read-sqls-order.html"*/,
+            selector: 'page-read-sals-order',template:/*ion-inline-start:"C:\Users\36394\projet\erp\src\pages\read-sals-order\read-sals-order.html"*/`<!--\n  Generated template for the ReadSqlsOrderPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>查看订单</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n<ion-content padding>\n    <ion-spinner icon="dots" *ngIf="loading" class="spinner-dark" ></ion-spinner>\n    <ion-card *ngFor="let order of salsOrders" (click) = "presentOrderPage(order, salsOrders.indexOf(order))"> \n        <ion-card-header>\n          订单编号 : {{order.commandeId}}\n        </ion-card-header>\n        <ion-card-content>\n          <ion-grid>\n            <ion-row inline>\n              <ion-col>收取人 : {{order.receiver}}</ion-col>\n            </ion-row>\n            <ion-row>\n              <ion-col>单位 : {{order.type}}</ion-col>\n            </ion-row>\n            <ion-row>\n              <ion-col>订单日期 : {{order.commandeCreateDate}} </ion-col>\n            </ion-row>\n            <ion-row>\n                <ion-col>订单创建人 : {{userId}} </ion-col>\n                <ion-col>订单状态 : {{order.status}} </ion-col>\n            </ion-row>\n            \n          </ion-grid>\n        </ion-card-content>\n      </ion-card>\n\n</ion-content>\n`/*ion-inline-end:"C:\Users\36394\projet\erp\src\pages\read-sals-order\read-sals-order.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ModalController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ModalController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__providers_rest_rest__["a" /* RestProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__providers_rest_rest__["a" /* RestProvider */]) === "function" && _d || Object])
-    ], ReadSqlsOrderPage);
-    return ReadSqlsOrderPage;
-    var _a, _b, _c, _d;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ModalController */], __WEBPACK_IMPORTED_MODULE_3__providers_rest_rest__["a" /* RestProvider */]])
+    ], ReadSalsOrderPage);
+    return ReadSalsOrderPage;
 }());
 
-//# sourceMappingURL=read-sqls-order.js.map
+//# sourceMappingURL=read-sals-order.js.map
 
 /***/ }),
 
@@ -315,7 +323,7 @@ webpackEmptyAsyncContext.id = 162;
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"../pages/read-sqls-order/read-sqls-order.module": [
+	"../pages/read-sals-order/read-sals-order.module": [
 		679,
 		1
 	],
@@ -388,7 +396,6 @@ var ProductModelPage = (function () {
             numberProduct: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required],
             unitProduct: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required],
             priceProduct: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required],
-            typePriceProduct: [''],
             datePayProduct: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required],
             hadPaidProduct: [''],
             descriptProduct: ['']
@@ -400,8 +407,7 @@ var ProductModelPage = (function () {
             this.productSelect = {
                 id: infoProduct.idProduct,
                 name: infoProduct.nameProduct,
-                unit: infoProduct.unitProduct,
-                typePrice: infoProduct.typePriceProduct
+                unit: infoProduct.unitProduct
             };
             this.modifMod = true;
         }
@@ -420,7 +426,6 @@ var ProductModelPage = (function () {
         var productTmp = this.productForm.value;
         productTmp["nameProduct"] = this.productSelect.name;
         productTmp["unitProduct"] = this.productSelect.unit;
-        productTmp["typePriceProduct"] = this.productSelect.typePrice;
         this.productForm.setValue(productTmp);
     };
     ProductModelPage.prototype.exit = function () {
@@ -457,10 +462,10 @@ var ProductModelPage = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-product-model',template:/*ion-inline-start:"C:\Users\36394\projet\erp\src\pages\product-model\product-model.html"*/`<!--\n\n  Generated template for the ProductModelPage page.\n\n\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header>\n\n\n\n  <ion-navbar>\n\n      <ion-buttons>\n\n          <button ion-button (click)="exit()" icon-only>\n\n              <ion-icon name=\'arrow-back\' showWhen="ios" color = "primary"></ion-icon>\n\n            <ion-icon name="md-close" showWhen="android"></ion-icon>\n\n          </button>\n\n        </ion-buttons>\n\n    <ion-title text-center>添加货物</ion-title>\n\n    <ion-buttons end> <button ion-button (click)="logProductForm()" \n\n      [disabled]="!productForm.valid" color="primary">保存</button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content >\n\n    <ion-item-group [formGroup]="productForm" inset=\'true\'>\n\n\n\n      <ion-item>\n\n          <ion-label color="primary" floating>货物名称*</ion-label>\n\n          <ionic-selectable\n\n            item-content \n\n            [(ngModel)]="productSelect"\n\n            [ngModelOptions]="{standalone: true}"\n\n            [items]="products"\n\n            itemTextField="name"\n\n            [canSearch]="true"\n\n            (onChange) = "changeProduct()"\n\n            [disabled] = "products==[]"\n\n            >\n\n          </ionic-selectable>\n\n        </ion-item>\n\n    \n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>产地</ion-label>\n\n        <ion-input type="text" formControlName="adresseProduct"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>官方品名</ion-label>\n\n        <ion-input type="text" formControlName="nameOffical"></ion-input>\n\n      </ion-item>\n\n\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>数量*</ion-label>\n\n        <ion-input type="number" formControlName="numberProduct"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>单位*</ion-label>\n\n        <ion-input type="text" formControlName="unitProduct"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>单价*</ion-label>\n\n        <ion-input type="number" formControlName="priceProduct"></ion-input>\n\n      </ion-item>\n\n\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>金额*</ion-label>\n\n        <ion-input type="number" [disabled] = "true" value="{{productForm.value.priceProduct *  productForm.value.numberProduct}}"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" *ngIf="productForm.value.datePayProduct!=\'\'" stacked>*交货日期</ion-label>\n\n        <ion-label color="primary" *ngIf="productForm.value.datePayProduct==\'\'">交货日期*</ion-label>\n\n        <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="datePayProduct"\n\n          autocorrect="on"></ion-datetime>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>已付数量</ion-label>\n\n        <ion-input type="text" formControlName="hadPaidProduct"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>备注</ion-label>\n\n        <ion-textarea formControlName="descriptProduct"></ion-textarea>\n\n      </ion-item>\n\n      <ion-item></ion-item>\n\n    </ion-item-group>\n\n\n\n    <button ion-button *ngIf="modifMod" (click) = "removeProduct()" block>删除</button>\n\n\n\n</ion-content>\n\n`/*ion-inline-end:"C:\Users\36394\projet\erp\src\pages\product-model\product-model.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ViewController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ViewController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__providers_rest_rest__["a" /* RestProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__providers_rest_rest__["a" /* RestProvider */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _e || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ViewController */], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__providers_rest_rest__["a" /* RestProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
     ], ProductModelPage);
     return ProductModelPage;
-    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=product-model.js.map
@@ -650,7 +655,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_splash_screen__ = __webpack_require__(346);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_product_model_product_model__ = __webpack_require__(208);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__providers_rest_rest__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_read_sqls_order_read_sqls_order__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_read_sals_order_read_sals_order__ = __webpack_require__(149);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -684,13 +689,13 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_8__pages_test_test__["a" /* TestPage */],
                 __WEBPACK_IMPORTED_MODULE_9__pages_sals_order_sals_order__["a" /* SalsOrderPage */],
                 __WEBPACK_IMPORTED_MODULE_12__pages_product_model_product_model__["a" /* ProductModelPage */],
-                __WEBPACK_IMPORTED_MODULE_14__pages_read_sqls_order_read_sqls_order__["a" /* ReadSqlsOrderPage */]
+                __WEBPACK_IMPORTED_MODULE_14__pages_read_sals_order_read_sals_order__["a" /* ReadSalsOrderPage */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["f" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* MyApp */], {}, {
                     links: [
-                        { loadChildren: '../pages/read-sqls-order/read-sqls-order.module#ReadSqlsOrderPageModule', name: 'ReadSqlsOrderPage', segment: 'read-sqls-order', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/read-sals-order/read-sals-order.module#ReadSalsOrderPageModule', name: 'ReadSalsOrderPage', segment: 'read-sals-order', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/test/test.module#TestPageModule', name: 'TestPage', segment: 'test', priority: 'low', defaultHistory: [] }
                     ]
                 }),
@@ -705,7 +710,7 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_8__pages_test_test__["a" /* TestPage */],
                 __WEBPACK_IMPORTED_MODULE_9__pages_sals_order_sals_order__["a" /* SalsOrderPage */],
                 __WEBPACK_IMPORTED_MODULE_12__pages_product_model_product_model__["a" /* ProductModelPage */],
-                __WEBPACK_IMPORTED_MODULE_14__pages_read_sqls_order_read_sqls_order__["a" /* ReadSqlsOrderPage */]
+                __WEBPACK_IMPORTED_MODULE_14__pages_read_sals_order_read_sals_order__["a" /* ReadSalsOrderPage */]
             ],
             providers: [
                 __WEBPACK_IMPORTED_MODULE_10__ionic_native_status_bar__["a" /* StatusBar */],
@@ -734,7 +739,7 @@ var AppModule = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_home_home__ = __webpack_require__(347);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_list_list__ = __webpack_require__(348);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_sals_order_sals_order__ = __webpack_require__(112);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_read_sqls_order_read_sqls_order__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_read_sals_order_read_sals_order__ = __webpack_require__(149);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -764,7 +769,7 @@ var MyApp = (function () {
         this.pages = [
             { title: '销售管理', componentPages: [
                     { pageTitle: '销售订单', component: __WEBPACK_IMPORTED_MODULE_6__pages_sals_order_sals_order__["a" /* SalsOrderPage */] },
-                    { pageTitle: '查看订单', component: __WEBPACK_IMPORTED_MODULE_7__pages_read_sqls_order_read_sqls_order__["a" /* ReadSqlsOrderPage */] }
+                    { pageTitle: '查看订单', component: __WEBPACK_IMPORTED_MODULE_7__pages_read_sals_order_read_sals_order__["a" /* ReadSalsOrderPage */] }
                 ] },
             { title: 'Home', componentPages: [
                     { pageTitle: 'Home', component: __WEBPACK_IMPORTED_MODULE_4__pages_home_home__["a" /* HomePage */] }
@@ -849,6 +854,7 @@ var RestProvider = (function () {
         this.apiUrlGetOrdersByUserId = this.host + 'api/SalesOrder/GetSalesOrderByUserId';
         this.apiUrlGetDeptByName = this.host + 'api/Client';
         this.apiUrlGetSalesOrderByOrderId = this.host + "api/SalesOrder/GetSalesOrderByOrderId";
+        this.apiUrlInsertSalesOrderByOrderId = this.host + "api/SalesOrder/InsertSalesOrderByOrderId";
     }
     RestProvider.prototype.GetCargoByName = function (limit) {
         return this.getUrlReturn(this.apiUrlGetCargoByName + "?limit=" + limit);
@@ -861,6 +867,9 @@ var RestProvider = (function () {
     };
     RestProvider.prototype.GetSalesOrderByOrderId = function (orderId) {
         return this.getUrlReturn(this.apiUrlGetSalesOrderByOrderId + "?orderId=" + orderId);
+    };
+    RestProvider.prototype.InsertSalesOrderByOrderId = function (orderInfo, products) {
+        return this.getUrlReturn(this.apiUrlInsertSalesOrderByOrderId + "?orderInfo=" + orderInfo + "&products=" + products);
     };
     RestProvider.prototype.getUrlReturn = function (url) {
         return this.http.get(url)
@@ -888,10 +897,9 @@ var RestProvider = (function () {
     };
     RestProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */]) === "function" && _a || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */]])
     ], RestProvider);
     return RestProvider;
-    var _a;
 }());
 
 //# sourceMappingURL=rest.js.map
