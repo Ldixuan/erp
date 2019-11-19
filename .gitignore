@@ -41,3 +41,5 @@ UserInterfaceState.xcuserstate
 /node_modules
 /node_modules
 
+/www/build
+/node_modules
