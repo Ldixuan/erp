@@ -153,7 +153,8 @@ export class SalsOrderPage {
 
 
   logForm() {
-    this.rest.InsertSalesOrderByOrderId(this.orderForm.value, this.listProduct)
+    //this.rest.InsertSalesOrderByOrderId(this.orderForm.value, this.listProduct)
+    this.rest.InsertSalesOrderByOrderId({text : "123"}, [{text:"123"}])
         .subscribe(
           f => {
             console.log(f);
