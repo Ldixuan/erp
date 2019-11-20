@@ -18,8 +18,8 @@ export class RestProvider {
    
   }
 
-  private host = "http://47.100.137.77/";
-  //private host = "http://localhost/LjWebApplication/";
+  //private host = "http://47.100.137.77/";
+  private host = "http://localhost/LjWebApplication/";
   private apiUrlGetCargoByName = this.host + 'api/cargo';
   private apiUrlGetOrdersByUserId = this.host + 'api/SalesOrder/GetSalesOrderByUserId';
   private apiUrlGetDeptByName = this.host + 'api/Client';
@@ -44,7 +44,7 @@ export class RestProvider {
     return this.getUrlReturn(this. apiUrlGetSalesOrderByOrderId+"?orderId="+orderId);
   }
 
-  InsertSalesOrderByOrderId(orderInfo, products : Array<any>):Observable<any>{
+  InsertSalesOrderByOrderId(orderInfo, products:Array<any>):Observable<any>{
     return this.postUrl(this.apiUrlInsertSalesOrderByOrderId, {orderInfo:orderInfo,products:products});
   }
 
