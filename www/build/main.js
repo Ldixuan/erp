@@ -123,7 +123,6 @@ var SalsOrderPage = (function () {
                 productTemp['unitProduct'] = productsInfo[index].cargoUnit;
                 productTemp['priceProduct'] = productsInfo[index].cargoUnitPrice || 0;
                 productTemp['datePayProduct'] = productsInfo[index].scheduleCargoDate;
-                productTemp['salesOrderCommandOrder'] = productsInfo[index].salesOrderCommandOrder;
                 productTemp['adresseProduct'] = "";
                 productTemp['nameOffical'] = "";
                 productTemp['hadPaidProduct'] = "";
@@ -172,14 +171,11 @@ var SalsOrderPage = (function () {
     SalsOrderPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad SalsOrderPage');
     };
-    SalsOrderPage.prototype.getNewProductOrder = function () {
-        return "0" + this.listProduct.length;
-    };
     SalsOrderPage.prototype.presentModal = function (infoProduct, index) {
         var _this = this;
         var modal;
         if (infoProduct == undefined) {
-            modal = this.modalCtrl.create(__WEBPACK_IMPORTED_MODULE_3__product_model_product_model__["a" /* ProductModelPage */], { orderProduct: this.getNewProductOrder() });
+            modal = this.modalCtrl.create(__WEBPACK_IMPORTED_MODULE_3__product_model_product_model__["a" /* ProductModelPage */]);
         }
         else {
             modal = this.modalCtrl.create(__WEBPACK_IMPORTED_MODULE_3__product_model_product_model__["a" /* ProductModelPage */], { infoProduct: infoProduct });
@@ -326,11 +322,11 @@ webpackEmptyAsyncContext.id = 162;
 
 var map = {
 	"../pages/read-sals-order/read-sals-order.module": [
-		679,
+		680,
 		1
 	],
 	"../pages/test/test.module": [
-		680,
+		679,
 		0
 	]
 };
@@ -392,7 +388,6 @@ var ProductModelPage = (function () {
         this.initProducts();
         this.productForm = this.formBuilder.group({
             idProduct: [''],
-            salesOrderCommandOrder: [''],
             nameProduct: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required],
             adresseProduct: [''],
             nameOffical: [''],
@@ -413,11 +408,6 @@ var ProductModelPage = (function () {
                 unit: infoProduct.unitProduct
             };
             this.modifMod = true;
-        }
-        else {
-            var temp = this.productForm.value;
-            temp.salesOrderCommandOrder = this.navParams.get("orderProduct");
-            this.productForm.setValue(temp);
         }
     }
     ProductModelPage.prototype.initProducts = function () {
@@ -704,8 +694,8 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["f" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* MyApp */], {}, {
                     links: [
-                        { loadChildren: '../pages/read-sals-order/read-sals-order.module#ReadSalsOrderPageModule', name: 'ReadSalsOrderPage', segment: 'read-sals-order', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/test/test.module#TestPageModule', name: 'TestPage', segment: 'test', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/test/test.module#TestPageModule', name: 'TestPage', segment: 'test', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/read-sals-order/read-sals-order.module#ReadSalsOrderPageModule', name: 'ReadSalsOrderPage', segment: 'read-sals-order', priority: 'low', defaultHistory: [] }
                     ]
                 }),
                 __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* HttpModule */],
@@ -911,10 +901,9 @@ var RestProvider = (function () {
     };
     RestProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */]) === "function" && _a || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */]])
     ], RestProvider);
     return RestProvider;
-    var _a;
 }());
 
 //# sourceMappingURL=rest.js.map

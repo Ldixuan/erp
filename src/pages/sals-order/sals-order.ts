@@ -118,7 +118,6 @@ export class SalsOrderPage {
               productTemp['unitProduct'] = productsInfo[index].cargoUnit;
               productTemp['priceProduct'] = productsInfo[index].cargoUnitPrice || 0;
               productTemp['datePayProduct'] = productsInfo[index].scheduleCargoDate;
-              productTemp['salesOrderCommandOrder'] = productsInfo[index].salesOrderCommandOrder;
               productTemp['adresseProduct'] = "";
               productTemp['nameOffical'] = "";
               productTemp['hadPaidProduct'] = "";
@@ -176,14 +175,10 @@ export class SalsOrderPage {
     console.log('ionViewDidLoad SalsOrderPage');
   }
 
-  getNewProductOrder(){
-    return "0"+this.listProduct.length;
-  }
-
   presentModal(infoProduct?, index?) {
     let modal;
     if(infoProduct == undefined){
-      modal = this.modalCtrl.create(ProductModelPage, {orderProduct : this.getNewProductOrder()});
+      modal = this.modalCtrl.create(ProductModelPage);
     }else{
       modal = this.modalCtrl.create(ProductModelPage, {infoProduct : infoProduct});
     }

@@ -32,7 +32,6 @@ export class ProductModelPage {
     this.initProducts();
     this.productForm = this.formBuilder.group({
       idProduct: [''],
-      salesOrderCommandOrder : [''],
       nameProduct: ['', Validators.required],
       adresseProduct: [''],
       nameOffical: [''],
@@ -55,10 +54,6 @@ export class ProductModelPage {
         unit:infoProduct.unitProduct
       };
       this.modifMod = true;
-    }else{
-      let temp = this.productForm.value;
-      temp.salesOrderCommandOrder = this.navParams.get("orderProduct");
-      this.productForm.setValue(temp);
     }
   }
 
