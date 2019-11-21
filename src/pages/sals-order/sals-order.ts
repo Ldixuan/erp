@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, AlertController,NavController, NavParams,ModalController, Modal,ViewController } from 'ionic-angular';
+import { IonicPage, AlertController,NavController, NavParams,ModalController, Modal,ViewController, LoadingController, ToastController } from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ProductModelPage } from '../product-model/product-model';
 import { RestProvider} from '../../providers/rest/rest'
 import { ParseSourceFile } from '@angular/compiler';
+import { BaseUI } from '../../app/common/baseui';
+import { Network } from '@ionic-native/network/ngx';
+
 /**
  * Generated class for the SalsOrderPage page.
  *
@@ -16,7 +19,7 @@ import { ParseSourceFile } from '@angular/compiler';
   selector: 'page-sals-order',
   templateUrl: 'sals-order.html',
 })
-export class SalsOrderPage {
+export class SalsOrderPage extends BaseUI{
 
   private orderForm : FormGroup;
 
@@ -27,8 +30,17 @@ export class SalsOrderPage {
   readModel = false;
   deptSelect : any;
 
-  constructor(private formBuilder: FormBuilder, public viewCtrl: ViewController,
-    public alerCtrl: AlertController, public modalCtrl: ModalController, public rest: RestProvider, public navParams: NavParams) {
+  constructor(
+    private formBuilder: FormBuilder, 
+    public viewCtrl: ViewController,
+    public alerCtrl: AlertController, 
+    public modalCtrl: ModalController, 
+    public rest: RestProvider, 
+    public navParams: NavParams,
+    public loadingCtrl : LoadingController,
+    public toastCtrl : ToastController,
+    public network: Network) {
+      super();
     this.orderForm = this.formBuilder.group({
       title: [''],
       date: ['', Validators.required],
@@ -154,21 +166,28 @@ export class SalsOrderPage {
   }
 
   saveOrder(){
-    this.rest.InsertSalesOrderByOrderId(this.orderForm.value, this.listProduct)
-        .subscribe(
-          f => {
-            console.log(f);
-            if(f.status == "0"){
-              alert("保存成功");
-            }else{
-              alert("保存失敗 : "+f.msg);
-            }
-          },
-          error => {
-            alert(error);
+    var loading =  super.showLoading(this.loadingCtrl,"正在保存，请稍等");
+    if(this.network.type !='none'){
+      this.rest.InsertSalesOrderByOrderId(this.orderForm.value, this.listProduct)
+      .subscribe(
+        f => {
+          console.log(f);
+          if(f.status == "0"){
+            loading.dismiss();
+            alert("保存成功");
+          }else{
+           // alert("保存失敗 : "+f.msg);
+           super.showToast(this.toastCtrl, "保存失敗 : "+f.msg); 
           }
-
-        )
+        },
+        error => {
+          super.showToast(this.toastCtrl, "保存失敗 : "+error); //TODO: cannot show the detail information for the user
+        }
+      )
+    }
+    else{
+      super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+    }
   }
 
   ionViewDidLoad() {
