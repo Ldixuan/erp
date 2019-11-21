@@ -5,6 +5,8 @@ import { ProductModelPage } from '../product-model/product-model';
 import { RestProvider} from '../../providers/rest/rest'
 import { ParseSourceFile } from '@angular/compiler';
 import { BaseUI } from '../../app/common/baseui';
+import { Network } from '@ionic-native/network/ngx';
+
 /**
  * Generated class for the SalsOrderPage page.
  *
@@ -36,7 +38,8 @@ export class SalsOrderPage extends BaseUI{
     public rest: RestProvider, 
     public navParams: NavParams,
     public loadingCtrl : LoadingController,
-    public toastCtrl : ToastController) {
+    public toastCtrl : ToastController,
+    public network: Network) {
       super();
     this.orderForm = this.formBuilder.group({
       title: [''],
@@ -164,23 +167,27 @@ export class SalsOrderPage extends BaseUI{
 
   saveOrder(){
     var loading =  super.showLoading(this.loadingCtrl,"正在保存，请稍等");
-    this.rest.InsertSalesOrderByOrderId(this.orderForm.value, this.listProduct)
-        .subscribe(
-          f => {
-            console.log(f);
-            if(f.status == "0"){
-              loading.dismiss();
-              alert("保存成功");
-            }else{
-             // alert("保存失敗 : "+f.msg);
-             super.showToast(this.toastCtrl, "保存失敗 : "+f.msg); 
-            }
-          },
-          error => {
-            super.showToast(this.toastCtrl, "保存失敗 : "+error); //TODO: cannot show the detail information for the user
+    if(this.network.type !='none'){
+      this.rest.InsertSalesOrderByOrderId(this.orderForm.value, this.listProduct)
+      .subscribe(
+        f => {
+          console.log(f);
+          if(f.status == "0"){
+            loading.dismiss();
+            alert("保存成功");
+          }else{
+           // alert("保存失敗 : "+f.msg);
+           super.showToast(this.toastCtrl, "保存失敗 : "+f.msg); 
           }
-
-        )
+        },
+        error => {
+          super.showToast(this.toastCtrl, "保存失敗 : "+error); //TODO: cannot show the detail information for the user
+        }
+      )
+    }
+    else{
+      super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+    }
   }
 
   ionViewDidLoad() {
