@@ -5,7 +5,7 @@ import { ProductModelPage } from '../product-model/product-model';
 import { RestProvider} from '../../providers/rest/rest'
 import { ParseSourceFile } from '@angular/compiler';
 import { BaseUI } from '../../app/common/baseui';
-import { Network } from '@ionic-native/network/ngx';
+import { Network } from '@ionic-native/network';
 
 /**
  * Generated class for the SalsOrderPage page.
