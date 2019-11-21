@@ -71,6 +71,7 @@ export class ProductModelPage {
 
   changeProduct(){
     let productTmp = this.productForm.value;
+      productTmp["idProduct"] = this.productSelect.id;
       productTmp["nameProduct"] = this.productSelect.name;
       productTmp["unitProduct"] = this.productSelect.unit;
       this.productForm.setValue(productTmp);

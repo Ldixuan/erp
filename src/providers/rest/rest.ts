@@ -44,8 +44,8 @@ export class RestProvider {
     return this.getUrlReturn(this. apiUrlGetSalesOrderByOrderId+"?orderId="+orderId);
   }
 
-  InsertSalesOrderByOrderId(orderInfo, products : Array<any>){
-    return this.getUrlReturn(this.apiUrlInsertSalesOrderByOrderId+"?orderInfo="+orderInfo+"&products="+products);
+  InsertSalesOrderByOrderId(orderInfo, products:Array<any>):Observable<any>{
+    return this.postUrl(this.apiUrlInsertSalesOrderByOrderId, {orderInfo:orderInfo,products:products});
   }
 
   
@@ -53,6 +53,12 @@ export class RestProvider {
     return this.http.get(url)
       .map(this.extractData)
       .catch(this.handleError);
+  }
+
+  private postUrl(url:string, body:any): Observable<any> {
+    return this.http.post(url, body)
+    .map(this.extractData)
+    .catch(this.handleError);
   }
 
   private extractData(res: Response) {

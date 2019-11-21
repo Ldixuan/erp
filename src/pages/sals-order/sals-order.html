@@ -7,10 +7,15 @@
 <ion-header>
 
   <ion-navbar *ngIf="!readModel">
+    <ion-buttons>
       <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
+    </ion-buttons>
       <ion-title>销售订单</ion-title>
+    <ion-buttons end> 
+      <button ion-button [disabled]="!orderForm.valid" (click) = "logForm()">保存</button>
+    </ion-buttons>
     </ion-navbar>
   
     <ion-navbar *ngIf="readModel">
@@ -21,8 +26,8 @@
             <ion-icon name="md-close" showWhen="android"></ion-icon>
         </button>
       </ion-buttons>
-        <ion-buttons end> <button ion-button (click)="removeOrder()" 
-          color="primary">删除</button>
+        <ion-buttons end> 
+          <button ion-button [disabled]="!orderForm.valid" (click) = "logForm()">保存</button>
         </ion-buttons>
       </ion-navbar>
 </ion-header>
@@ -120,6 +125,4 @@
       </ion-card-content>
     </ion-card>
   </ion-list>
-  
-  <button ion-button [disabled]="!orderForm.valid" (click) = "logForm()" block>保存</button>
 </ion-content>

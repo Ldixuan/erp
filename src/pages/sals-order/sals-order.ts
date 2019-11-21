@@ -3,6 +3,7 @@ import { IonicPage, AlertController,NavController, NavParams,ModalController, Mo
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ProductModelPage } from '../product-model/product-model';
 import { RestProvider} from '../../providers/rest/rest'
+import { ParseSourceFile } from '@angular/compiler';
 /**
  * Generated class for the SalsOrderPage page.
  *
@@ -42,7 +43,7 @@ export class SalsOrderPage {
       userId : ['Admi'],
       deptId : [''],
       status : [''],
-      statusCode : [''],
+      statusCode : 0,
       messageForAuditor : [''],
       remarkfeedback : ['']
     });
@@ -61,7 +62,6 @@ export class SalsOrderPage {
     this.rest.GetDeptByName(-1) // 填写url的参数
           .subscribe(
           f => {
-            console.log(f);
             this.depts = f;
           },
             
@@ -74,6 +74,7 @@ export class SalsOrderPage {
     this.rest.GetSalesOrderByOrderId(title)
         .subscribe(
           (f : any) => {
+            console.log(f);
             let orderDetail = f.salesOrderDetail;
             let temp = this.orderForm.value;
             temp.title = orderDetail.commandeId;
@@ -91,7 +92,7 @@ export class SalsOrderPage {
             temp.deptId = orderDetail.departmentId;
             temp.status = orderDetail.status;
             temp.messageForAuditor = orderDetail.messageForAuditor;
-            temp.statusCode = "";
+            temp.statusCode = orderDetail.statusCode || 0;
             temp.remarkfeedback = orderDetail.remarkfeedback;
             this.orderForm.setValue(temp);
 
@@ -113,9 +114,9 @@ export class SalsOrderPage {
               };
               productTemp['idProduct'] = productsInfo[index].cargoId;
               productTemp['nameProduct'] = productsInfo[index].cargoName;
-              productTemp['numberProduct'] = productsInfo[index].cargoQuantity;
+              productTemp['numberProduct'] = productsInfo[index].cargoQuantity || 0;
               productTemp['unitProduct'] = productsInfo[index].cargoUnit;
-              productTemp['priceProduct'] = productsInfo[index].cargoUnitPrice;
+              productTemp['priceProduct'] = productsInfo[index].cargoUnitPrice || 0;
               productTemp['datePayProduct'] = productsInfo[index].scheduleCargoDate;
               productTemp['adresseProduct'] = "";
               productTemp['nameOffical'] = "";
@@ -130,15 +131,16 @@ export class SalsOrderPage {
         )
   }
 
-  removeOrder(){
+
+  logForm() {
     let confirm = this.alerCtrl.create({
       title: '提示',
-      message: '确认删除此订单吗?',
+      message: '确认保存此订单吗?',
       buttons: [
         {
           text: '确认',
           handler: () => {
-            this.viewCtrl.dismiss({action:1, content : {}});
+            this.saveOrder();
           }
         },
         {
@@ -151,26 +153,22 @@ export class SalsOrderPage {
     confirm.present()
   }
 
-
-  logForm() {
+  saveOrder(){
     this.rest.InsertSalesOrderByOrderId(this.orderForm.value, this.listProduct)
         .subscribe(
           f => {
             console.log(f);
-            // if(f.status == "0"){
-            //   alert("保存成功");
-            // }else{
-            //   alert("保存失敗 : "+f.msg);
-            // }
+            if(f.status == "0"){
+              alert("保存成功");
+            }else{
+              alert("保存失敗 : "+f.msg);
+            }
           },
           error => {
             alert(error);
           }
 
         )
-    if(this.readModel){
-      this.viewCtrl.dismiss({action: 2, content : this.orderForm.value})
-    }
   }
 
   ionViewDidLoad() {
