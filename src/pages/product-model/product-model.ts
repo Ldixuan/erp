@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, AlertController, NavParams,ViewController} from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { RestProvider} from '../../providers/rest/rest'
+import { RestProvider} from '../../providers/rest/rest';
+import { BaseUI } from '../../app/common/baseui';
 
 /**
  * Generated class for the ProductModelPage page.
@@ -14,7 +15,7 @@ import { RestProvider} from '../../providers/rest/rest'
   selector: 'page-product-model',
   templateUrl: 'product-model.html',
 })
-export class ProductModelPage {
+export class ProductModelPage extends BaseUI {
 
   searchQuery: string = '';
   products: any;
@@ -26,8 +27,12 @@ export class ProductModelPage {
   
   
 
-  constructor(public viewCtrl: ViewController, private formBuilder: FormBuilder, 
-    public navParams: NavParams, public rest: RestProvider,public alerCtrl: AlertController) {
+  constructor(public viewCtrl: ViewController, 
+    private formBuilder: FormBuilder, 
+    public navParams: NavParams, 
+    public rest: RestProvider,
+    public alerCtrl: AlertController) {
+    super();
     
     this.initProducts();
     this.productForm = this.formBuilder.group({

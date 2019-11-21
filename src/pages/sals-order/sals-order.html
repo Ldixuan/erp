@@ -12,7 +12,7 @@
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
-      <ion-title>销售订单</ion-title>
+      <ion-title text-center>销售订单</ion-title>
     <ion-buttons end> 
       <button ion-button [disabled]="!orderForm.valid" (click) = "logForm()">保存</button>
     </ion-buttons>
@@ -22,7 +22,7 @@
       <ion-title text-center>销售订单</ion-title>
       <ion-buttons>
         <button ion-button (click)="exit()" icon-only>
-            <ion-icon name='arrow-back' color = "primary"></ion-icon>
+            <ion-icon name='arrow-back' color = "primary" showWhen="ios"></ion-icon>
             <ion-icon name="md-close" showWhen="android"></ion-icon>
         </button>
       </ion-buttons>
