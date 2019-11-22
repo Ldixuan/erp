@@ -1,10 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { timeout, catchError } from 'rxjs/operators'
 import { Input } from '@angular/compiler/src/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/Rx';
+import { of } from 'rxjs/observable/of';
+
 /*
   Generated class for the RestProvider provider.
 
@@ -62,12 +65,24 @@ export class RestProvider {
   
   private getUrlReturn(url: string): Observable<any> {
     return this.http.get(url)
-      .map(this.extractData)
-      .catch(this.handleError);
+    .pipe(
+      timeout(10000),
+      catchError(e => {
+        return of({'error':'timeout'});
+      })
+    )
+    .map(this.extractData)
+    .catch(this.handleError);
   }
 
   private postUrlReturn(url:string, body:any): Observable<any> {
     return this.http.post(url, body)
+    .pipe(
+      timeout(10000),
+      catchError(e => {
+        return of({'error':'timeout'});
+      })
+    )
     .map(this.extractData)
     .catch(this.handleError);
   }
