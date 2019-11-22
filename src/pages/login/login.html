@@ -1,0 +1,19 @@
+<ion-content>
+
+      <ion-list>
+          <ion-item style="padding-top: 15px;">
+              <ion-label floating>用户名</ion-label>
+              <ion-select interface="popover" [(ngModel)]="selectedUserId">
+                <ion-option *ngFor="let user of userList"  [value]="user.id">{{user.id}} - {{user.username}}</ion-option>
+              </ion-select>
+          </ion-item>
+        
+          <ion-item style="padding-top:10px;">
+            <ion-label floating>密码</ion-label>
+            <ion-input type="password" [(ngModel)]="password"></ion-input>
+          </ion-item>
+        </ion-list>
+
+  <button ion-button block (click)="login()">登录</button>
+
+</ion-content>

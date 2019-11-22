@@ -73,22 +73,28 @@ export class SalsOrderPage extends BaseUI{
   }
 
   initDepts(){
+    if(this.network.type !='none'){
     this.rest.GetDeptByName(-1) // 填写url的参数
           .subscribe(
           f => {
             this.depts = f;
           },
-            
           error => {
-            alert(error);  
+            alert(error); //todo :    super.showToast(this.toastCtrl,"保存成功");
           });
+        }
+        else{
+          super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+        }
   }
 
   initOrderInfo(title :string){
+    var loading =  super.showLoading(this.loadingCtrl,"加载中...");
+    if(this.network.type !='none'){
     this.rest.GetSalesOrderByOrderId(title)
         .subscribe(
           (f : any) => {
-            console.log(f);
+            console.log(f); //TODO remove
             let orderDetail = f.salesOrderDetail;
             let temp = this.orderForm.value;
             temp.title = orderDetail.commandeId;
@@ -139,11 +145,16 @@ export class SalsOrderPage extends BaseUI{
               this.listProduct.push(productTemp);
               this.loading = false;
             }
+            loading.dismiss();
           },
           error => {
-            alert(error);
+            loading.dismiss();
+            alert(error); //TODO change to toast
           }
-        )
+        )}
+        else{
+          super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+        }
   }
 
 
@@ -238,7 +249,7 @@ export class SalsOrderPage extends BaseUI{
     temp.deptId = this.deptSelect.id;
     temp.dept = this.deptSelect.name;
     this.orderForm.setValue(temp); 
-    console.log(temp);
+    console.log(temp); // TODO remove
   }
 
   exit() {

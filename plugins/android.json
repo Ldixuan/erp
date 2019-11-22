@@ -13,6 +13,9 @@
     "cordova-plugin-ionic-webview": {
       "PACKAGE_NAME": "io.ionic.starter"
     },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
     "cordova-plugin-splashscreen": {
       "PACKAGE_NAME": "io.ionic.starter"
     },
@@ -21,10 +24,15 @@
     },
     "ionic-plugin-keyboard": {
       "PACKAGE_NAME": "io.ionic.starter"
-    },
-    "cordova-plugin-network-information": {
-      "PACKAGE_NAME": "io.ionic.starter"
     }
   },
-  "dependent_plugins": {}
+  "dependent_plugins": {
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "cordova-plugin-advanced-http": {
+      "OKHTTP_VERSION": "3.10.0",
+      "PACKAGE_NAME": "io.ionic.starter"
+    }
+  }
 }

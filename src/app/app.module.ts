@@ -4,12 +4,14 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import {HttpModule} from '@angular/http';
 import { IonicSelectableModule } from 'ionic-selectable';
 import { Network } from '@ionic-native/network';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { TestPage } from '../pages/test/test';
 import { SalsOrderPage } from '../pages/sals-order/sals-order'; 
+import { LoginPage } from '../pages/login/login'
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -26,13 +28,15 @@ import { ReadSalsOrderPage } from '../pages/read-sals-order/read-sals-order'
     TestPage,
     SalsOrderPage,
     ProductModelPage,
-    ReadSalsOrderPage
+    ReadSalsOrderPage,
+    LoginPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     HttpModule,
-    IonicSelectableModule
+    IonicSelectableModule,
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -42,7 +46,8 @@ import { ReadSalsOrderPage } from '../pages/read-sals-order/read-sals-order'
     TestPage,
     SalsOrderPage,
     ProductModelPage,
-    ReadSalsOrderPage
+    ReadSalsOrderPage,
+    LoginPage
   ],
   providers: [
     StatusBar,

@@ -25,12 +25,19 @@ export class RestProvider {
   private apiUrlGetDeptByName = this.host + 'api/Client';
   private apiUrlGetSalesOrderByOrderId = this.host + "api/SalesOrder/GetSalesOrderByOrderId";
   private apiUrlInsertSalesOrderByOrderId = this.host + "api/SalesOrder/InsertSalesOrderByOrderId";
+  private apiUrlgetUserList = this.host + "api/Auth/getUserList";
+  private apiUrlLogin = this.host + "api/Auth/Login"; //TODO
 
  
 
   GetCargoByName(limit:number):Observable<any>{
       return this.getUrlReturn(this.apiUrlGetCargoByName+"?limit="+limit);
   }
+
+  GetUserList():Observable<any>{
+    return this.getUrlReturn(this.apiUrlgetUserList);
+}
+
 
   GetOrdersByUserId(userId:string):Observable<any>{
     return this.getUrlReturn(this.apiUrlGetOrdersByUserId+"?userId="+userId);
@@ -45,7 +52,11 @@ export class RestProvider {
   }
 
   InsertSalesOrderByOrderId(orderInfo, products:Array<any>):Observable<any>{
-    return this.postUrl(this.apiUrlInsertSalesOrderByOrderId, {orderInfo:orderInfo,products:products});
+    return this.postUrlReturn(this.apiUrlInsertSalesOrderByOrderId, {orderInfo:orderInfo,products:products});
+  }
+
+  Login(User):Observable<any>{
+    return this.postUrlReturn(this.apiUrlLogin, User);
   }
 
   
@@ -55,7 +66,7 @@ export class RestProvider {
       .catch(this.handleError);
   }
 
-  private postUrl(url:string, body:any): Observable<any> {
+  private postUrlReturn(url:string, body:any): Observable<any> {
     return this.http.post(url, body)
     .map(this.extractData)
     .catch(this.handleError);
