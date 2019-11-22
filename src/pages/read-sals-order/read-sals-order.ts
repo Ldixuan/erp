@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams} from 'ionic-angular';
 import { SalsOrderPage } from '../sals-order/sals-order'; 
 import { RestProvider} from '../../providers/rest/rest'
 
@@ -19,15 +19,17 @@ export class ReadSalsOrderPage {
 
   private salsOrders : Array<any>;
   private userId : string;
+  private hasChangeData = false;
 
   loading = true;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public modalCtrl: ModalController,public rest: RestProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public rest: RestProvider) {
     this.userId = "Admi";
     this.initSalsOrdersData()
   }
 
   initSalsOrdersData(){
+    this.loading = true;
     this.rest.GetOrdersByUserId(this.userId)
         .subscribe(
           (f : any) => {
@@ -40,25 +42,25 @@ export class ReadSalsOrderPage {
         );
   }
 
+  myCallbackFunction = (_params) => {
+    return new Promise((resolve, reject) => {
+        this.hasChangeData = _params;
+        resolve();
+    });
+   }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad ReadSalsOrderPage');
   }
 
+  ionViewDidEnter(){
+   if(this.hasChangeData){
+     this.initSalsOrdersData();
+   }
+  }
+
   presentOrderPage(infoOrder, index:number){
-    const modal = this.modalCtrl.create(SalsOrderPage, {title : infoOrder.commandeId});
-
-    modal.onDidDismiss(data => {
-      if(data != undefined ){
-        if(data.action == 1){
-          this.salsOrders.splice(index, 1);
-        }else if(data.action == 2){
-          this.salsOrders[index] = data.content;
-        }
-      }
-
-    })
-
-    modal.present();
+    this.navCtrl.push(SalsOrderPage,{title : infoOrder.commandeId,callback:this.myCallbackFunction});
   }
 
 }

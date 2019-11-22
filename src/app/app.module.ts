@@ -3,7 +3,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import {HttpModule} from '@angular/http';
 import { IonicSelectableModule } from 'ionic-selectable';
-import { Network } from '@ionic-native/network/ngx';
+import { Network } from '@ionic-native/network';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';

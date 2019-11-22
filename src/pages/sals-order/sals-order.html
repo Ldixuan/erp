@@ -20,12 +20,6 @@
   
     <ion-navbar *ngIf="readModel">
       <ion-title text-center>销售订单</ion-title>
-      <ion-buttons>
-        <button ion-button (click)="exit()" icon-only>
-            <ion-icon name='arrow-back' color = "primary" showWhen="ios"></ion-icon>
-            <ion-icon name="md-close" showWhen="android"></ion-icon>
-        </button>
-      </ion-buttons>
         <ion-buttons end> 
           <button ion-button [disabled]="!orderForm.valid" (click) = "logForm()">保存</button>
         </ion-buttons>
@@ -33,9 +27,15 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content padding>
+    
   <ion-item-group inset="true" [formGroup]="orderForm" >
-
+      
+      <ion-item *ngIf="loading">
+          <ion-spinner></ion-spinner>
+          <p text-center font-size-small>加载中</p>
+      </ion-item>
+  
       <ion-item *ngIf="readModel">
         <ion-label color="primary" floating>订单编号</ion-label>
         <ion-input type="text"  [disabled]="true" formControlName="title"></ion-input>

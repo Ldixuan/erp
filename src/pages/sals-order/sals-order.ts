@@ -5,7 +5,7 @@ import { ProductModelPage } from '../product-model/product-model';
 import { RestProvider} from '../../providers/rest/rest'
 import { ParseSourceFile } from '@angular/compiler';
 import { BaseUI } from '../../app/common/baseui';
-import { Network } from '@ionic-native/network/ngx';
+import { Network } from '@ionic-native/network';
 
 /**
  * Generated class for the SalsOrderPage page.
@@ -29,6 +29,7 @@ export class SalsOrderPage extends BaseUI{
   depts: any;
   readModel = false;
   deptSelect : any;
+  loading = false;
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -39,6 +40,7 @@ export class SalsOrderPage extends BaseUI{
     public navParams: NavParams,
     public loadingCtrl : LoadingController,
     public toastCtrl : ToastController,
+    public navCtrl : NavController,
     public network: Network) {
       super();
     this.orderForm = this.formBuilder.group({
@@ -63,11 +65,11 @@ export class SalsOrderPage extends BaseUI{
     this.listProduct = new Array<any>();
     let title = this.navParams.get('title');
     if(title != undefined){
+      this.loading = true;
       this.initOrderInfo(title);
       this.readModel = true;
     }
     this.initDepts();
-
   }
 
   initDepts(){
@@ -135,6 +137,7 @@ export class SalsOrderPage extends BaseUI{
               productTemp['hadPaidProduct'] = "";
               productTemp['descriptProduct'] = "";
               this.listProduct.push(productTemp);
+              this.loading = false;
             }
           },
           error => {
@@ -145,6 +148,10 @@ export class SalsOrderPage extends BaseUI{
 
 
   logForm() {
+    if(this.listProduct.length == 0){
+      super.showToast(this.toastCtrl, "请添加货物");
+      return;
+    }
     let confirm = this.alerCtrl.create({
       title: '提示',
       message: '确认保存此订单吗?',
@@ -166,15 +173,23 @@ export class SalsOrderPage extends BaseUI{
   }
 
   saveOrder(){
+    
     var loading =  super.showLoading(this.loadingCtrl,"正在保存，请稍等");
     if(this.network.type !='none'){
       this.rest.InsertSalesOrderByOrderId(this.orderForm.value, this.listProduct)
       .subscribe(
         f => {
-          console.log(f);
           if(f.status == "0"){
             loading.dismiss();
-            alert("保存成功");
+            super.showToast(this.toastCtrl,"保存成功");
+            if(this.readModel){
+              var callback = this.navParams.get('callback');
+              callback(true).then(() => {this.navCtrl.pop();});
+            }else{
+              this.orderForm.reset({userId : "Admi"});
+              this.deptSelect = null;
+              console.log(this.orderForm.value);
+            }
           }else{
            // alert("保存失敗 : "+f.msg);
            super.showToast(this.toastCtrl, "保存失敗 : "+f.msg); 
