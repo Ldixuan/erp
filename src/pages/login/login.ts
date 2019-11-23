@@ -31,7 +31,7 @@ export class LoginPage extends BaseUI {
               public viewCtrl : ViewController,
               public storage : Storage) {
     super();
-    //this.navCtrl.setRoot(HomePage); //TODO: remove only for developpement model
+    this.navCtrl.setRoot(HomePage); //TODO: remove only for developpement model
   }
 
   ionViewDidLoad() {

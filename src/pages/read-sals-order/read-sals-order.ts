@@ -20,8 +20,10 @@ import { Network } from '@ionic-native/network';
 export class ReadSalsOrderPage extends BaseUI{
 
   private salsOrders : Array<any>;
+  private salsOrdersOrigine : Array<any>;
   private userId : string;
   private hasChangeData = false;
+  private statusTable = [];
 
   loading = true;
 
@@ -34,6 +36,7 @@ export class ReadSalsOrderPage extends BaseUI{
       super();
       this.userId = "Admi";
       this.initSalsOrdersData()
+      
   }
 
   initSalsOrdersData(){
@@ -44,6 +47,12 @@ export class ReadSalsOrderPage extends BaseUI{
             (f : any) => {
               if(f.Success){
                 this.salsOrders = f.Data;
+                this.salsOrdersOrigine = f.Data;
+                this.salsOrders.forEach(order => {
+                  this.statusTable.push(order.status);
+                });
+                this.statusTable = Array.from(new Set(this.statusTable));
+                console.log(this.statusTable);
               }else{
                 super.showToast(this.toastCtrl, f.Msg);
               }
@@ -78,6 +87,10 @@ export class ReadSalsOrderPage extends BaseUI{
 
   presentOrderPage(infoOrder, index:number){
     this.navCtrl.push(SalsOrderPage,{title : infoOrder.commandeId,callback:this.myCallbackFunction});
+  }
+
+  filterOrder(event){
+    this.salsOrders = this.salsOrdersOrigine.filter(o => o.status == event);
   }
 
 }
