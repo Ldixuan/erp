@@ -31,6 +31,7 @@ export class LoginPage extends BaseUI {
               public viewCtrl : ViewController,
               public storage : Storage) {
     super();
+    //this.navCtrl.setRoot(HomePage); //TODO: remove only for developpement model
   }
 
   ionViewDidLoad() {
@@ -52,7 +53,12 @@ export class LoginPage extends BaseUI {
           this.rest.GetUserList() // 填写url的参数
           .subscribe(
           (f : any) => {
-            this.userList = f;
+            console.log(f);
+            if(f.Success){
+              this.userList = f.Data;
+            }else{
+              super.showToast(this.toastCtrl, f.Msg);
+            }
           },
           error => {
             alert(error);//TODO remove

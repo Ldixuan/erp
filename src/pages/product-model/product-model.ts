@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, AlertController, NavParams,ViewController} from 'ionic-angular';
+import { IonicPage, AlertController, NavParams,ViewController,ToastController} from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { RestProvider} from '../../providers/rest/rest';
 import { BaseUI } from '../../app/common/baseui';
+import { Network } from '@ionic-native/network';
 
 /**
  * Generated class for the ProductModelPage page.
@@ -31,7 +32,9 @@ export class ProductModelPage extends BaseUI {
     private formBuilder: FormBuilder, 
     public navParams: NavParams, 
     public rest: RestProvider,
-    public alerCtrl: AlertController) {
+    public alerCtrl: AlertController,
+    public toastCtrl : ToastController,
+    public network: Network) {
     super();
     
     this.initProducts();
@@ -63,15 +66,23 @@ export class ProductModelPage extends BaseUI {
   }
 
   initProducts(){
-    this.rest.GetCargoByName(-1) // 填写url的参数
-          .subscribe(
-          (f : any) => {
-            this.products = f;
-            console.log(this.products);
-          },
-          error => {
-            alert(error);
-          });
+    if(this.network.type !='none'){
+      this.rest.GetCargoByName(-1) // 填写url的参数
+            .subscribe(
+            (f : any) => {
+              if(f.Success){
+                this.products = f.Data;
+              }else{
+                super.showToast(this.toastCtrl, f.Msg);
+              }
+            },
+            error => {
+              alert(error);
+            });
+    }
+    else{
+      super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+    }
   }
 
   changeProduct(){

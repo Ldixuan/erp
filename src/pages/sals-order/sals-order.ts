@@ -29,7 +29,6 @@ export class SalsOrderPage extends BaseUI{
   depts: any;
   readModel = false;
   deptSelect : any;
-  loading = false;
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -65,7 +64,6 @@ export class SalsOrderPage extends BaseUI{
     this.listProduct = new Array<any>();
     let title = this.navParams.get('title');
     if(title != undefined){
-      this.loading = true;
       this.initOrderInfo(title);
       this.readModel = true;
     }
@@ -74,87 +72,95 @@ export class SalsOrderPage extends BaseUI{
 
   initDepts(){
     if(this.network.type !='none'){
-    this.rest.GetDeptByName(-1) // 填写url的参数
-          .subscribe(
-          f => {
-            this.depts = f;
-          },
-          error => {
-            alert(error); //todo :    super.showToast(this.toastCtrl,"保存成功");
-          });
-        }
-        else{
-          super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
-        }
+      this.rest.GetDeptByName(-1) // 填写url的参数
+            .subscribe(
+            f => {
+              if(f.Success){
+                this.depts = f.Data;
+              }else{
+                super.showToast(this.toastCtrl, f.Msg);
+              }
+            },
+            error => {
+              alert(error); //todo :    super.showToast(this.toastCtrl,"保存成功");
+            });
+    }
+    else{
+      super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+    }
   }
 
   initOrderInfo(title :string){
     var loading =  super.showLoading(this.loadingCtrl,"加载中...");
     if(this.network.type !='none'){
-    this.rest.GetSalesOrderByOrderId(title)
-        .subscribe(
-          (f : any) => {
-            console.log(f); //TODO remove
-            let orderDetail = f.salesOrderDetail;
-            let temp = this.orderForm.value;
-            temp.title = orderDetail.commandeId;
-            temp.date = orderDetail.commandeCreateDate;
-            temp.telSender = orderDetail.senderTelephoneNumber;
-            temp.faxSender = orderDetail.senderFax;
-            temp.sender = orderDetail.sender;
-            temp.receiver = orderDetail.receiver;
-            temp.faxReceiver = orderDetail.receiverFax;
-            temp.telReceiver = orderDetail.receiverTelephoneNumber;
-            temp.descript = orderDetail.Remark1 + orderDetail.Remark2 + orderDetail.Remark3
-            + orderDetail.Remark4 + orderDetail.Remark5 + orderDetail.Remark6 + orderDetail.Remark7;
-            temp.dept = orderDetail.departmentLabel;
-            temp.userId = orderDetail.commandCreator;
-            temp.deptId = orderDetail.departmentId;
-            temp.status = orderDetail.status;
-            temp.messageForAuditor = orderDetail.messageForAuditor;
-            temp.statusCode = orderDetail.statusCode || 0;
-            temp.remarkfeedback = orderDetail.remarkfeedback;
-            this.orderForm.setValue(temp);
+      this.rest.GetSalesOrderByOrderId(title)
+          .subscribe(
+            (f : any) => {
+              console.log(f); //TODO remove
+              if(f.Success){
+                let orderDetail = f.Data.salesOrderDetail;
+                let temp = this.orderForm.value;
+                temp.title = orderDetail.commandeId;
+                temp.date = orderDetail.commandeCreateDate;
+                temp.telSender = orderDetail.senderTelephoneNumber;
+                temp.faxSender = orderDetail.senderFax;
+                temp.sender = orderDetail.sender;
+                temp.receiver = orderDetail.receiver;
+                temp.faxReceiver = orderDetail.receiverFax;
+                temp.telReceiver = orderDetail.receiverTelephoneNumber;
+                temp.descript = orderDetail.Remark1 + orderDetail.Remark2 + orderDetail.Remark3
+                + orderDetail.Remark4 + orderDetail.Remark5 + orderDetail.Remark6 + orderDetail.Remark7;
+                temp.dept = orderDetail.departmentLabel;
+                temp.userId = orderDetail.commandCreator;
+                temp.deptId = orderDetail.departmentId;
+                temp.status = orderDetail.status;
+                temp.messageForAuditor = orderDetail.messageForAuditor;
+                temp.statusCode = orderDetail.statusCode || 0;
+                temp.remarkfeedback = orderDetail.remarkfeedback;
+                this.orderForm.setValue(temp);
 
-            this.deptSelect = {id : orderDetail.departmentId, name:orderDetail.departmentLabel};
+                this.deptSelect = {id : orderDetail.departmentId, name:orderDetail.departmentLabel};
 
-            let productsInfo = f.cargo;
-            for (let index = 0; index < productsInfo.length; index++) {
-              let productTemp = {
-                idProduct: "",
-                nameProduct: "",
-                adresseProduct: "",
-                nameOffical: "",
-                numberProduct: "",
-                unitProduct: "",
-                priceProduct: "",
-                datePayProduct:"",
-                hadPaidProduct:"",
-                descriptProduct:""
-              };
-              productTemp['idProduct'] = productsInfo[index].cargoId;
-              productTemp['nameProduct'] = productsInfo[index].cargoName;
-              productTemp['numberProduct'] = productsInfo[index].cargoQuantity || 0;
-              productTemp['unitProduct'] = productsInfo[index].cargoUnit;
-              productTemp['priceProduct'] = productsInfo[index].cargoUnitPrice || 0;
-              productTemp['datePayProduct'] = productsInfo[index].scheduleCargoDate;
-              productTemp['adresseProduct'] = "";
-              productTemp['nameOffical'] = "";
-              productTemp['hadPaidProduct'] = "";
-              productTemp['descriptProduct'] = "";
-              this.listProduct.push(productTemp);
-              this.loading = false;
+                let productsInfo = f.Data.cargo;
+                for (let index = 0; index < productsInfo.length; index++) {
+                  let productTemp = {
+                    idProduct: "",
+                    nameProduct: "",
+                    adresseProduct: "",
+                    nameOffical: "",
+                    numberProduct: "",
+                    unitProduct: "",
+                    priceProduct: "",
+                    datePayProduct:"",
+                    hadPaidProduct:"",
+                    descriptProduct:""
+                  };
+                  productTemp['idProduct'] = productsInfo[index].cargoId;
+                  productTemp['nameProduct'] = productsInfo[index].cargoName;
+                  productTemp['numberProduct'] = productsInfo[index].cargoQuantity || 0;
+                  productTemp['unitProduct'] = productsInfo[index].cargoUnit;
+                  productTemp['priceProduct'] = productsInfo[index].cargoUnitPrice || 0;
+                  productTemp['datePayProduct'] = productsInfo[index].scheduleCargoDate;
+                  productTemp['adresseProduct'] = "";
+                  productTemp['nameOffical'] = "";
+                  productTemp['hadPaidProduct'] = "";
+                  productTemp['descriptProduct'] = "";
+                  this.listProduct.push(productTemp);
+                }
+              }else{
+                super.showToast(this.toastCtrl, f.Msg);
+              }
+              loading.dismiss();
+            },
+            error => {
+              loading.dismiss();
+              alert(error); //TODO change to toast
             }
-            loading.dismiss();
-          },
-          error => {
-            loading.dismiss();
-            alert(error); //TODO change to toast
-          }
-        )}
-        else{
-          super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
-        }
+          );
+    }
+    else{
+      super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+    }
   }
 
 
@@ -190,23 +196,22 @@ export class SalsOrderPage extends BaseUI{
       this.rest.InsertSalesOrderByOrderId(this.orderForm.value, this.listProduct)
       .subscribe(
         f => {
-          if(f.status == "0"){
-            loading.dismiss();
+          if(f.Success){
             super.showToast(this.toastCtrl,"保存成功");
             if(this.readModel){
               var callback = this.navParams.get('callback');
               callback(true).then(() => {this.navCtrl.pop();});
             }else{
-              this.orderForm.reset({userId : "Admi"});
-              this.deptSelect = null;
-              console.log(this.orderForm.value);
+              this.navCtrl.setRoot(SalsOrderPage);
             }
           }else{
            // alert("保存失敗 : "+f.msg);
-           super.showToast(this.toastCtrl, "保存失敗 : "+f.msg); 
+           super.showToast(this.toastCtrl, "保存失敗 : "+f.Msg); 
           }
+          loading.dismiss();
         },
         error => {
+          loading.dismiss();
           super.showToast(this.toastCtrl, "保存失敗 : "+error); //TODO: cannot show the detail information for the user
         }
       )

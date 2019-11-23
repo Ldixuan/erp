@@ -104,7 +104,7 @@ export class RestProvider {
     // }
     // console.error(errMsg);
     // return Observable.throw(errMsg);
-    console.log(JSON.stringify(error));
+    //console.log(JSON.stringify(error));
     return Observable.throw(JSON.stringify(error));
   }
 }
