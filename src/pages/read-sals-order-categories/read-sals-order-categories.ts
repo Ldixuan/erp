@@ -4,6 +4,7 @@ import { RestProvider} from '../../providers/rest/rest';
 import { BaseUI } from '../../app/common/baseui';
 import { Network } from '@ionic-native/network';
 import { ReadSalsOrderPage } from '../read-sals-order/read-sals-order';
+
 /**
  * Generated class for the ReadSalsOrderCategoriesPage page.
  *

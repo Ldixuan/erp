@@ -30,8 +30,7 @@ export class MyApp {
     this.pages = [
       { title: '销售管理', componentPages: [
         {pageTitle: '销售订单', component: SalsOrderPage},
-        {pageTitle: '查看订单', component: ReadSalsOrderPage},
-        {pageTitle: '查看订单1', component: ReadSalsOrderCategoriesPage}
+        {pageTitle: '查看订单', component: ReadSalsOrderCategoriesPage}
       ] },
       { title: 'Home', componentPages: [
         {pageTitle: 'Home', component : HomePage}

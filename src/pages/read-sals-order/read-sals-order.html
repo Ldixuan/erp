@@ -15,19 +15,14 @@
 
 </ion-header>
 
-<ion-content padding>
-  <div *ngIf="loading">
-      <ion-spinner></ion-spinner>
-      <p text-center font-size-small>加载中</p>
-  </div>
-  
+<div *ngIf="loading" class="spinner">
+  <ion-spinner center></ion-spinner>
+  <p text-center font-size-small>加载中</p>
+</div>
 
-  <ion-item>
-    <ion-label>选择订单状态</ion-label>
-    <ion-select (ionChange)="filterOrder($event)">
-      <ion-option *ngFor="let status of statusTable" value="{{status}}">{{status}}</ion-option>
-    </ion-select>
-  </ion-item>
+<ion-content>
+  
+  
     <ion-card *ngFor="let order of salsOrders" (click) = "presentOrderPage(order, salsOrders.indexOf(order))"> 
         <ion-card-header>
           订单编号 : {{order.commandeId}}

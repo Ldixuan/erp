@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams} from 'ionic-angular';
+import { IonicPage, NavController, NavParams,ToastController, Toast} from 'ionic-angular';
 import { SalsOrderPage } from '../sals-order/sals-order'; 
-import { RestProvider} from '../../providers/rest/rest'
+import { RestProvider} from '../../providers/rest/rest';
+import { Storage } from '@ionic/storage';
+import { BaseUI } from '../../app/common/baseui';
 
 /**
  * Generated class for the ReadSqlsOrderPage page.
@@ -15,19 +17,27 @@ import { RestProvider} from '../../providers/rest/rest'
   selector: 'page-read-sals-order',
   templateUrl: 'read-sals-order.html',
 })
-export class ReadSalsOrderPage {
+export class ReadSalsOrderPage extends BaseUI{
 
   private salsOrders : Array<any>;
   private userId : string;
   private hasChangeData = false;
   CategoryId : string;
 
-  loading = true;
+  loading = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public rest: RestProvider) {
-    this.userId = "Admi";
-    this.CategoryId = this.navParams.get('cateogryId');
-    this.initSalsOrdersData()
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public rest: RestProvider,
+    public storage : Storage,
+    public toastCtrl : ToastController) {
+      super();
+      storage.get("userId").then((val) => {
+        this.userId = val;
+      });
+      this.CategoryId = this.navParams.get('cateogryId');
+      this.initSalsOrdersData();
   }
 
   initSalsOrdersData(){

@@ -2,8 +2,8 @@
 
       <ion-list>
           <ion-item style="padding-top: 15px;">
-              <ion-label floating>用户名</ion-label>
-              <ion-select interface="popover" [(ngModel)]="selectedUserId">
+              <ion-label  floating>用户名</ion-label>
+              <ion-select [(ngModel)]="selectedUserId" interface="action-sheet" disabled="{{hasLogUserList}}">
                 <ion-option *ngFor="let user of userList"  [value]="user.id">{{user.id}} - {{user.username}}</ion-option>
               </ion-select>
           </ion-item>

@@ -6,6 +6,7 @@ import { RestProvider} from '../../providers/rest/rest'
 import { ParseSourceFile } from '@angular/compiler';
 import { BaseUI } from '../../app/common/baseui';
 import { Network } from '@ionic-native/network';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the SalsOrderPage page.
@@ -40,6 +41,7 @@ export class SalsOrderPage extends BaseUI{
     public loadingCtrl : LoadingController,
     public toastCtrl : ToastController,
     public navCtrl : NavController,
+    public storage : Storage,
     public network: Network) {
       super();
     this.orderForm = this.formBuilder.group({
@@ -53,7 +55,7 @@ export class SalsOrderPage extends BaseUI{
       telReceiver:[''],
       descript:[''],
       dept:['', Validators.required],
-      userId : ['Admi'],
+      userId : [''],
       deptId : [''],
       status : [''],
       statusCode : 0,
@@ -62,6 +64,12 @@ export class SalsOrderPage extends BaseUI{
     });
     this.depts = [];
     this.listProduct = new Array<any>();
+
+    this.storage.get("userId").then((val) => {
+      var temp = this.orderForm.value;
+      temp.userId = val;
+      this.orderForm.setValue(temp);
+    });
     let title = this.navParams.get('title');
     if(title != undefined){
       this.initOrderInfo(title);
