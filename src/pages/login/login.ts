@@ -32,6 +32,7 @@ export class LoginPage extends BaseUI {
               public storage : Storage,
               public loadingCtrl: LoadingController) {
     super();
+    this.navCtrl.setRoot(HomePage); //TODO: remove only for developpement model
   }
 
   ionViewDidLoad() {
@@ -49,11 +50,17 @@ export class LoginPage extends BaseUI {
         this.navCtrl.setRoot(HomePage);
       }
       else{
-        if(this.network.type !='none'){//todo: add the waiting
+        if(this.network.type !='none'){
           this.rest.GetUserList() // 填写url的参数
           .subscribe(
           (f : any) => {
-            this.userList = f["Data"];
+         
+            console.log(f);
+            if(f.Success){
+              this.userList = f.Data;
+            }else{
+              super.showToast(this.toastCtrl, f.Msg);
+            }
           },
           error => {
             alert(error);//TODO remove
@@ -97,6 +104,7 @@ export class LoginPage extends BaseUI {
           super.showToast(this.toastCtrl,"请输入正确的账号及密码");
         }
        }
+      
     
     }
     else{
