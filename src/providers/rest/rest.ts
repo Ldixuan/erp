@@ -25,11 +25,12 @@ export class RestProvider {
   private host = "http://localhost/LjWebApplication/";
   private apiUrlGetCargoByName = this.host + 'api/cargo';
   private apiUrlGetOrdersByUserId = this.host + 'api/SalesOrder/GetSalesOrderByUserId';
+  private apiUrlGetSalesOrderCategoriesByUserId = this.host + 'api/SalesOrder/GetSalesOrderCategoriesByUserId';
   private apiUrlGetDeptByName = this.host + 'api/Client';
   private apiUrlGetSalesOrderByOrderId = this.host + "api/SalesOrder/GetSalesOrderByOrderId";
   private apiUrlInsertSalesOrderByOrderId = this.host + "api/SalesOrder/InsertSalesOrderByOrderId";
   private apiUrlgetUserList = this.host + "api/Auth/getUserList";
-  private apiUrlLogin = this.host + "api/Auth/Login"; //TODO
+  private apiUrlLogin = this.host + "api/Auth/Login"; 
 
  
 
@@ -42,8 +43,12 @@ export class RestProvider {
 }
 
 
-  GetOrdersByUserId(userId:string):Observable<any>{
-    return this.getUrlReturn(this.apiUrlGetOrdersByUserId+"?userId="+userId);
+  GetOrdersByUserId(userId:string, categoryId: string):Observable<any>{
+    return this.getUrlReturn(this.apiUrlGetOrdersByUserId+"?userId="+userId+"&categoryId="+categoryId);
+  }
+
+  GetSalesOrderCategoriesByUserId(userId:string):Observable<any>{
+    return this.getUrlReturn(this.apiUrlGetSalesOrderCategoriesByUserId+"?userId="+userId);
   }
 
   GetDeptByName(limit:number):Observable<any>{

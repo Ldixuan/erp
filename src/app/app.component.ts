@@ -5,9 +5,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
-import { SalsOrderPage } from '../pages/sals-order/sals-order'
-import { ReadSalsOrderPage } from '../pages/read-sals-order/read-sals-order'
-import { LoginPage } from '../pages/login/login'
+import { SalsOrderPage } from '../pages/sals-order/sals-order';
+import { ReadSalsOrderPage } from '../pages/read-sals-order/read-sals-order';
+import { LoginPage } from '../pages/login/login';
+import { ReadSalsOrderCategoriesPage } from '../pages/read-sals-order-categories/read-sals-order-categories'
 
 
 @Component({
@@ -29,7 +30,8 @@ export class MyApp {
     this.pages = [
       { title: '销售管理', componentPages: [
         {pageTitle: '销售订单', component: SalsOrderPage},
-        {pageTitle: '查看订单', component: ReadSalsOrderPage}
+        {pageTitle: '查看订单', component: ReadSalsOrderPage},
+        {pageTitle: '查看订单1', component: ReadSalsOrderCategoriesPage}
       ] },
       { title: 'Home', componentPages: [
         {pageTitle: 'Home', component : HomePage}

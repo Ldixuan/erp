@@ -18,7 +18,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { ProductModelPage } from '../pages/product-model/product-model';
 import { from } from 'rxjs/observable/from';
 import { RestProvider } from '../providers/rest/rest';
-import { ReadSalsOrderPage } from '../pages/read-sals-order/read-sals-order'
+import { ReadSalsOrderPage } from '../pages/read-sals-order/read-sals-order';
+import { ReadSalsOrderCategoriesPage } from '../pages/read-sals-order-categories/read-sals-order-categories'
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ReadSalsOrderPage } from '../pages/read-sals-order/read-sals-order'
     SalsOrderPage,
     ProductModelPage,
     ReadSalsOrderPage,
-    LoginPage
+    LoginPage,
+    ReadSalsOrderCategoriesPage
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,8 @@ import { ReadSalsOrderPage } from '../pages/read-sals-order/read-sals-order'
     SalsOrderPage,
     ProductModelPage,
     ReadSalsOrderPage,
-    LoginPage
+    LoginPage,
+    ReadSalsOrderCategoriesPage
   ],
   providers: [
     StatusBar,

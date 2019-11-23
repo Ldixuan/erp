@@ -20,20 +20,22 @@ export class ReadSalsOrderPage {
   private salsOrders : Array<any>;
   private userId : string;
   private hasChangeData = false;
+  CategoryId : string;
 
   loading = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public rest: RestProvider) {
     this.userId = "Admi";
+    this.CategoryId = this.navParams.get('cateogryId');
     this.initSalsOrdersData()
   }
 
   initSalsOrdersData(){
     this.loading = true;
-    this.rest.GetOrdersByUserId(this.userId)
+    this.rest.GetOrdersByUserId(this.userId,this.CategoryId)
         .subscribe(
           (f : any) => {
-            this.salsOrders = f;
+            this.salsOrders = f["Data"];
             this.loading = false;
           },
           error => {
