@@ -1,12 +1,15 @@
-import { HttpClient } from '@angular/common/http';
+
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { timeout, catchError } from 'rxjs/operators'
+import { timeout, catchError, mergeMap } from 'rxjs/operators'
 import { Input } from '@angular/compiler/src/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Storage } from '@ionic/storage';
+
 import 'rxjs/add/operator/catch';
 import 'rxjs/Rx';
 import { of } from 'rxjs/observable/of';
+
 
 /*
   Generated class for the RestProvider provider.
@@ -17,8 +20,7 @@ import { of } from 'rxjs/observable/of';
 @Injectable()
 export class RestProvider {
 
-  constructor(public http: Http) {
-   
+  constructor(public http: Http, public storage: Storage) {
   }
 
   //private host = "http://47.100.137.77/";
@@ -32,16 +34,12 @@ export class RestProvider {
   private apiUrlgetUserList = this.host + "api/Auth/getUserList";
   private apiUrlLogin = this.host + "api/Auth/Login"; 
 
- 
-
+  /*
+  * With auth services 
+  */
   GetCargoByName(limit:number):Observable<any>{
       return this.getUrlReturn(this.apiUrlGetCargoByName+"?limit="+limit);
   }
-
-  GetUserList():Observable<any>{
-    return this.getUrlReturn(this.apiUrlgetUserList);
-}
-
 
   GetOrdersByUserId(userId:string, categoryId: string):Observable<any>{
     return this.getUrlReturn(this.apiUrlGetOrdersByUserId+"?userId="+userId+"&categoryId="+categoryId);
@@ -63,34 +61,92 @@ export class RestProvider {
     return this.postUrlReturn(this.apiUrlInsertSalesOrderByOrderId, {orderInfo:orderInfo,products:products});
   }
 
+  /**
+   * Without auth
+   * 
+   * @param {*} User
+   * @returns {Observable<any>}
+   * @memberof RestProvider
+   */
   Login(User):Observable<any>{
-    return this.postUrlReturn(this.apiUrlLogin, User);
+    return this.postUrlReturnWithOutAuth(this.apiUrlLogin, User);
+  }
+  /**
+   * Without auth
+   * Get userlist for the login page 
+   * @returns {Observable<any>}
+   * @memberof RestProvider
+   */
+  GetUserList():Observable<any>{
+    return this.getUrlReturnWithOutAuth(this.apiUrlgetUserList);
   }
 
+  // TODO: Login page remove all 
+  private getUrlReturnWithOutAuth(url: string): Observable<any> {
+      return this.http.get(url)
+      .pipe(
+        timeout(10000),
+        catchError(e => {
+          return of({'error':'timeout'});
+        })
+      )
+      .map(this.extractData)
+      .catch(this.handleError);
+    }
   
+ private getToken(): Observable<any> {
+  return Observable.fromPromise(this.storage.get('token').then(token => {
+    //maybe some processing logic like JSON.parse(token)
+    return token;
+  }));
+ }
+    
   private getUrlReturn(url: string): Observable<any> {
-    return this.http.get(url)
-    .pipe(
-      timeout(10000),
-      catchError(e => {
-        return of({'error':'timeout'});
-      })
-    )
-    .map(this.extractData)
-    .catch(this.handleError);
-  }
+    return this.getToken().pipe(
+      mergeMap(token => this.http.get(url,{headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+ token
+      })}).pipe(
+        timeout(10000),
+        catchError(e => {
+          return of({'error':'timeout'});
+        })
+      )
+      .map(this.extractData)
+      .catch(this.handleError)
+      )
+    );
+}
 
-  private postUrlReturn(url:string, body:any): Observable<any> {
-    return this.http.post(url, body)
-    .pipe(
+private postUrlReturn(url:string, body:any): Observable<any> {
+  return this.getToken().pipe(
+    mergeMap(token => this.http.post(url,body,{headers: new Headers({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ token
+    })}).pipe(
       timeout(10000),
       catchError(e => {
         return of({'error':'timeout'});
       })
     )
     .map(this.extractData)
-    .catch(this.handleError);
-  }
+    .catch(this.handleError)
+    )
+  );
+}
+
+private postUrlReturnWithOutAuth(url:string, body:any): Observable<any> {
+  return this.http.post(url, body)
+  .pipe(
+    timeout(10000),
+    catchError(e => {
+      return of({'error':'timeout'});
+    })
+  )
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
 
   private extractData(res: Response) {
     let body = res.json();
