@@ -116,7 +116,7 @@ export class RestProvider {
       .catch(this.handleError)
       )
     );
-}
+  }
 
 private postUrlReturn(url:string, body:any): Observable<any> {
   return this.getToken().pipe(

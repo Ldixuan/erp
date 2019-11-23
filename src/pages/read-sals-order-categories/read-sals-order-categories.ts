@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController,ToastController, NavParams, LoadingController } from 'ionic-angular';
 import { RestProvider} from '../../providers/rest/rest';
 import { BaseUI } from '../../app/common/baseui';
 import { Network } from '@ionic-native/network';
@@ -18,7 +18,12 @@ import { ReadSalsOrderPage } from '../read-sals-order/read-sals-order';
 })
 export class ReadSalsOrderCategoriesPage extends BaseUI {
   orderStatus: any[];
-  constructor(public navCtrl: NavController, public navParams: NavParams, public network : Network ,public rest : RestProvider,public loadingCtrl : LoadingController) {
+  constructor(public navCtrl: NavController,
+     public navParams: NavParams,
+      public network : Network ,
+      public rest : RestProvider,
+      public toastCtrl : ToastController,
+      public loadingCtrl : LoadingController) {
     super();
   }
 
@@ -30,7 +35,11 @@ export class ReadSalsOrderCategoriesPage extends BaseUI {
       this.rest.GetSalesOrderCategoriesByUserId(userId)
           .subscribe(
             (f : any) => {
-              this.orderStatus = f["Data"];
+              if(f.Success){
+                this.orderStatus = f["Data"];
+              }else{
+                super.showToast(this.toastCtrl, f.Msg);
+              }
             },
             error => {
               loading.dismiss();

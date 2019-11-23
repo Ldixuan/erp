@@ -104,7 +104,6 @@ export class SalsOrderPage extends BaseUI{
       this.rest.GetSalesOrderByOrderId(title)
           .subscribe(
             (f : any) => {
-              console.log(f); //TODO remove
               if(f.Success){
                 let orderDetail = f.Data.salesOrderDetail;
                 let temp = this.orderForm.value;

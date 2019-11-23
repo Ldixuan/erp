@@ -10,9 +10,9 @@ webpackJsonp([2],{
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__product_model_product_model__ = __webpack_require__(212);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_rest_rest__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_common_baseui__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_network__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_storage__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_common_baseui__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_network__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_storage__ = __webpack_require__(64);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -123,7 +123,6 @@ var SalsOrderPage = (function (_super) {
         if (this.network.type != 'none') {
             this.rest.GetSalesOrderByOrderId(title)
                 .subscribe(function (f) {
-                console.log(f); //TODO remove
                 if (f.Success) {
                     var orderDetail = f.Data.salesOrderDetail;
                     var temp = _this.orderForm.value;
@@ -284,20 +283,10 @@ var SalsOrderPage = (function (_super) {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-sals-order',template:/*ion-inline-start:"C:\Users\36394\projet\erp\src\pages\sals-order\sals-order.html"*/`<!--\n\n  Generated template for the SalsOrderPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header>\n\n\n\n  <ion-navbar *ngIf="!readModel">\n\n    <ion-buttons>\n\n      <button ion-button menuToggle>\n\n        <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n      <ion-title text-center>销售订单</ion-title>\n\n    <ion-buttons end> \n\n      <button ion-button [disabled]="!orderForm.valid" (click) = "logForm()">保存</button>\n\n    </ion-buttons>\n\n    </ion-navbar>\n\n  \n\n    <ion-navbar *ngIf="readModel">\n\n      <ion-title text-center>销售订单</ion-title>\n\n        <ion-buttons end> \n\n          <button ion-button [disabled]="!orderForm.valid" (click) = "logForm()">保存</button>\n\n        </ion-buttons>\n\n      </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n    \n\n  <ion-item-group inset="true" [formGroup]="orderForm" >\n\n      \n\n      <ion-item *ngIf="loading">\n\n          <ion-spinner></ion-spinner>\n\n          <p text-center font-size-small>加载中</p>\n\n      </ion-item>\n\n  \n\n      <ion-item *ngIf="readModel">\n\n        <ion-label color="primary" floating>订单编号</ion-label>\n\n        <ion-input type="text"  [disabled]="true" formControlName="title"></ion-input>\n\n     </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" *ngIf="orderForm.value.date==\'\'">订单日期*</ion-label>\n\n        <ion-label color="primary" *ngIf="orderForm.value.date!=\'\'" stacked>订单日期*</ion-label>\n\n        <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="date" autocorrect="on"></ion-datetime>\n\n      </ion-item>\n\n      \n\n      <ion-item>\n\n        <ion-label color="primary" floating>收取人</ion-label>\n\n        <ion-input type="text" formControlName="sender"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>传真</ion-label>\n\n        <ion-input type="tel" formControlName="faxSender"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>电话</ion-label>\n\n        <ion-input type="tel" formControlName="telSender"></ion-input>\n\n      </ion-item>\n\n\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>单位*</ion-label>\n\n        <ionic-selectable\n\n          item-content \n\n          [(ngModel)]="deptSelect"\n\n          [ngModelOptions]="{standalone: true}"\n\n          [items]="depts"\n\n          itemTextField="name"\n\n          [canSearch]="true"\n\n          (onChange) = "changeDept()"\n\n          >\n\n        </ionic-selectable>\n\n      </ion-item>\n\n      <ion-item>\n\n        <ion-label color="primary" floating>发送人</ion-label>\n\n        <ion-input type="text" formControlName="receiver" autocorrect="on"></ion-input>\n\n      </ion-item>  \n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>传真</ion-label>\n\n        <ion-input type="tel" formControlName="faxReceiver" autocorrect="on"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>电话</ion-label>\n\n        <ion-input type="tel" formControlName="telReceiver" autocorrect="on"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n          <ion-label color="primary" floating>备注</ion-label>\n\n          <ion-textarea formControlName="descript"></ion-textarea>\n\n      </ion-item>\n\n\n\n      <ion-item></ion-item>\n\n  </ion-item-group>\n\n\n\n  <a ion-item (click)="presentModal()">\n\n      添加货物\n\n  </a>\n\n\n\n  <ion-list id="listProduct" >\n\n    <ion-card *ngFor="let product of listProduct" (click) = "presentModal(product, listProduct.indexOf(product))"> \n\n      <ion-card-header>\n\n        {{product.nameProduct}}\n\n      </ion-card-header>\n\n      <ion-card-content>\n\n        <ion-grid>\n\n          <ion-row inline>\n\n            <ion-col>数量 : {{product.numberProduct}} {{product.unitProduct}}</ion-col>\n\n            <ion-col>单价 : {{product.priceProduct}}</ion-col>\n\n            <ion-col>金额 : {{product.amount}} 元</ion-col>\n\n          </ion-row>\n\n          <ion-row>\n\n            <ion-col>交货日期 : {{product.datePayProduct}} </ion-col>\n\n          </ion-row>\n\n          <ion-row>\n\n            <ion-col>备注 : {{product.descriptProduct}} </ion-col>\n\n          </ion-row>\n\n        </ion-grid>\n\n      </ion-card-content>\n\n    </ion-card>\n\n  </ion-list>\n\n</ion-content>\n\n`/*ion-inline-end:"C:\Users\36394\projet\erp\src\pages\sals-order\sals-order.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* ViewController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* ModalController */],
-            __WEBPACK_IMPORTED_MODULE_4__providers_rest_rest__["a" /* RestProvider */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["o" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_7__ionic_storage__["b" /* Storage */],
-            __WEBPACK_IMPORTED_MODULE_6__ionic_native_network__["a" /* Network */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* ViewController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* ViewController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* ModalController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* ModalController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__providers_rest_rest__["a" /* RestProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_rest_rest__["a" /* RestProvider */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* NavParams */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* LoadingController */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["o" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["o" /* ToastController */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavController */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_7__ionic_storage__["b" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__ionic_storage__["b" /* Storage */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_6__ionic_native_network__["a" /* Network */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__ionic_native_network__["a" /* Network */]) === "function" && _l || Object])
     ], SalsOrderPage);
     return SalsOrderPage;
-    var SalsOrderPage_1;
+    var SalsOrderPage_1, _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
 }(__WEBPACK_IMPORTED_MODULE_5__app_common_baseui__["a" /* BaseUI */]));
 
 //# sourceMappingURL=sals-order.js.map
@@ -361,8 +350,8 @@ var HomePage = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sals_order_sals_order__ = __webpack_require__(116);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_rest_rest__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_storage__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_common_baseui__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_storage__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_common_baseui__ = __webpack_require__(65);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -423,10 +412,16 @@ var ReadSalsOrderPage = (function (_super) {
         this.loading = true;
         this.rest.GetOrdersByUserId(this.userId, this.CategoryId)
             .subscribe(function (f) {
-            _this.salsOrders = f["Data"];
+            if (f.Success) {
+                _this.salsOrders = f["Data"];
+            }
+            else {
+                _super.prototype.showToast.call(_this, _this.toastCtrl, f.Msg);
+            }
             _this.loading = false;
         }, function (error) {
-            alert(error);
+            alert(error); //TODO change to toast
+            _this.loading = false;
         });
     };
     ReadSalsOrderPage.prototype.ionViewDidLoad = function () {
@@ -509,8 +504,8 @@ module.exports = webpackAsyncContext;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_rest_rest__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_common_baseui__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_network__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_common_baseui__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_network__ = __webpack_require__(66);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -595,7 +590,7 @@ var ProductModelPage = (function (_super) {
                     _super.prototype.showToast.call(_this, _this.toastCtrl, f.Msg);
                 }
             }, function (error) {
-                alert(error);
+                alert(error); //TODO change to toast
             });
         }
         else {
@@ -643,15 +638,10 @@ var ProductModelPage = (function (_super) {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-product-model',template:/*ion-inline-start:"C:\Users\36394\projet\erp\src\pages\product-model\product-model.html"*/`<ion-header>\n\n\n\n  <ion-navbar>\n\n      <ion-buttons>\n\n          <button ion-button (click)="exit()" icon-only>\n\n              <ion-icon name=\'arrow-back\' showWhen="ios" color = "primary"></ion-icon>\n\n            <ion-icon name="md-close" showWhen="android"></ion-icon>\n\n          </button>\n\n        </ion-buttons>\n\n    <ion-title text-center>添加货物</ion-title>\n\n    <ion-buttons end> <button ion-button (click)="logProductForm()" \n\n      [disabled]="!productForm.valid" color="primary">保存</button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content >\n\n    <ion-item-group [formGroup]="productForm" inset=\'true\'>\n\n\n\n      <ion-item>\n\n          <ion-label color="primary" floating>货物名称*</ion-label>\n\n          <ionic-selectable\n\n            item-content \n\n            [(ngModel)]="productSelect"\n\n            [ngModelOptions]="{standalone: true}"\n\n            [items]="products"\n\n            itemTextField="name"\n\n            [canSearch]="true"\n\n            (onChange) = "changeProduct()"\n\n            [disabled] = "products==[]"\n\n            >\n\n          </ionic-selectable>\n\n        </ion-item>\n\n    \n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>产地</ion-label>\n\n        <ion-input type="text" formControlName="adresseProduct"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>官方品名</ion-label>\n\n        <ion-input type="text" formControlName="nameOffical"></ion-input>\n\n      </ion-item>\n\n\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>数量*</ion-label>\n\n        <ion-input type="number" formControlName="numberProduct"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>单位*</ion-label>\n\n        <ion-input type="text" formControlName="unitProduct"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>单价*</ion-label>\n\n        <ion-input type="number" formControlName="priceProduct"></ion-input>\n\n      </ion-item>\n\n\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>金额*</ion-label>\n\n        <ion-input type="number" [disabled] = "true" value="{{productForm.value.priceProduct *  productForm.value.numberProduct}}"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" *ngIf="productForm.value.datePayProduct!=\'\'" stacked>*交货日期</ion-label>\n\n        <ion-label color="primary" *ngIf="productForm.value.datePayProduct==\'\'">交货日期*</ion-label>\n\n        <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="datePayProduct"\n\n          autocorrect="on"></ion-datetime>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>已付数量</ion-label>\n\n        <ion-input type="text" formControlName="hadPaidProduct"></ion-input>\n\n      </ion-item>\n\n\n\n      <ion-item>\n\n        <ion-label color="primary" floating>备注</ion-label>\n\n        <ion-textarea formControlName="descriptProduct"></ion-textarea>\n\n      </ion-item>\n\n      <ion-item></ion-item>\n\n    </ion-item-group>\n\n\n\n    <button ion-button *ngIf="modifMod" (click) = "removeProduct()" block>删除</button>\n\n\n\n</ion-content>\n\n`/*ion-inline-end:"C:\Users\36394\projet\erp\src\pages\product-model\product-model.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* ViewController */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_3__providers_rest_rest__["a" /* RestProvider */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["o" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_5__ionic_native_network__["a" /* Network */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* ViewController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* ViewController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* NavParams */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__providers_rest_rest__["a" /* RestProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__providers_rest_rest__["a" /* RestProvider */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["o" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["o" /* ToastController */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_5__ionic_native_network__["a" /* Network */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__ionic_native_network__["a" /* Network */]) === "function" && _g || Object])
     ], ProductModelPage);
     return ProductModelPage;
+    var _a, _b, _c, _d, _e, _f, _g;
 }(__WEBPACK_IMPORTED_MODULE_4__app_common_baseui__["a" /* BaseUI */]));
 
 //# sourceMappingURL=product-model.js.map
@@ -722,10 +712,10 @@ var ListPage = (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_common_baseui__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_network__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_common_baseui__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_network__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_rest_rest__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_storage__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_storage__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__home_home__ = __webpack_require__(154);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -884,8 +874,8 @@ var LoginPage = (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_common_baseui__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_network__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_common_baseui__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_network__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__read_sals_order_read_sals_order__ = __webpack_require__(155);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -920,12 +910,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var ReadSalsOrderCategoriesPage = (function (_super) {
     __extends(ReadSalsOrderCategoriesPage, _super);
-    function ReadSalsOrderCategoriesPage(navCtrl, navParams, network, rest, loadingCtrl) {
+    function ReadSalsOrderCategoriesPage(navCtrl, navParams, network, rest, toastCtrl, loadingCtrl) {
         var _this = _super.call(this) || this;
         _this.navCtrl = navCtrl;
         _this.navParams = navParams;
         _this.network = network;
         _this.rest = rest;
+        _this.toastCtrl = toastCtrl;
         _this.loadingCtrl = loadingCtrl;
         return _this;
     }
@@ -937,7 +928,12 @@ var ReadSalsOrderCategoriesPage = (function (_super) {
             var userId = 'Admi';
             this.rest.GetSalesOrderCategoriesByUserId(userId)
                 .subscribe(function (f) {
-                _this.orderStatus = f["Data"];
+                if (f.Success) {
+                    _this.orderStatus = f["Data"];
+                }
+                else {
+                    _super.prototype.showToast.call(_this, _this.toastCtrl, f.Msg);
+                }
             }, function (error) {
                 loading.dismiss();
                 alert(error); //TODO change to toast
@@ -953,9 +949,10 @@ var ReadSalsOrderCategoriesPage = (function (_super) {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-read-sals-order-categories',template:/*ion-inline-start:"C:\Users\36394\projet\erp\src\pages\read-sals-order-categories\read-sals-order-categories.html"*/`<!--\n\n  Generated template for the ReadSalsOrderCategoriesPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header>\n\n  <ion-navbar>\n\n        <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title text-center>观看订单</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n  <ion-list>\n\n    <button ion-item *ngFor="let item of orderStatus" (click)="itemSelected(item.categoryId)">\n\n      {{ item.categoryName }}\n\n      <ion-badge item-end>  {{ item.count }}</ion-badge>\n\n    </button> \n\n  </ion-list>\n\n</ion-content>\n\n`/*ion-inline-end:"C:\Users\36394\projet\erp\src\pages\read-sals-order-categories\read-sals-order-categories.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_network__["a" /* Network */], __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* LoadingController */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__ionic_native_network__["a" /* Network */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__ionic_native_network__["a" /* Network */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_rest_rest__["a" /* RestProvider */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["o" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["o" /* ToastController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* LoadingController */]) === "function" && _f || Object])
     ], ReadSalsOrderCategoriesPage);
     return ReadSalsOrderCategoriesPage;
+    var _a, _b, _c, _d, _e, _f;
 }(__WEBPACK_IMPORTED_MODULE_3__app_common_baseui__["a" /* BaseUI */]));
 
 //# sourceMappingURL=read-sals-order-categories.js.map
@@ -1031,8 +1028,8 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(296);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_selectable__ = __webpack_require__(684);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_network__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_storage__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_network__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_storage__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_component__ = __webpack_require__(685);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_home_home__ = __webpack_require__(154);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_list_list__ = __webpack_require__(352);
@@ -1094,7 +1091,7 @@ var AppModule = (function () {
                         { loadChildren: '../pages/test/test.module#TestPageModule', name: 'TestPage', segment: 'test', priority: 'low', defaultHistory: [] }
                     ]
                 }),
-                __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* HttpModule */],
+                __WEBPACK_IMPORTED_MODULE_3__angular_http__["c" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_4_ionic_selectable__["a" /* IonicSelectableModule */],
                 __WEBPACK_IMPORTED_MODULE_6__ionic_storage__["a" /* IonicStorageModule */].forRoot()
             ],
@@ -1137,12 +1134,13 @@ var AppModule = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(213);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(296);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch__ = __webpack_require__(297);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Rx__ = __webpack_require__(298);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_Rx__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_observable_of__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_observable_of__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_storage__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch__ = __webpack_require__(298);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_Rx__ = __webpack_require__(299);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_Rx__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_observable_of__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_observable_of__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1159,6 +1157,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 /*
   Generated class for the RestProvider provider.
 
@@ -1166,8 +1165,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
   and Angular DI.
 */
 var RestProvider = (function () {
-    function RestProvider(http) {
+    function RestProvider(http, storage) {
         this.http = http;
+        this.storage = storage;
         //private host = "http://47.100.137.77/";
         this.host = "http://localhost/LjWebApplication/";
         this.apiUrlGetCargoByName = this.host + 'api/cargo';
@@ -1179,11 +1179,11 @@ var RestProvider = (function () {
         this.apiUrlgetUserList = this.host + "api/Auth/getUserList";
         this.apiUrlLogin = this.host + "api/Auth/Login";
     }
+    /*
+    * With auth services
+    */
     RestProvider.prototype.GetCargoByName = function (limit) {
         return this.getUrlReturn(this.apiUrlGetCargoByName + "?limit=" + limit);
-    };
-    RestProvider.prototype.GetUserList = function () {
-        return this.getUrlReturn(this.apiUrlgetUserList);
     };
     RestProvider.prototype.GetOrdersByUserId = function (userId, categoryId) {
         return this.getUrlReturn(this.apiUrlGetOrdersByUserId + "?userId=" + userId + "&categoryId=" + categoryId);
@@ -1200,21 +1200,66 @@ var RestProvider = (function () {
     RestProvider.prototype.InsertSalesOrderByOrderId = function (orderInfo, products) {
         return this.postUrlReturn(this.apiUrlInsertSalesOrderByOrderId, { orderInfo: orderInfo, products: products });
     };
+    /**
+     * Without auth
+     *
+     * @param {*} User
+     * @returns {Observable<any>}
+     * @memberof RestProvider
+     */
     RestProvider.prototype.Login = function (User) {
-        return this.postUrlReturn(this.apiUrlLogin, User);
+        return this.postUrlReturnWithOutAuth(this.apiUrlLogin, User);
     };
-    RestProvider.prototype.getUrlReturn = function (url) {
+    /**
+     * Without auth
+     * Get userlist for the login page
+     * @returns {Observable<any>}
+     * @memberof RestProvider
+     */
+    RestProvider.prototype.GetUserList = function () {
+        return this.getUrlReturnWithOutAuth(this.apiUrlgetUserList);
+    };
+    // TODO: Login page remove all 
+    RestProvider.prototype.getUrlReturnWithOutAuth = function (url) {
         return this.http.get(url)
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["timeout"])(10000), Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["catchError"])(function (e) {
-            return Object(__WEBPACK_IMPORTED_MODULE_6_rxjs_observable_of__["of"])({ 'error': 'timeout' });
+            return Object(__WEBPACK_IMPORTED_MODULE_7_rxjs_observable_of__["of"])({ 'error': 'timeout' });
         }))
             .map(this.extractData)
             .catch(this.handleError);
     };
+    RestProvider.prototype.getToken = function () {
+        return __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__["Observable"].fromPromise(this.storage.get('token').then(function (token) {
+            //maybe some processing logic like JSON.parse(token)
+            return token;
+        }));
+    };
+    RestProvider.prototype.getUrlReturn = function (url) {
+        var _this = this;
+        return this.getToken().pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["mergeMap"])(function (token) { return _this.http.get(url, { headers: new __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* Headers */]({
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }) }).pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["timeout"])(10000), Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["catchError"])(function (e) {
+            return Object(__WEBPACK_IMPORTED_MODULE_7_rxjs_observable_of__["of"])({ 'error': 'timeout' });
+        }))
+            .map(_this.extractData)
+            .catch(_this.handleError); }));
+    };
     RestProvider.prototype.postUrlReturn = function (url, body) {
+        var _this = this;
+        return this.getToken().pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["mergeMap"])(function (token) { return _this.http.post(url, body, { headers: new __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* Headers */]({
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }) }).pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["timeout"])(10000), Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["catchError"])(function (e) {
+            return Object(__WEBPACK_IMPORTED_MODULE_7_rxjs_observable_of__["of"])({ 'error': 'timeout' });
+        }))
+            .map(_this.extractData)
+            .catch(_this.handleError); }));
+    };
+    RestProvider.prototype.postUrlReturnWithOutAuth = function (url, body) {
         return this.http.post(url, body)
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["timeout"])(10000), Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["catchError"])(function (e) {
-            return Object(__WEBPACK_IMPORTED_MODULE_6_rxjs_observable_of__["of"])({ 'error': 'timeout' });
+            return Object(__WEBPACK_IMPORTED_MODULE_7_rxjs_observable_of__["of"])({ 'error': 'timeout' });
         }))
             .map(this.extractData)
             .catch(this.handleError);
@@ -1240,7 +1285,7 @@ var RestProvider = (function () {
     };
     RestProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* Http */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* Http */], __WEBPACK_IMPORTED_MODULE_4__ionic_storage__["b" /* Storage */]])
     ], RestProvider);
     return RestProvider;
 }());
@@ -1249,7 +1294,7 @@ var RestProvider = (function () {
 
 /***/ }),
 
-/***/ 64:
+/***/ 65:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

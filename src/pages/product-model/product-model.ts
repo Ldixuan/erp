@@ -77,7 +77,7 @@ export class ProductModelPage extends BaseUI {
               }
             },
             error => {
-              alert(error);
+              alert(error); //TODO change to toast
             });
     }
     else{

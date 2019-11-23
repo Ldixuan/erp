@@ -44,12 +44,17 @@ export class ReadSalsOrderPage extends BaseUI{
     this.loading = true;
     this.rest.GetOrdersByUserId(this.userId,this.CategoryId)
         .subscribe(
-          (f : any) => {
-            this.salsOrders = f["Data"];
+          (f : any) => {     
+            if(f.Success){
+              this.salsOrders = f["Data"];
+            }else{
+              super.showToast(this.toastCtrl, f.Msg);
+            }
             this.loading = false;
           },
           error => {
-            alert(error);
+            alert(error); //TODO change to toast
+            this.loading = false;
           }
         );
   }
