@@ -33,30 +33,30 @@ export class ReadSalsOrderPage extends BaseUI{
     public storage : Storage,
     public toastCtrl : ToastController) {
       super();
-      storage.get("userId").then((val) => {
-        this.userId = val;
-      });
       this.CategoryId = this.navParams.get('cateogryId');
       this.initSalsOrdersData();
   }
 
   initSalsOrdersData(){
-    this.loading = true;
-    this.rest.GetOrdersByUserId(this.userId,this.CategoryId)
-        .subscribe(
-          (f : any) => {     
-            if(f.Success){
-              this.salsOrders = f["Data"];
-            }else{
-              super.showToast(this.toastCtrl, f.Msg);
+    this.storage.get("userId").then((val) => {
+      this.userId = val;
+      this.loading = true;
+      this.rest.GetOrdersByUserId(this.userId,this.CategoryId)
+          .subscribe(
+            (f : any) => {     
+              if(f.Success){
+                this.salsOrders = f["Data"];
+              }else{
+                super.showToast(this.toastCtrl, f.Msg);
+              }
+              this.loading = false;
+            },
+            error => {
+              alert(error); //TODO change to toast
+              this.loading = false;
             }
-            this.loading = false;
-          },
-          error => {
-            alert(error); //TODO change to toast
-            this.loading = false;
-          }
-        );
+          );
+    });
   }
 
   myCallbackFunction = (_params) => {

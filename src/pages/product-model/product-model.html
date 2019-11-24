@@ -1,17 +1,17 @@
 <ion-header>
-
-  <ion-navbar>
-      <ion-buttons>
-          <button ion-button (click)="exit()" icon-only>
-              <ion-icon name='arrow-back' showWhen="ios" color = "primary"></ion-icon>
-            <ion-icon name="md-close" showWhen="android"></ion-icon>
-          </button>
-        </ion-buttons>
-    <ion-title text-center>添加货物</ion-title>
-    <ion-buttons end> <button ion-button (click)="logProductForm()" 
-      [disabled]="!productForm.valid" color="primary">保存</button>
-    </ion-buttons>
-  </ion-navbar>
+    <ion-toolbar mode="ios">
+        <ion-title text-center>添加货物</ion-title>
+        <ion-buttons>
+            <button ion-button (click)="exit()" icon-only>
+                <ion-icon name='arrow-back' showWhen="ios" color = "primary"></ion-icon>
+              <ion-icon name="md-close" showWhen="android"></ion-icon>
+            </button>
+          </ion-buttons>
+      
+      <ion-buttons end> <button ion-button (click)="logProductForm()" 
+        [disabled]="!productForm.valid" color="primary">保存</button>
+      </ion-buttons>
+    </ion-toolbar>
 
 </ion-header>
 
@@ -71,7 +71,7 @@
         <ion-label color="primary" *ngIf="productForm.value.datePayProduct!=''" stacked>*交货日期</ion-label>
         <ion-label color="primary" *ngIf="productForm.value.datePayProduct==''">交货日期*</ion-label>
         <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="datePayProduct"
-          autocorrect="on"></ion-datetime>
+          max="2050"></ion-datetime>
       </ion-item>
 
       <ion-item>

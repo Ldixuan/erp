@@ -5,21 +5,21 @@
   Ionic pages and navigation.
 -->
 <ion-header>
+    <ion-toolbar mode="ios" *ngIf="!readModel">
+        <ion-title text-center>销售订单</ion-title>
+        <ion-buttons>
+            <button ion-button menuToggle>
+              <ion-icon name="menu"></ion-icon>
+            </button>
+          </ion-buttons>
+        
+          <ion-buttons end> 
+            <button ion-button [disabled]="!orderForm.valid" (click) = "logForm()">保存</button>
+          </ion-buttons>
+    </ion-toolbar>
 
-  <ion-navbar *ngIf="!readModel">
-    <ion-buttons>
-      <button ion-button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
-      <ion-title text-center>销售订单</ion-title>
-    <ion-buttons end> 
-      <button ion-button [disabled]="!orderForm.valid" (click) = "logForm()">保存</button>
-    </ion-buttons>
-    </ion-navbar>
-  
     <ion-navbar *ngIf="readModel">
-      <ion-title text-center>销售订单</ion-title>
+      <ion-title align-title="center">销售订单</ion-title>
         <ion-buttons end> 
           <button ion-button [disabled]="!orderForm.valid" (click) = "logForm()">保存</button>
         </ion-buttons>
@@ -44,7 +44,7 @@
       <ion-item>
         <ion-label color="primary" *ngIf="orderForm.value.date==''">订单日期*</ion-label>
         <ion-label color="primary" *ngIf="orderForm.value.date!=''" stacked>订单日期*</ion-label>
-        <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="date" autocorrect="on"></ion-datetime>
+        <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="date"  max="2050"></ion-datetime>
       </ion-item>
       
       <ion-item>
@@ -113,7 +113,7 @@
           <ion-row inline>
             <ion-col>数量 : {{product.numberProduct}} {{product.unitProduct}}</ion-col>
             <ion-col>单价 : {{product.priceProduct}}</ion-col>
-            <ion-col>金额 : {{product.amount}} 元</ion-col>
+            <ion-col>金额 : {{product.priceProduct*product.numberProduct}} 元</ion-col>
           </ion-row>
           <ion-row>
             <ion-col>交货日期 : {{product.datePayProduct}} </ion-col>
