@@ -23,8 +23,8 @@ export class RestProvider {
   constructor(public http: Http, public storage: Storage) {
   }
 
-  //private host = "http://47.100.137.77/";
-  private host = "http://localhost/LjWebApplication/";
+  private host = "http://47.100.137.77/";
+  //private host = "http://localhost/LjWebApplication/";
   private apiUrlGetCargoByName = this.host + 'api/cargo';
   private apiUrlGetOrdersByUserId = this.host + 'api/SalesOrder/GetSalesOrderByUserId';
   private apiUrlGetSalesOrderCategoriesByUserId = this.host + 'api/SalesOrder/GetSalesOrderCategoriesByUserId';
