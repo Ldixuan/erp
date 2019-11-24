@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, AlertController, NavParams,ViewController,ToastController} from 'ionic-angular';
-import {Validators, FormBuilder, FormGroup } from '@angular/forms';
+import {Validators, FormBuilder, FormGroup,  AbstractControl } from '@angular/forms';
 import { RestProvider} from '../../providers/rest/rest';
 import { BaseUI } from '../../app/common/baseui';
 import { Network } from '@ionic-native/network';
-
 /**
  * Generated class for the ProductModelPage page.
  *
@@ -63,6 +62,14 @@ export class ProductModelPage extends BaseUI {
       };
       this.modifMod = true;
     }
+  }
+
+  checkNumber(name:string){
+     let val =  this.productForm.value[name];
+     if(isNaN(Number.parseInt(val))){
+      this.productForm.controls[name].setValue('');
+     }
+     
   }
 
   initProducts(){

@@ -45,7 +45,9 @@ export class ReadSalsOrderCategoriesPage extends BaseUI {
               loading.dismiss();
               alert(error); //TODO change to toast
             });
-          }
+    }else{
+      super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+    }
 
   }
   itemSelected(itemId){

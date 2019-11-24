@@ -41,9 +41,9 @@
         <ion-input type="text"  [disabled]="true" formControlName="title"></ion-input>
      </ion-item>
 
-      <ion-item>
+      <ion-item style="height: 80px;">
         <ion-label color="primary" *ngIf="orderForm.value.date==''">订单日期*</ion-label>
-        <ion-label color="primary" *ngIf="orderForm.value.date!=''" stacked>订单日期*</ion-label>
+        <ion-label color="primary" *ngIf="orderForm.value.date!=''"  stacked>订单日期*</ion-label>
         <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="date"  max="2050"></ion-datetime>
       </ion-item>
       
@@ -72,6 +72,7 @@
           [items]="depts"
           itemTextField="name"
           [canSearch]="true"
+          [disabled] = "depts.length == 0"
           (onChange) = "changeDept()"
           >
         </ionic-selectable>
@@ -111,12 +112,13 @@
       <ion-card-content>
         <ion-grid>
           <ion-row inline>
-            <ion-col>数量 : {{product.numberProduct}} {{product.unitProduct}}</ion-col>
-            <ion-col>单价 : {{product.priceProduct}}</ion-col>
-            <ion-col>金额 : {{product.priceProduct*product.numberProduct}} 元</ion-col>
+            <ion-col col-8 >数量 : {{product.numberProduct}} {{product.unitProduct}}</ion-col>
+            <ion-col col-4 pull-3>单价 : {{product.priceProduct}}</ion-col>
+            
           </ion-row>
           <ion-row>
-            <ion-col>交货日期 : {{product.datePayProduct}} </ion-col>
+            <ion-col col-5>金额 : {{product.priceProduct*product.numberProduct}} 元</ion-col>
+            <ion-col col-7>交货日期 : {{product.datePayProduct}} </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>备注 : {{product.descriptProduct}} </ion-col>

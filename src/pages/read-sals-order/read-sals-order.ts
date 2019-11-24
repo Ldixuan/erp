@@ -4,6 +4,7 @@ import { SalsOrderPage } from '../sals-order/sals-order';
 import { RestProvider} from '../../providers/rest/rest';
 import { Storage } from '@ionic/storage';
 import { BaseUI } from '../../app/common/baseui';
+import { Network } from '@ionic-native/network';
 
 /**
  * Generated class for the ReadSqlsOrderPage page.
@@ -31,7 +32,8 @@ export class ReadSalsOrderPage extends BaseUI{
     public navParams: NavParams,
     public rest: RestProvider,
     public storage : Storage,
-    public toastCtrl : ToastController) {
+    public toastCtrl : ToastController,
+    public network: Network) {
       super();
       this.CategoryId = this.navParams.get('cateogryId');
       this.initSalsOrdersData();
@@ -41,22 +43,28 @@ export class ReadSalsOrderPage extends BaseUI{
     this.storage.get("userId").then((val) => {
       this.userId = val;
       this.loading = true;
-      this.rest.GetOrdersByUserId(this.userId,this.CategoryId)
-          .subscribe(
-            (f : any) => {     
-              if(f.Success){
-                this.salsOrders = f["Data"];
-              }else{
-                super.showToast(this.toastCtrl, f.Msg);
+      if(this.network.type !='none'){
+        this.rest.GetOrdersByUserId(this.userId,this.CategoryId)
+            .subscribe(
+              (f : any) => {     
+                if(f.Success){
+                  this.salsOrders = f["Data"];
+                }else{
+                  super.showToast(this.toastCtrl, f.Msg);
+                }
+                this.loading = false;
+              },
+              error => {
+                alert(error); //TODO change to toast
+                this.loading = false;
               }
-              this.loading = false;
-            },
-            error => {
-              alert(error); //TODO change to toast
-              this.loading = false;
-            }
-          );
-    });
+            );
+      }
+      else{
+        super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+      }
+    }
+  );
   }
 
   myCallbackFunction = (_params) => {
