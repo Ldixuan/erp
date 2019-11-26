@@ -60,7 +60,8 @@ export class SalsOrderPage extends BaseUI{
       status : [''],
       statusCode : 0,
       messageForAuditor : [''],
-      remarkfeedback : ['']
+      remarkfeedback : [''],
+      type:['0'] //'I': 采购 '0': 销售
     });
     this.depts = [];
     this.listProduct = new Array<any>();

@@ -1,3 +1,11 @@
 page-read-sals-order-categories {
-
+  ion-spinner {
+    display: block;
+    margin: auto;
+  }
+    .spinner{
+        position: relative;
+        z-index: 9999;
+        top: 45%;
+      }
 }

@@ -21,8 +21,6 @@
 </div>
 
 <ion-content>
-  
-  
     <ion-card *ngFor="let order of salsOrders" (click) = "presentOrderPage(order, salsOrders.indexOf(order))"> 
         <ion-card-header>
           订单编号 : {{order.commandeId}}

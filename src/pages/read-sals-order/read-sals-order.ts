@@ -25,7 +25,7 @@ export class ReadSalsOrderPage extends BaseUI{
   private hasChangeData = false;
   CategoryId : string;
 
-  loading = false;
+ loading : boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -44,7 +44,7 @@ export class ReadSalsOrderPage extends BaseUI{
       this.userId = val;
       this.loading = true;
       if(this.network.type !='none'){
-        this.rest.GetOrdersByUserId(this.userId,this.CategoryId)
+        this.rest.GetOrdersByUserId(this.userId,this.CategoryId,"O")
             .subscribe(
               (f : any) => {     
                 if(f.Success){

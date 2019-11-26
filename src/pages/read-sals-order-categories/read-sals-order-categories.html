@@ -13,6 +13,11 @@
   </ion-navbar>
 </ion-header>
 
+<div *ngIf="loading" class="spinner">
+  <ion-spinner center></ion-spinner>
+  <p text-center font-size-small>加载中</p>
+</div>
+
 <ion-content>
   <ion-list>
     <button ion-item *ngFor="let item of orderStatus" (click)="itemSelected(item.categoryId)">
