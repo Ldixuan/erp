@@ -18,7 +18,9 @@
   <p text-center font-size-small>加载中</p>
 </div>
 
+
 <ion-content>
+    <p *ngIf="noData" text-center>暂无数据</p>
   <ion-list>
     <button ion-item *ngFor="let item of orderStatus" (click)="itemSelected(item.categoryId)">
       {{ item.categoryName }}

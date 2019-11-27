@@ -3,10 +3,11 @@ import { IonicPage, AlertController,NavController, NavParams,ModalController, Mo
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ProductModelPage } from '../product-model/product-model';
 import { RestProvider} from '../../providers/rest/rest'
-import { ParseSourceFile } from '@angular/compiler';
+
 import { BaseUI } from '../../app/common/baseui';
 import { Network } from '@ionic-native/network';
 import { Storage } from '@ionic/storage';
+import { ReadSalsOrderCategoriesPage } from '../read-sals-order-categories/read-sals-order-categories'
 
 /**
  * Generated class for the SalsOrderPage page.
@@ -23,14 +24,13 @@ import { Storage } from '@ionic/storage';
 export class SalsOrderPage extends BaseUI{
 
   private orderForm : FormGroup;
-
   listProduct : Array<any>;
   gridShow = false;
   productNotFound = false;
   depts: any;
   readModel = false;
   deptSelect : any;
-
+  orderId ="";
   constructor(
     private formBuilder: FormBuilder, 
     public viewCtrl: ViewController,
@@ -61,7 +61,7 @@ export class SalsOrderPage extends BaseUI{
       statusCode : 0,
       messageForAuditor : [''],
       remarkfeedback : [''],
-      type:['0'] //'I': 采购 '0': 销售
+      type:['O'] //'I': 采购 'O': 销售
     });
     this.depts = [];
     this.listProduct = new Array<any>();
@@ -108,6 +108,7 @@ export class SalsOrderPage extends BaseUI{
               if(f.Success){
                 let orderDetail = f.Data.salesOrderDetail;
                 let temp = this.orderForm.value;
+                this.orderId =orderDetail.commandeId;
                 temp.title = orderDetail.commandeId;
                 temp.date = orderDetail.commandeCreateDate;
                 temp.telSender = orderDetail.senderTelephoneNumber;
@@ -206,12 +207,13 @@ export class SalsOrderPage extends BaseUI{
         f => {
           if(f.Success){
             super.showToast(this.toastCtrl,"保存成功");
-            if(this.readModel){
+          /*   if(this.readModel){
               var callback = this.navParams.get('callback');
               callback(true).then(() => {this.navCtrl.pop();});
             }else{
               this.navCtrl.setRoot(SalsOrderPage);
-            }
+            } */
+            this.navCtrl.setRoot(ReadSalsOrderCategoriesPage);
           }else{
            // alert("保存失敗 : "+f.msg);
            super.showToast(this.toastCtrl, "保存失敗 : "+f.Msg); 
@@ -263,6 +265,41 @@ export class SalsOrderPage extends BaseUI{
     temp.dept = this.deptSelect.name;
     this.orderForm.setValue(temp); 
     console.log(temp); // TODO remove
+  }
+
+  valideSalesOrder(){
+    var commandeId = this.orderId
+    if(commandeId!=null&&commandeId!=""&&this.readModel){
+      var loading =  super.showLoading(this.loadingCtrl,"正在提交，请稍等");
+      if(this.network.type !='none'){
+        this.rest.UpdateSalesOrderStatut(commandeId, "1")//1: 提交到财务
+        .subscribe(
+          f => {
+            if(f.Success){
+              super.showToast(this.toastCtrl,"提交成功");
+              if(this.readModel){
+                //var callback = this.navParams.get('callback');
+                //callback(true).then(() => {this.navCtrl.pop();});
+                this.navCtrl.setRoot(ReadSalsOrderCategoriesPage);
+              }else{
+                this.navCtrl.setRoot(SalsOrderPage);
+              }
+            }else{
+             // alert("保存失敗 : "+f.msg);
+             super.showToast(this.toastCtrl, "提交失敗 : "+f.Msg); 
+            }
+            loading.dismiss();
+          },
+          error => {
+            loading.dismiss();
+            super.showToast(this.toastCtrl, "提交失敗 : "+error); //TODO: cannot show the detail information for the user
+          }
+        )
+      }
+      else{
+        super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+      }
+    }
   }
 
   exit() {

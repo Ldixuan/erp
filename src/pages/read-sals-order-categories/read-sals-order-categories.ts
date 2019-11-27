@@ -20,6 +20,7 @@ import { Storage } from '@ionic/storage';
 export class ReadSalsOrderCategoriesPage extends BaseUI {
   orderStatus: any[];
   loading : boolean = true;
+  noData : boolean = false;
   constructor(public navCtrl: NavController,
      public navParams: NavParams,
       public network : Network ,
@@ -47,9 +48,13 @@ export class ReadSalsOrderCategoriesPage extends BaseUI {
       .subscribe(
         (f : any) => {
           if(f.Success){
+            this.loading = false;
             if(f["Data"].length>0){
-              this.loading = false;
-              this.orderStatus = f["Data"];
+                this.noData = false;
+                this.orderStatus = f["Data"];
+            }
+            else{
+              this.noData = true;
             }
           }else{
             super.showToast(this.toastCtrl, f.Msg);

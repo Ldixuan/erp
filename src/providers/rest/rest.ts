@@ -33,6 +33,7 @@ export class RestProvider {
   private apiUrlInsertSalesOrderByOrderId = this.host + "api/SalesOrder/InsertSalesOrderByOrderId";
   private apiUrlgetUserList = this.host + "api/Auth/getUserList";
   private apiUrlLogin = this.host + "api/Auth/Login"; 
+  private apiUrlUpdateSalesOrderStatut = this.host + "api/SalesOrder/UpdateSalesOrderStatut";
 
   /*
   * With auth services 
@@ -59,6 +60,9 @@ export class RestProvider {
 
   InsertSalesOrderByOrderId(orderInfo, products:Array<any>):Observable<any>{
     return this.postUrlReturn(this.apiUrlInsertSalesOrderByOrderId, {orderInfo:orderInfo,products:products});
+  }
+  UpdateSalesOrderStatut(orderId, statusCode):Observable<any>{
+    return this.postUrlReturn(this.apiUrlUpdateSalesOrderStatut, {orderId:orderId,statutCode:statusCode});
   }
 
   /**
