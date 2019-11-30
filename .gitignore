@@ -41,3 +41,6 @@ UserInterfaceState.xcuserstate
 /node_modules
 /node_modules
 
+.vs
+plugins
+build

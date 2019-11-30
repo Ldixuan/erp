@@ -48,37 +48,62 @@ export class LoginPage extends BaseUI {
       token = values[1];
 
       if( userId != null && token !=null){
-        this.navCtrl.setRoot(HomePage);
-      }
-      else{
         if(this.network.type !='none'){
-          this.rest.GetUserList() // 填写url的参数
-          .subscribe(
-          (f : any) => {
+        this.rest.CheckAvailabilityOfToken(token).subscribe(
+          (f:any) =>{
             if(f.Success){
-              this.userList = f.Data;
-            }else{
-              super.showToast(this.toastCtrl, f.Msg);
+              this.navCtrl.setRoot(HomePage);
             }
-            if(this.userList.length != 0){
-              this.hasLogUserList = false;
-            }else{
-              super.showToast(this.toastCtrl, "用户名获取失败");
+            else{
+              super.showToast(this.toastCtrl, "账号密码已过期，请重新登陆");
+              this.loadUserList(loading);
             }
-            loading.dismiss();
           },
-          error => {
-            loading.dismiss();
-            alert(error);//TODO remove
-          });
+          error =>{
+            super.showToast(this.toastCtrl, "账号密码已过期，请重新登陆");
+            this.storage.remove("userId");
+            this.storage.remove("token");
+            this.loadUserList(loading);
+          }
+        )
         }
         else{
-            super.showToast(this.toastCtrl, "您处于离线状态，请连接网络!");
-            loading.dismiss();
+          super.showToast(this.toastCtrl, "您处于离线状态，请连接网络!");
         }
+      }
+      else{
+       this.loadUserList(loading);
       }
       
     });
+  }
+
+  loadUserList(loading){
+    if(this.network.type !='none'){
+      this.rest.GetUserList() 
+      .subscribe(
+      (f : any) => {
+        if(f.Success){
+          this.userList = f.Data;
+        }else{
+          super.showToast(this.toastCtrl, f.Msg);
+        }
+        if(this.userList.length != 0){
+          this.hasLogUserList = false;
+        }else{
+          super.showToast(this.toastCtrl, "用户名获取失败");
+        }
+        loading.dismiss();
+      },
+      error => {
+        loading.dismiss();
+        alert(error);//TODO remove
+      });
+    }
+    else{
+        super.showToast(this.toastCtrl, "您处于离线状态，请连接网络!");
+        loading.dismiss();
+    }
   }
 
   login(){
