@@ -31,6 +31,8 @@ export class SalsOrderPage extends BaseUI{
   readModel = false;
   deptSelect : any;
   orderId ="";
+  hadSubmit = false;
+  disableDepts = false;
   constructor(
     private formBuilder: FormBuilder, 
     public viewCtrl: ViewController,
@@ -75,8 +77,9 @@ export class SalsOrderPage extends BaseUI{
     if(title != undefined){
       this.initOrderInfo(title);
       this.readModel = true;
+    }else {
+      this.initDepts();
     }
-    this.initDepts();
   }
 
   initDepts(){
@@ -98,6 +101,7 @@ export class SalsOrderPage extends BaseUI{
       super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
     }
   }
+
 
   initOrderInfo(title :string){
     var loading =  super.showLoading(this.loadingCtrl,"加载中...");
@@ -126,7 +130,11 @@ export class SalsOrderPage extends BaseUI{
                 temp.messageForAuditor = orderDetail.messageForAuditor;
                 temp.statusCode = orderDetail.statusCode || 0;
                 temp.remarkfeedback = orderDetail.remarkfeedback;
+                temp.type = orderDetail.commandeType;
                 this.orderForm.setValue(temp);
+                if(Number.parseInt(orderDetail.status) == 1){
+                  this.hadSubmit = true;
+                }
 
                 this.deptSelect = {id : orderDetail.departmentId, name:orderDetail.departmentLabel};
 
@@ -155,6 +163,9 @@ export class SalsOrderPage extends BaseUI{
                   productTemp['hadPaidProduct'] = "";
                   productTemp['descriptProduct'] = "";
                   this.listProduct.push(productTemp);
+                }
+                if(!this.hadSubmit){
+                  this.initDepts();
                 }
               }else{
                 super.showToast(this.toastCtrl, f.Msg);
@@ -236,11 +247,16 @@ export class SalsOrderPage extends BaseUI{
   }
 
   presentModal(infoProduct?, index?) {
+    
     let modal;
     if(infoProduct == undefined){
+      if(this.hadSubmit){
+        super.showToast(this.toastCtrl, "订单已提交,不可添加! "); 
+        return;
+      }
       modal = this.modalCtrl.create(ProductModelPage);
     }else{
-      modal = this.modalCtrl.create(ProductModelPage, {infoProduct : infoProduct});
+      modal = this.modalCtrl.create(ProductModelPage, {infoProduct : infoProduct,hadSubmit:this.hadSubmit});
     }
     modal.onDidDismiss(data => {
       if(index != undefined){
@@ -264,7 +280,6 @@ export class SalsOrderPage extends BaseUI{
     temp.deptId = this.deptSelect.id;
     temp.dept = this.deptSelect.name;
     this.orderForm.setValue(temp); 
-    console.log(temp); // TODO remove
   }
 
   valideSalesOrder(){

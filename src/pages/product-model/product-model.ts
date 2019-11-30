@@ -24,7 +24,7 @@ export class ProductModelPage extends BaseUI {
   private productForm : FormGroup;
   modifMod = false;
   productSelect : any;
-  
+  hadSubmit = false;
   
 
   constructor(public viewCtrl: ViewController, 
@@ -36,7 +36,7 @@ export class ProductModelPage extends BaseUI {
     public network: Network) {
     super();
     
-    this.initProducts();
+    
     this.productForm = this.formBuilder.group({
       idProduct: [''],
       nameProduct: ['', Validators.required],
@@ -62,6 +62,9 @@ export class ProductModelPage extends BaseUI {
       };
       this.modifMod = true;
     }
+    let tempHadSubmit = this.navParams.get('hadSubmit');
+    if(tempHadSubmit != undefined) this.hadSubmit = tempHadSubmit;
+    if(!this.hadSubmit) this.initProducts();
   }
 
   checkNumber(name:string){

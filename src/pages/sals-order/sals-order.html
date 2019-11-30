@@ -21,7 +21,7 @@
     <ion-navbar *ngIf="readModel">
       <ion-title align-title="center">销售订单</ion-title>
         <ion-buttons end> 
-          <button ion-button [disabled]="!orderForm.valid" (click) = "logForm()">保存</button>
+          <button ion-button *ngIf="!hadSubmit" [disabled]="!orderForm.valid" (click) = "logForm()">保存</button>
         </ion-buttons>
       </ion-navbar>
 </ion-header>
@@ -44,22 +44,22 @@
       <ion-item style="height: 80px;">
         <ion-label color="primary" *ngIf="orderForm.value.date==''">订单日期*</ion-label>
         <ion-label color="primary" *ngIf="orderForm.value.date!=''"  stacked>订单日期*</ion-label>
-        <ion-datetime displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="date"  max="2050"></ion-datetime>
+        <ion-datetime [disabled]="hadSubmit" displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="date"  max="2050"></ion-datetime>
       </ion-item>
       
       <ion-item>
         <ion-label color="primary" floating>收取人</ion-label>
-        <ion-input type="text" formControlName="sender"></ion-input>
+        <ion-input type="text" [disabled]="hadSubmit" formControlName="sender"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label color="primary" floating>传真</ion-label>
-        <ion-input type="tel" formControlName="faxSender"></ion-input>
+        <ion-input type="tel" [disabled]="hadSubmit" formControlName="faxSender"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label color="primary" floating>电话</ion-label>
-        <ion-input type="tel" formControlName="telSender"></ion-input>
+        <ion-input type="tel" [disabled]="hadSubmit" formControlName="telSender"></ion-input>
       </ion-item>
 
 
@@ -72,29 +72,29 @@
           [items]="depts"
           itemTextField="name"
           [canSearch]="true"
-          [disabled] = "depts.length == 0"
+          [disabled]="this.depts.length == 0"
           (onChange) = "changeDept()"
           >
         </ionic-selectable>
       </ion-item>
       <ion-item>
         <ion-label color="primary" floating>发送人</ion-label>
-        <ion-input type="text" formControlName="receiver" autocorrect="on"></ion-input>
+        <ion-input type="text" [disabled]="hadSubmit" formControlName="receiver" autocorrect="on"></ion-input>
       </ion-item>  
 
       <ion-item>
         <ion-label color="primary" floating>传真</ion-label>
-        <ion-input type="tel" formControlName="faxReceiver" autocorrect="on"></ion-input>
+        <ion-input type="tel" [disabled]="hadSubmit" formControlName="faxReceiver" autocorrect="on"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label color="primary" floating>电话</ion-label>
-        <ion-input type="tel" formControlName="telReceiver" autocorrect="on"></ion-input>
+        <ion-input type="tel" [disabled]="hadSubmit" formControlName="telReceiver" autocorrect="on"></ion-input>
       </ion-item>
 
       <ion-item>
           <ion-label color="primary" floating>备注</ion-label>
-          <ion-textarea formControlName="descript"></ion-textarea>
+          <ion-textarea [disabled]="hadSubmit" formControlName="descript"></ion-textarea>
       </ion-item>
 
       <ion-item></ion-item>
@@ -127,5 +127,5 @@
       </ion-card-content>
     </ion-card>
   </ion-list>
-  <button *ngIf="readModel" ion-button full color="secondary" (click)="valideSalesOrder()">提交订单</button>
+  <button *ngIf="readModel && !hadSubmit" ion-button full color="secondary" (click)="valideSalesOrder()">提交订单</button>
 </ion-content>
