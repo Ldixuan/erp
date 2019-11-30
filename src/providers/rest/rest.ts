@@ -34,6 +34,7 @@ export class RestProvider {
   private apiUrlgetUserList = this.host + "api/Auth/getUserList";
   private apiUrlLogin = this.host + "api/Auth/Login"; 
   private apiUrlUpdateSalesOrderStatut = this.host + "api/SalesOrder/UpdateSalesOrderStatut";
+  private apiUrlCheckAvailabilityOfToken = this.host + "api/Auth/CheckAvailabilityOfToken";
 
   /*
   * With auth services 
@@ -83,6 +84,10 @@ export class RestProvider {
    */
   GetUserList():Observable<any>{
     return this.getUrlReturnWithOutAuth(this.apiUrlgetUserList);
+  }
+
+  CheckAvailabilityOfToken(token : string ):Observable<any> {
+    return this.getUrlReturn(this.apiUrlCheckAvailabilityOfToken+"?token="+token);
   }
 
   // TODO: Login page remove all 
