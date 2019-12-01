@@ -26,15 +26,14 @@
       </ion-navbar>
 </ion-header>
 
+<div *ngIf="loading" class="spinner">
+    <ion-spinner center></ion-spinner>
+    <p text-center font-size-small>加载中</p>
+  </div>
 
 <ion-content padding>
     
   <ion-item-group inset="true" [formGroup]="orderForm" >
-      
-      <ion-item *ngIf="loading">
-          <ion-spinner></ion-spinner>
-          <p text-center font-size-small>加载中</p>
-      </ion-item>
   
       <ion-item *ngIf="readModel">
         <ion-label color="primary" floating>订单编号</ion-label>

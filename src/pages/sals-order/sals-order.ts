@@ -33,6 +33,7 @@ export class SalsOrderPage extends BaseUI{
   orderId ="";
   hadSubmit = false;
   disableDepts = false;
+  loading = false;
   constructor(
     private formBuilder: FormBuilder, 
     public viewCtrl: ViewController,
@@ -107,7 +108,7 @@ export class SalsOrderPage extends BaseUI{
 
 
   initOrderInfo(title :string){
-    var loading =  super.showLoading(this.loadingCtrl,"加载中...");
+    this.loading = true;
     if(this.network.type !='none'){
       this.rest.GetSalesOrderByOrderId(title)
           .subscribe(
@@ -176,10 +177,10 @@ export class SalsOrderPage extends BaseUI{
               }else{
                 super.showToast(this.toastCtrl, f.Msg);
               }
-              loading.dismiss();
+              this.loading = false;
             },
             error => {
-              loading.dismiss();
+              this.loading = false;
               alert(error); //TODO change to toast
             }
           );
