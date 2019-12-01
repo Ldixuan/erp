@@ -46,6 +46,20 @@
         <ion-label color="primary" *ngIf="orderForm.value.date!=''"  stacked>订单日期*</ion-label>
         <ion-datetime [disabled]="hadSubmit" displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="date"  max="2050"></ion-datetime>
       </ion-item>
+
+      <ion-item>
+          <ion-label color="primary" floating>盖章</ion-label>
+          <ion-select formControlName="seal" interface="action-sheet" [disabled]="hadSubmit">
+              <ion-option [value]="Z001">邯郸公章</ion-option>
+              <ion-option [value]="Z002">邯郸合同章</ion-option>
+              <ion-option [value]="Z003">佛山合同章</ion-option>
+          </ion-select>
+      </ion-item>
+
+      <ion-item no-lines>
+          <ion-label color="primary" >审核后将记录复制到一览表</ion-label>
+          <ion-toggle color="primary" [disabled]="hadSubmit" formControlName="copyAfterCheck" checked="{{orderForm.value.copyAfterCheck == '1'}}"></ion-toggle>
+      </ion-item>
       
       <ion-item>
         <ion-label color="primary" floating>收取人</ion-label>
@@ -95,6 +109,16 @@
       <ion-item>
           <ion-label color="primary" floating>备注</ion-label>
           <ion-textarea [disabled]="hadSubmit" formControlName="descript"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+          <ion-label color="primary" floating>更正说明</ion-label>
+          <ion-textarea [disabled]="hadSubmit" formControlName="remarkCorrige"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+          <ion-label color="primary" floating>回传说明</ion-label>
+          <ion-textarea [disabled]="hadSubmit" formControlName="remarkfeedback"></ion-textarea>
       </ion-item>
 
       <ion-item></ion-item>

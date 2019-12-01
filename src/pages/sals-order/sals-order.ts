@@ -63,7 +63,10 @@ export class SalsOrderPage extends BaseUI{
       statusCode : 0,
       messageForAuditor : [''],
       remarkfeedback : [''],
-      type:['O'] //'I': 采购 'O': 销售
+      type:['O'], //'I': 采购 'O': 销售
+      seal:[''],
+      copyAfterCheck:[false],
+      remarkCorrige:['']
     });
     this.depts = [];
     this.listProduct = new Array<any>();
@@ -131,6 +134,9 @@ export class SalsOrderPage extends BaseUI{
                 temp.statusCode = orderDetail.statusCode || 0;
                 temp.remarkfeedback = orderDetail.remarkfeedback;
                 temp.type = orderDetail.commandeType;
+                temp.seal = orderDetail.CachetPo || "";
+                temp.copyAfterCheck = orderDetail.CtovPo;
+                temp.remarkCorrige = orderDetail.MrmkPo;
                 this.orderForm.setValue(temp);
                 if(Number.parseInt(orderDetail.status) == 1){
                   this.hadSubmit = true;
@@ -183,8 +189,16 @@ export class SalsOrderPage extends BaseUI{
     }
   }
 
+  // changeCopyCheck(event){
+  //   if(event.checked){
+  //     this.orderForm.controls['copyAfterCheck'].setValue('1');
+  //   }else{
+  //     this.orderForm.controls['copyAfterCheck'].setValue('0');
+  //   }
+  // }
 
   logForm() {
+    console.log(this.orderForm.value);
     if(this.listProduct.length == 0){
       super.showToast(this.toastCtrl, "请添加货物");
       return;
