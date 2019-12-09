@@ -1,91 +1,85 @@
 <ion-header>
-    <ion-toolbar mode="ios">
-        <ion-title text-center>添加货物</ion-title>
-        <ion-buttons>
-            <button ion-button (click)="exit()" icon-only>
-                <ion-icon name='arrow-back' showWhen="ios" color = "primary"></ion-icon>
-              <ion-icon name="md-close" showWhen="android"></ion-icon>
-            </button>
-          </ion-buttons>
-      
-      <ion-buttons *ngIf="!hadSubmit" end> <button ion-button (click)="logProductForm()" 
-        [disabled]="!productForm.valid" color="primary">保存</button>
-      </ion-buttons>
-    </ion-toolbar>
+  <ion-toolbar mode="ios">
+    <ion-title text-center>添加货物</ion-title>
+    <ion-buttons>
+      <button ion-button (click)="exit()" icon-only>
+        <ion-icon name='arrow-back' showWhen="ios" color="primary"></ion-icon>
+        <ion-icon name="md-close" showWhen="android"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-buttons *ngIf="!hadSubmit" end> <button ion-button (click)="logProductForm()" [disabled]="!productForm.valid"
+        color="primary">保存</button>
+    </ion-buttons>
+  </ion-toolbar>
 
 </ion-header>
 
 
-<ion-content >
-    <ion-item-group [formGroup]="productForm" inset='true'>
+<ion-content>
+  <ion-list [formGroup]="productForm" inset='true'>
 
-      <ion-item>
-          <ion-label color="primary" floating>货物名称*</ion-label>
-          <ionic-selectable
-            item-content 
-            [(ngModel)]="productSelect"
-            [ngModelOptions]="{standalone: true}"
-            [items]="products"
-            itemTextField="name"
-            [canSearch]="true"
-            (onChange) = "changeProduct()"
-            [disabled] = "products.length == 0"
-            >
-          </ionic-selectable>
-        </ion-item>
-    
-
-      <ion-item>
-        <ion-label color="primary" floating>产地</ion-label>
-        <ion-input type="text" [disabled] = "hadSubmit" formControlName="adresseProduct"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label color="primary" floating>官方品名</ion-label>
-        <ion-input type="text" [disabled] = "hadSubmit" formControlName="nameOffical"></ion-input>
-      </ion-item>
+    <ion-item>
+      <ion-label color="primary" stacked>货物名称*</ion-label>
+      <ionic-selectable item-content [(ngModel)]="productSelect" [ngModelOptions]="{standalone: true}"
+        [items]="products" itemTextField="name" [canSearch]="true" (onChange)="changeProduct()"
+        [disabled]="products.length == 0">
+      </ionic-selectable>
+    </ion-item>
 
 
-      <ion-item>
-        <ion-label color="primary"  floating>数量*</ion-label>
-        <ion-input type="number" [disabled] = "hadSubmit" (change)="checkNumber('numberProduct')" formControlName="numberProduct"></ion-input>
-      </ion-item>
+    <ion-item>
+      <ion-label color="primary" stacked>产地</ion-label>
+      <ion-input type="text" [disabled]="hadSubmit" formControlName="adresseProduct"></ion-input>
+    </ion-item>
 
-      <ion-item>
-        <ion-label color="primary" floating>单位*</ion-label>
-        <ion-input type="text" [disabled] = "hadSubmit" formControlName="unitProduct" (change)="checkNumber('unitProduct')"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label color="primary" floating>单价*</ion-label>
-        <ion-input type="number" [disabled] = "hadSubmit" (change)="checkNumber('priceProduct')" formControlName="priceProduct"></ion-input>
-      </ion-item>
+    <ion-item>
+      <ion-label color="primary" stacked>官方品名</ion-label>
+      <ion-input type="text" [disabled]="hadSubmit" formControlName="nameOffical"></ion-input>
+    </ion-item>
 
 
-      <ion-item>
-        <ion-label color="primary" floating>金额*</ion-label>
-        <ion-input type="number" [disabled] = "true" value="{{productForm.value.priceProduct *  productForm.value.numberProduct}}"></ion-input>
-      </ion-item>
+    <ion-item>
+      <ion-label color="primary" stacked>数量*</ion-label>
+      <ion-input type="number" [disabled]="hadSubmit" (change)="checkNumber('numberProduct')"
+        formControlName="numberProduct"></ion-input>
+    </ion-item>
 
-      <ion-item style="height: 80px;">
-        <ion-label color="primary" *ngIf="productForm.value.datePayProduct!=''" stacked>*交货日期</ion-label>
-        <ion-label color="primary" *ngIf="productForm.value.datePayProduct==''" >交货日期*</ion-label>
-        <ion-datetime [disabled] = "hadSubmit" displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="datePayProduct"
-          max="2050"></ion-datetime>
-      </ion-item>
+    <ion-item>
+      <ion-label color="primary" stacked>单位*</ion-label>
+      <ion-input type="text" disabled formControlName="unitProduct" (change)="checkNumber('unitProduct')"></ion-input>
+    </ion-item>
 
-      <ion-item>
-        <ion-label color="primary" floating>已付数量</ion-label>
-        <ion-input type="text" [disabled] = "hadSubmit" formControlName="hadPaidProduct"></ion-input>
-      </ion-item>
+    <ion-item>
+      <ion-label color="primary" stacked>单价*</ion-label>
+      <ion-input type="number" [disabled]="hadSubmit" (change)="checkNumber('priceProduct')"
+        formControlName="priceProduct"></ion-input>
+    </ion-item>
 
-      <ion-item>
-        <ion-label color="primary" floating>备注</ion-label>
-        <ion-textarea [disabled] = "hadSubmit" formControlName="descriptProduct"></ion-textarea>
-      </ion-item>
-      <ion-item></ion-item>
-    </ion-item-group>
 
-    <button ion-button *ngIf="modifMod && !hadSubmit" (click) = "removeProduct()" color="danger" block>删除</button>
+    <ion-item>
+      <ion-label color="primary" stacked>金额*</ion-label>
+      <ion-input type="number" [disabled]="true"
+        value="{{productForm.value.priceProduct *  productForm.value.numberProduct}}"></ion-input>
+    </ion-item>
+
+    <ion-item style="height: 80px;">
+      <ion-label color="primary" stacked>*交货日期</ion-label>
+      <ion-datetime [disabled]="hadSubmit" displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD"
+        formControlName="datePayProduct" max="2050"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>已付数量</ion-label>
+      <ion-input type="text" [disabled]="hadSubmit" formControlName="hadPaidProduct"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>备注</ion-label>
+      <ion-textarea [disabled]="hadSubmit" formControlName="descriptProduct"></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <button ion-button *ngIf="modifMod && !hadSubmit" (click)="removeProduct()" color="danger" block>删除</button>
 
 </ion-content>

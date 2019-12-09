@@ -125,8 +125,7 @@ export class SalsOrderPage extends BaseUI{
                 temp.receiver = orderDetail.receiver;
                 temp.faxReceiver = orderDetail.receiverFax;
                 temp.telReceiver = orderDetail.receiverTelephoneNumber;
-                temp.descript = orderDetail.Remark1 + orderDetail.Remark2 + orderDetail.Remark3
-                + orderDetail.Remark4 + orderDetail.Remark5 + orderDetail.Remark6 + orderDetail.Remark7;
+                temp.descript = orderDetail.Remark1;
                 temp.dept = orderDetail.departmentLabel;
                 temp.userId = orderDetail.commandCreator;
                 temp.deptId = orderDetail.departmentId;

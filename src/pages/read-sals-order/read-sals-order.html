@@ -22,11 +22,11 @@
 
 <ion-content>
     <ion-card *ngFor="let order of salsOrders" (click) = "presentOrderPage(order, salsOrders.indexOf(order))"> 
-        <ion-card-header>
+        <ion-card-header style="margin-bottom: 5px; padding-bottom: 5px;">
           订单编号 : {{order.commandeId}}
         </ion-card-header>
         <ion-card-content>
-          <ion-grid>
+          <ion-grid style="padding-top: 0px;">
             <ion-row inline>
               <ion-col>收取人 : {{order.receiver}}</ion-col>
             </ion-row>

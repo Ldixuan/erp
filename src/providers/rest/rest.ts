@@ -22,7 +22,7 @@ export class RestProvider {
 
   constructor(public http: Http, public storage: Storage) {
   }
-
+  //private host = "http://3.90.11.160/";
   //private host = "http://47.100.137.77/";
   private host = "http://localhost/LjWebApplication/";
   private apiUrlGetCargoByName = this.host + 'api/cargo';
@@ -115,12 +115,13 @@ export class RestProvider {
       mergeMap(token => this.http.get(url,{headers: new Headers({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer '+ token
-      })}).pipe(
-        timeout(10000),
-        catchError(e => {
-          return of({'error':'timeout'});
-        })
-      )
+      })})
+      // .pipe(
+      //   timeout(10000),
+      //   catchError(e => {
+      //     return of({'error':'timeout'});
+      //   })
+      // )
       .map(this.extractData)
       .catch(this.handleError)
       )

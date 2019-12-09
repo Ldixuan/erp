@@ -5,6 +5,7 @@ import { Network } from '@ionic-native/network';
 import { RestProvider } from '../../providers/rest/rest';
 import { Storage } from '@ionic/storage';
 import { HomePage } from '../home/home'
+import { SettingsPage } from '../settings/settings';
 
 
 /**
@@ -23,6 +24,7 @@ export class LoginPage extends BaseUI {
   selectedUserId : string;
   password : string;
   hasLogUserList : boolean = true;
+  valided : boolean = false;
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 
@@ -52,7 +54,7 @@ export class LoginPage extends BaseUI {
         this.rest.CheckAvailabilityOfToken(token).subscribe(
           (f:any) =>{
             if(f.Success){
-              this.navCtrl.setRoot(HomePage);
+              this.navCtrl.setRoot(SettingsPage);
             }
             else{
               super.showToast(this.toastCtrl, "账号密码已过期，请重新登陆");
@@ -123,7 +125,7 @@ export class LoginPage extends BaseUI {
            if(f["Success"]==true){
             this.storage.set("userId",userTosend[0].id);
             this.storage.set("token",f["Data"].token);
-            this.navCtrl.setRoot(HomePage);
+            this.navCtrl.setRoot(SettingsPage);
            }
            else{
              super.showToast(this.toastCtrl,"登录失败，请检查用户名与密码是否正确");
