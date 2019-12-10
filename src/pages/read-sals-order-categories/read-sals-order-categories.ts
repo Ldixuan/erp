@@ -12,7 +12,7 @@ import { Storage } from '@ionic/storage';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
+@IonicPage()
 @Component({
   selector: 'page-read-sals-order-categories',
   templateUrl: 'read-sals-order-categories.html',
@@ -70,7 +70,7 @@ export class ReadSalsOrderCategoriesPage extends BaseUI {
 
   itemSelected(itemId){
     if(itemId!=null){
-      this.navCtrl.push(ReadSalsOrderPage,{cateogryId:itemId});
+      this.navCtrl.push('ReadSalsOrderPage',{cateogryId:itemId});
     }
   }
 

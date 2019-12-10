@@ -16,7 +16,7 @@ import { ReadSalsOrderCategoriesPage } from '../read-sals-order-categories/read-
  * Ionic pages and navigation.
  */
 
-
+@IonicPage()
 @Component({
   selector: 'page-sals-order',
   templateUrl: 'sals-order.html',
@@ -238,7 +238,7 @@ export class SalsOrderPage extends BaseUI{
             }else{
               this.navCtrl.setRoot(SalsOrderPage);
             } */
-            this.navCtrl.setRoot(ReadSalsOrderCategoriesPage);
+            this.navCtrl.setRoot('ReadSalsOrderCategoriesPage');
           }else{
            // alert("保存失敗 : "+f.msg);
            super.showToast(this.toastCtrl, "保存失敗 : "+f.Msg); 
@@ -268,9 +268,9 @@ export class SalsOrderPage extends BaseUI{
         super.showToast(this.toastCtrl, "订单已提交,不可添加! "); 
         return;
       }
-      modal = this.modalCtrl.create(ProductModelPage);
+      modal = this.modalCtrl.create('ProductModelPage');
     }else{
-      modal = this.modalCtrl.create(ProductModelPage, {infoProduct : infoProduct,hadSubmit:this.hadSubmit});
+      modal = this.modalCtrl.create('ProductModelPage', {infoProduct : infoProduct,hadSubmit:this.hadSubmit});
     }
     modal.onDidDismiss(data => {
       if(index != undefined){
@@ -309,9 +309,9 @@ export class SalsOrderPage extends BaseUI{
               if(this.readModel){
                 //var callback = this.navParams.get('callback');
                 //callback(true).then(() => {this.navCtrl.pop();});
-                this.navCtrl.setRoot(ReadSalsOrderCategoriesPage);
+                this.navCtrl.setRoot('ReadSalsOrderCategoriesPage');
               }else{
-                this.navCtrl.setRoot(SalsOrderPage);
+                this.navCtrl.setRoot('SalsOrderPage');
               }
             }else{
              // alert("保存失敗 : "+f.msg);

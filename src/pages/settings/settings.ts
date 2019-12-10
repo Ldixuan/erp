@@ -25,8 +25,7 @@ export class SettingsPage {
   }
   logout(){
     Promise.all([this.storage.remove("userId"),this.storage.remove("token")]).then(values => {
-        this.navCtrl.setRoot(LoginPage);
+        this.navCtrl.setRoot('LoginPage');
     });
   }
-
 }

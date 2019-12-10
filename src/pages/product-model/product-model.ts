@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, AlertController, NavParams,ViewController,ToastController} from 'ionic-angular';
-import {Validators, FormBuilder, FormGroup,  AbstractControl } from '@angular/forms';
+import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { RestProvider} from '../../providers/rest/rest';
 import { BaseUI } from '../../app/common/baseui';
 import { Network } from '@ionic-native/network';
@@ -10,7 +10,7 @@ import { Network } from '@ionic-native/network';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
+@IonicPage()
 @Component({
   selector: 'page-product-model',
   templateUrl: 'product-model.html',

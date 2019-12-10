@@ -4,7 +4,6 @@ import { BaseUI } from '../../app/common/baseui';
 import { Network } from '@ionic-native/network';
 import { RestProvider } from '../../providers/rest/rest';
 import { Storage } from '@ionic/storage';
-import { HomePage } from '../home/home'
 import { SettingsPage } from '../settings/settings';
 
 
@@ -14,7 +13,7 @@ import { SettingsPage } from '../settings/settings';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
+@IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
@@ -54,7 +53,7 @@ export class LoginPage extends BaseUI {
         this.rest.CheckAvailabilityOfToken(token).subscribe(
           (f:any) =>{
             if(f.Success){
-              this.navCtrl.setRoot(SettingsPage);
+              this.navCtrl.setRoot('SettingsPage');
             }
             else{
               super.showToast(this.toastCtrl, "账号密码已过期，请重新登陆");
@@ -125,7 +124,7 @@ export class LoginPage extends BaseUI {
            if(f["Success"]==true){
             this.storage.set("userId",userTosend[0].id);
             this.storage.set("token",f["Data"].token);
-            this.navCtrl.setRoot(SettingsPage);
+            this.navCtrl.setRoot('SettingsPage');
            }
            else{
              super.showToast(this.toastCtrl,"登录失败，请检查用户名与密码是否正确");

@@ -116,12 +116,9 @@ export class RestProvider {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer '+ token
       })})
-      // .pipe(
-      //   timeout(10000),
-      //   catchError(e => {
-      //     return of({'error':'timeout'});
-      //   })
-      // )
+      .pipe(
+        timeout(20000)
+      )
       .map(this.extractData)
       .catch(this.handleError)
       )
@@ -134,10 +131,13 @@ private postUrlReturn(url:string, body:any): Observable<any> {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer '+ token
     })}).pipe(
-      timeout(10000),
-      catchError(e => {
-        return of({'error':'timeout'});
-      })
+      timeout(20000),
+      // catchError(e => {
+      //   return of({
+      //     'Success': false,
+      //     'Msg':'访问超时，请检查网络连接',
+      //     'error':'timeout'});
+      // })
     )
     .map(this.extractData)
     .catch(this.handleError)
@@ -148,15 +148,14 @@ private postUrlReturn(url:string, body:any): Observable<any> {
 private postUrlReturnWithOutAuth(url:string, body:any): Observable<any> {
   return this.http.post(url, body)
   .pipe(
-    timeout(10000),
-    catchError(e => {
-      return of({'error':'timeout'});
-    })
+    timeout(20000),
+    // catchError(e => {
+    //   return of({'error':'timeout'});
+    // })
   )
   .map(this.extractData)
   .catch(this.handleError);
 }
-
 
   private extractData(res: Response) {
     let body = res.json();
@@ -175,7 +174,16 @@ private postUrlReturnWithOutAuth(url:string, body:any): Observable<any> {
     // }
     // console.error(errMsg);
     // return Observable.throw(errMsg);
-    //console.log(JSON.stringify(error));
+    if(error.name!=null &&error.name =="TimeoutError"){
+        //超时信息
+        return Observable.throw(JSON.stringify({Msg:"连接超时请检查网络连接",Success :false}));
+      }
+      else{
+        if(error.Type =="401"){
+         //处理未登录
+        }
+      }
+    console.error(error);
     return Observable.throw(JSON.stringify(error));
   }
 }

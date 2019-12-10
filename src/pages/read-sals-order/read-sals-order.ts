@@ -85,7 +85,7 @@ export class ReadSalsOrderPage extends BaseUI{
   }
 
   presentOrderPage(infoOrder, index:number){
-    this.navCtrl.push(SalsOrderPage,{title : infoOrder.commandeId,callback:this.myCallbackFunction});
+    this.navCtrl.push('SalsOrderPage',{title : infoOrder.commandeId,callback:this.myCallbackFunction});
   }
 
 }
