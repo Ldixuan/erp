@@ -1,4 +1,4 @@
-import { Loading, LoadingController, ToastController, Toast } from "ionic-angular";
+import { Loading, LoadingController, ToastController, Toast, NavController } from "ionic-angular";
 
 export abstract class BaseUI{
     constructor(){
@@ -18,10 +18,31 @@ export abstract class BaseUI{
     protected showToast(toastCtrl: ToastController, message: string):Toast{
         let toast = toastCtrl.create({
             message:message,
-            duration : 5000,
+            duration : 2000,
             position:'bottom'
         });
         toast.present();
         return toast;
+    }
+    protected logout(toastCtrl: ToastController, navCtrl: NavController){
+        this.showToast(toastCtrl,"登录已过期，请重新登陆");
+        navCtrl.setRoot('LoginPage');
+    }
+    protected showAlert(alertCtrl,title,message, callback, callbackReturn){
+        let confirm = alertCtrl.create({
+            title: title,
+            message: message,
+            buttons: [
+              {
+                text: '确认',
+                handler:()=>{callback} 
+              },
+              {
+                text: '取消',
+                handler: callbackReturn
+              }
+            ]
+          });
+          confirm.present();
     }
 } 

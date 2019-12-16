@@ -16,10 +16,9 @@
 </ion-header>
 
 
-<ion-content>
-  <ion-list [formGroup]="productForm" inset='true'>
-
-    <ion-item>
+<ion-content padding>
+  <ion-list [formGroup]="productForm">
+    <ion-item style="border: 0px!important;">
       <ion-label color="primary" stacked>货物名称*</ion-label>
       <ionic-selectable item-content [(ngModel)]="productSelect" [ngModelOptions]="{standalone: true}"
         [items]="products" itemTextField="name" [canSearch]="true" (onChange)="changeProduct()"
@@ -56,6 +55,13 @@
         formControlName="priceProduct"></ion-input>
     </ion-item>
 
+    <ion-item>
+      <ion-label color="primary" interface="action-sheet" stacked>价类</ion-label>
+      <ion-select (value)="unitPriceType">
+        <ion-option value="unit">单位价</ion-option>
+        <ion-option value="meter">米价</ion-option>
+      </ion-select>
+    </ion-item>
 
     <ion-item>
       <ion-label color="primary" stacked>金额*</ion-label>
@@ -63,7 +69,7 @@
         value="{{productForm.value.priceProduct *  productForm.value.numberProduct}}"></ion-input>
     </ion-item>
 
-    <ion-item style="height: 80px;">
+    <ion-item>
       <ion-label color="primary" stacked>*交货日期</ion-label>
       <ion-datetime [disabled]="hadSubmit" displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD"
         formControlName="datePayProduct" max="2050"></ion-datetime>
@@ -78,6 +84,7 @@
       <ion-label color="primary" stacked>备注</ion-label>
       <ion-textarea [disabled]="hadSubmit" formControlName="descriptProduct"></ion-textarea>
     </ion-item>
+    <ion-item style="border: 0px;"></ion-item>
   </ion-list>
 
   <button ion-button *ngIf="modifMod && !hadSubmit" (click)="removeProduct()" color="danger" block>删除</button>

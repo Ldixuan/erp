@@ -18,20 +18,31 @@
     <ion-list style="margin-top: 32px;">
         <button ion-item class="AccountDetail">
           <ion-avatar item-start>
-            <img src="assets/imgs/logo-512.png">
+            <img src="assets/imgs/portrait.jpg">
           </ion-avatar>
-          <h1>管理员</h1>
+          <h1>{{username}}</h1>
         </button>
       </ion-list>
   
       <ion-list>
         <ion-list-header>
-          <span> Mes commandes </span>
-          <a class="viewAll" href="#" float-right>观看所有</a>
+          <span> 我的订单 </span>
+          <a class="viewAll"  float-right>观看所有</a>
         </ion-list-header>
-        <button ion-item (click)="readCommandList()">销售订单</button>
-        <button ion-item (click)="readCommandList()">采购订单</button>
-        <button ion-item (click)="readCommandList()">订单</button>
+        <button ion-item (click)='showSalesOrder()'>
+          <ion-icon name="document" item-start></ion-icon>
+          销售订单</button>
+        <button ion-item (click)='showPurcharseOrder()'>
+          <ion-icon name="document" item-start></ion-icon>
+          采购订单</button>
+        <button ion-item (click)='editOrder()'>
+          <ion-icon name="create" item-start></ion-icon>
+          编辑订单
+        </button> 
+        <button ion-item (click)='valideOrder()'>
+          <ion-icon name="arrow-dropdown-circle" item-start></ion-icon>
+          审核订单
+        </button>   
       </ion-list>
   
       <ion-list>
@@ -39,12 +50,12 @@
           <ion-icon class="iconStyle" name="chatbubbles" item-start></ion-icon>
           我的信息
         </button>
-        <button ion-item (click)="contactUs()">
-          <ion-icon class="iconStyle" name="mail" item-start></ion-icon>
+        <button ion-item (click)="newFunctionality()">
+          <ion-icon class="iconStyle" name="information-circle" item-start></ion-icon>
           新功能
         </button>
-        <button ion-item (click)="aboutUs()">
-          <ion-icon class="iconStyle" name="information-circle" item-start></ion-icon>
+        <button ion-item>
+          <ion-icon class="iconStyle" name="mail" item-start></ion-icon>
           关于我们
         </button>
       </ion-list>

@@ -1,14 +1,12 @@
 
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { timeout, catchError, mergeMap } from 'rxjs/operators'
-import { Input } from '@angular/compiler/src/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Storage } from '@ionic/storage';
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/Rx';
-import { of } from 'rxjs/observable/of';
 
 
 /*
@@ -19,11 +17,14 @@ import { of } from 'rxjs/observable/of';
 */
 @Injectable()
 export class RestProvider {
-
-  constructor(public http: Http, public storage: Storage) {
+  constructor(public http: Http, 
+    public storage: Storage
+   ) {
+   
   }
+
   //private host = "http://3.90.11.160/";
-  //private host = "http://47.100.137.77/";
+ // private host = "https://api.europetechs.com/";
   private host = "http://localhost/LjWebApplication/";
   private apiUrlGetCargoByName = this.host + 'api/cargo';
   private apiUrlGetOrdersByUserId = this.host + 'api/SalesOrder/GetSalesOrderByUserId';
@@ -35,12 +36,16 @@ export class RestProvider {
   private apiUrlLogin = this.host + "api/Auth/Login"; 
   private apiUrlUpdateSalesOrderStatut = this.host + "api/SalesOrder/UpdateSalesOrderStatut";
   private apiUrlCheckAvailabilityOfToken = this.host + "api/Auth/CheckAvailabilityOfToken";
-
+  private apiUrlGetSalesOrderValidationContent = this.host + 'api/SalesOrder/GetSalesOrderValidationContent';
   /*
   * With auth services 
   */
   GetCargoByName(limit:number):Observable<any>{
       return this.getUrlReturn(this.apiUrlGetCargoByName+"?limit="+limit);
+  }
+
+  GetSalesOrderValidationContent(orderId:string):Observable<any>{
+    return this.getUrlReturn(this.apiUrlGetSalesOrderValidationContent+"?orderId="+orderId);
   }
 
   GetOrdersByUserId(userId:string, categoryId: string, type: string ):Observable<any>{
@@ -62,8 +67,8 @@ export class RestProvider {
   InsertSalesOrderByOrderId(orderInfo, products:Array<any>):Observable<any>{
     return this.postUrlReturn(this.apiUrlInsertSalesOrderByOrderId, {orderInfo:orderInfo,products:products});
   }
-  UpdateSalesOrderStatut(orderId, statusCode):Observable<any>{
-    return this.postUrlReturn(this.apiUrlUpdateSalesOrderStatut, {orderId:orderId,statutCode:statusCode});
+  UpdateSalesOrderStatut(userId,orderId, applicationContent,statusCode):Observable<any>{
+    return this.postUrlReturn(this.apiUrlUpdateSalesOrderStatut, {userId:userId,applicationContent:applicationContent,orderId:orderId,statutCode:statusCode});
   }
 
   /**
@@ -94,10 +99,10 @@ export class RestProvider {
   private getUrlReturnWithOutAuth(url: string): Observable<any> {
       return this.http.get(url)
       .pipe(
-        timeout(10000),
-        catchError(e => {
-          return of({'error':'timeout'});
-        })
+        timeout(20000),
+  //       catchError(e => {
+  //         return of({'error':'timeout'});
+  //       })
       )
       .map(this.extractData)
       .catch(this.handleError);
@@ -176,14 +181,12 @@ private postUrlReturnWithOutAuth(url:string, body:any): Observable<any> {
     // return Observable.throw(errMsg);
     if(error.name!=null &&error.name =="TimeoutError"){
         //超时信息
-        return Observable.throw(JSON.stringify({Msg:"连接超时请检查网络连接",Success :false}));
+        return Observable.throw({Msg:"连接超时请检查网络连接",Success :false});
       }
       else{
-        if(error.Type =="401"){
-         //处理未登录
-        }
-      }
-    console.error(error);
-    return Observable.throw(JSON.stringify(error));
+    
+    console.error(JSON.parse(error._body));
+    return Observable.throw(JSON.parse(error._body));
   }
+}
 }

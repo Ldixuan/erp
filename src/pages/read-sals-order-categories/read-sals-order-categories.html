@@ -6,10 +6,10 @@
 -->
 <ion-header>
   <ion-navbar>
-        <button ion-button menuToggle>
+    <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title align-title="center">观看订单</ion-title>
+    <ion-title align-title="center">观看{{commandTypeLabel}}订单</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -18,13 +18,24 @@
   <p text-center font-size-small>加载中</p>
 </div>
 
-
 <ion-content>
-    <p *ngIf="noData" text-center>暂无数据</p>
+  
+<ion-refresher (ionRefresh)="doRefresh($event)"> 
+  <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="下拉刷新"
+      refreshingSpinner="bubbles"
+      refreshingText="刷新..."> 
+  </ion-refresher-content>
+  <ion-refresher-content > 
+</ion-refresher-content>
+</ion-refresher>
+
+  <p *ngIf="noData" text-center>暂无数据</p>
   <ion-list>
     <button ion-item *ngFor="let item of orderStatus" (click)="itemSelected(item.categoryId)">
       {{ item.categoryName }}
-      <ion-badge item-end>  {{ item.count }}</ion-badge>
-    </button> 
+      <ion-badge item-end> {{ item.count }}</ion-badge>
+    </button>
   </ion-list>
 </ion-content>

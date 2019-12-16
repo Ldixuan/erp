@@ -1,0 +1,124 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController, AlertController } from 'ionic-angular';
+import { RestProvider } from '../../providers/rest/rest';
+import { BaseUI } from '../../app/common/baseui';
+import { Network } from '@ionic-native/network';
+import { Storage } from '@ionic/storage';
+
+@IonicPage()
+@Component({
+  selector: 'page-validation-order',
+  templateUrl: 'validation-order.html',
+})
+export class ValidationOrderPage extends BaseUI {
+  commandeId:string;
+  validationContent: any;
+  public applicationSenderContent: string;
+  senderContent: string;
+  managerContent: string;
+  financialContent: string;
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public rest : RestProvider,
+    public network : Network,
+    public loadingCtrl:LoadingController,
+    public toastCtrl: ToastController ,
+    public storage : Storage,
+    public alertCtrl: AlertController) {
+    super();
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ValidationOrderPage');
+    this.commandeId = this.navParams.get('commandeId');
+
+    if(this.network.type !='none'){
+      var loading =  super.showLoading(this.loadingCtrl,"正在加载，请稍等");
+        this.rest.GetSalesOrderValidationContent(this.commandeId).subscribe(
+          f => {
+            if(f.Success){
+              if(f['Data']!=null && f['Data']!={})
+                this.validationContent = f['Data'];
+                this.senderContent = this.validationContent.senderContent['content'];
+                this.financialContent = this.validationContent.financialContent['content'];
+                this.managerContent = this.validationContent.managerContent['content'];
+            }
+            loading.dismiss();
+          },
+          error => {
+            loading.dismiss();
+            if(error.Type =='401'){
+              super.logout(this.toastCtrl,this.navCtrl);
+            }else{
+              super.showToast(this.toastCtrl, error.Msg);
+            }
+          }
+        )
+    }
+    else{
+      super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+    }
+
+    this.rest.GetSalesOrderValidationContent(this.commandeId).subscribe()
+  }
+  
+  valideSalesOrder(){
+    // super.showAlert(this.alertCtrl,'提示','确认提交此订单吗?',this.saveSalesOrder(),p=>{
+    //   return;
+    // });
+
+    let confirm = this.alertCtrl.create({
+      title: '提示',
+      message: '确认提交此订单吗',
+      buttons: [
+        {
+          text: '确认',
+          handler:() => {
+            this.saveSalesOrder()
+          }
+        },
+        {
+          text: '取消',
+          handler: ()=> {return;}
+        }
+      ]
+    });
+    confirm.present();
+  }
+  saveSalesOrder(){
+ 
+      if(this.network.type !='none'){
+        var loading =  super.showLoading(this.loadingCtrl,"正在提交，请稍等");
+        this.storage.get("userId").then(p=>{
+          var userId = p;
+          this.rest.UpdateSalesOrderStatut(userId,this.commandeId,this.senderContent ,"1")//1: 提交到财务
+          .subscribe(
+            f => {
+              if(f.Success){
+                super.showToast(this.toastCtrl,"提交成功");
+                this.navCtrl.setRoot('SettingsPage');
+              }else{
+               // alert("保存失敗 : "+f.msg);
+               super.showToast(this.toastCtrl, "提交失敗 : "+f.Msg); 
+              }
+              loading.dismiss();
+            },
+            error => {
+              loading.dismiss();
+              if(error.Type =='401'){
+                super.logout(this.toastCtrl,this.navCtrl);
+              }else{
+                super.showToast(this.toastCtrl, error.Msg);
+              }
+            }
+          )
+        })
+    
+      }
+      else{
+        super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+      }
+    }
+  }
+
+

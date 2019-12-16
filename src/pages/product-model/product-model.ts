@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, AlertController, NavParams,ViewController,ToastController} from 'ionic-angular';
+import { IonicPage, AlertController, NavParams,ViewController,ToastController, NavController} from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { RestProvider} from '../../providers/rest/rest';
 import { BaseUI } from '../../app/common/baseui';
@@ -30,6 +30,7 @@ export class ProductModelPage extends BaseUI {
   constructor(public viewCtrl: ViewController, 
     private formBuilder: FormBuilder, 
     public navParams: NavParams, 
+    public navCtrl:NavController,
     public rest: RestProvider,
     public alerCtrl: AlertController,
     public toastCtrl : ToastController,
@@ -87,7 +88,11 @@ export class ProductModelPage extends BaseUI {
               }
             },
             error => {
-              alert(error); //TODO change to toast
+              if(error.Type =='401'){
+                super.logout(this.toastCtrl,this.navCtrl);
+              }else{
+                super.showToast(this.toastCtrl, error.Msg);
+              }
             });
     }
     else{

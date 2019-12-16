@@ -5,58 +5,63 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-    <ion-toolbar mode="ios" *ngIf="!readModel">
-        <ion-title text-center>销售订单</ion-title>
-        <ion-buttons>
-            <button ion-button menuToggle>
-              <ion-icon name="menu"></ion-icon>
-            </button>
-          </ion-buttons>
-        
-          <ion-buttons end> 
-            <button ion-button [disabled]="!orderForm.valid" (click) = "logForm()">保存</button>
-          </ion-buttons>
-    </ion-toolbar>
+  <ion-navbar mode="ios" *ngIf="!readModel">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title text-center>销售/采购订单</ion-title>
+    <ion-buttons end>
+      <button ion-button [disabled]="!orderForm.valid" (click)="logForm()">保存</button>
+    </ion-buttons>
+  </ion-navbar>
 
-    <ion-navbar *ngIf="readModel">
-      <ion-title align-title="center">销售订单</ion-title>
-        <ion-buttons end> 
-          <button ion-button *ngIf="!hadSubmit" [disabled]="!orderForm.valid" (click) = "logForm()">保存</button>
-        </ion-buttons>
-      </ion-navbar>
+  <ion-navbar *ngIf="readModel">
+    <ion-title align-title="center">销售/采购订单</ion-title>
+    <ion-buttons end>
+      <button ion-button *ngIf="!hadSubmit" [disabled]="!orderForm.valid" (click)="logForm()">保存</button>
+    </ion-buttons>
+  </ion-navbar>
 </ion-header>
 
 <div *ngIf="loading" class="spinner">
-    <ion-spinner center></ion-spinner>
-    <p text-center font-size-small>加载中</p>
-  </div>
+  <ion-spinner center></ion-spinner>
+  <p text-center font-size-small>加载中</p>
+</div>
 
-<ion-content padding  >
-    <div *ngIf="loading==false">
-  <ion-item-group inset="true" [formGroup]="orderForm" >
+<ion-content padding>
+  <div *ngIf="loading==false">
+    <ion-item-group inset="true" [formGroup]="orderForm">
+      <ion-item>
+        <ion-label color="primary" stacked>订单类型*</ion-label>
+        <ion-select formControlName="type" interface="action-sheet" [disabled]="hadSubmit">
+          <ion-option value="O">销售订单</ion-option>
+          <ion-option value="I">采购订单</ion-option>
+        </ion-select>
+      </ion-item>
+
       <ion-item *ngIf="readModel">
         <ion-label color="primary" stacked>订单编号</ion-label>
-        <ion-input type="text"  [disabled]="true" formControlName="title"></ion-input>
-     </ion-item>
-
-      <ion-item>
-     
-        <ion-label color="primary"  stacked>订单日期*</ion-label>
-        <ion-datetime [disabled]="hadSubmit" displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD" formControlName="date"  max="2050"></ion-datetime>
+        <ion-input type="text" [disabled]="true" formControlName="title"></ion-input>
       </ion-item>
 
       <ion-item>
-          <ion-label color="primary" stacked>盖章</ion-label>
-          <ion-select formControlName="seal" interface="action-sheet" [disabled]="hadSubmit">
-              <ion-option [value]="Z001">邯郸公章</ion-option>
-              <ion-option [value]="Z002">邯郸合同章</ion-option>
-              <ion-option [value]="Z003">佛山合同章</ion-option>
-          </ion-select>
+        <ion-label color="primary" stacked>订单日期*</ion-label>
+        <ion-datetime [disabled]="hadSubmit" displayFormat="YYYY年 MM月 DD日" pickerFormat="YYYY MM DD"
+          formControlName="date" max="2050"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="primary" stacked>盖章</ion-label>
+        <ion-select formControlName="seal" interface="action-sheet" [disabled]="hadSubmit">
+          <ion-option value="Z001">邯郸公章</ion-option>
+          <ion-option value="Z002">邯郸合同章</ion-option>
+          <ion-option value="Z003">佛山合同章</ion-option>
+        </ion-select>
       </ion-item>
 
       <ion-item>
         <ion-label color="primary" stacked>收取人</ion-label>
-        <ion-input type="text" [disabled]="hadSubmit" formControlName="sender"></ion-input>
+        <ion-input type="text" [disabled]="hadSubmit" formControlName="receiver"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -72,22 +77,18 @@
 
       <ion-item>
         <ion-label color="primary" stacked>单位*</ion-label>
-        <ionic-selectable
-          item-content 
-          [(ngModel)]="deptSelect"
-          [ngModelOptions]="{standalone: true}"
-          [items]="depts"
-          itemTextField="name"
-          [canSearch]="true"
-          [disabled]="this.depts.length == 0"
-          (onChange) = "changeDept()"
-          >
+        <ionic-selectable item-content [(ngModel)]="deptSelect" [ngModelOptions]="{standalone: true}" [items]="depts"
+          itemTextField="name" [canSearch]="true" [disabled]="this.depts.length == 0" (onChange)="changeDept()">
         </ionic-selectable>
       </ion-item>
       <ion-item>
         <ion-label color="primary" stacked>发送人</ion-label>
-        <ion-input type="text" [disabled]="hadSubmit" formControlName="receiver" autocorrect="on"></ion-input>
-      </ion-item>  
+        <ion-input type="text" [disabled]="hadSubmit" formControlName="sender" autocorrect="on"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary" stacked>订单公司名称</ion-label>
+        <ion-input type="text" [disabled]="hadSubmit" formControlName="entrepriseName" autocorrect="on"></ion-input>
+      </ion-item>
 
       <ion-item>
         <ion-label color="primary" stacked>传真</ion-label>
@@ -100,54 +101,58 @@
       </ion-item>
 
       <ion-item>
-          <ion-label color="primary" stacked>备注</ion-label>
-          <ion-textarea [disabled]="hadSubmit" formControlName="descript"></ion-textarea>
+        <ion-label color="primary" stacked>备注</ion-label>
+        <ion-textarea [disabled]="hadSubmit" formControlName="descript"></ion-textarea>
       </ion-item>
 
       <ion-item>
-          <ion-label color="primary" stacked>更正说明</ion-label>
-          <ion-textarea [disabled]="hadSubmit" formControlName="remarkCorrige"></ion-textarea>
+        <ion-label color="primary" stacked>更正说明</ion-label>
+        <ion-textarea [disabled]="hadSubmit" formControlName="remarkCorrige"></ion-textarea>
       </ion-item>
 
       <ion-item>
-          <ion-label color="primary" stacked>回传说明</ion-label>
-          <ion-textarea [disabled]="hadSubmit" formControlName="remarkfeedback"></ion-textarea>
+        <ion-label color="primary" stacked>回传说明</ion-label>
+        <ion-textarea [disabled]="hadSubmit" formControlName="remarkfeedback"></ion-textarea>
       </ion-item>
 
       <ion-item no-lines margin-top>
-          <ion-label color="primary" stacked>审核后将记录复制到一览表</ion-label>
-          <ion-toggle color="primary" [disabled]="hadSubmit" formControlName="copyAfterCheck" checked="{{orderForm.value.copyAfterCheck == '1'}}"></ion-toggle>
+        <ion-label color="primary" stacked>审核后将记录复制到一览表</ion-label>
+        <ion-toggle color="primary" [disabled]="hadSubmit" formControlName="copyAfterCheck"
+          checked="{{orderForm.value.copyAfterCheck == '1'}}"></ion-toggle>
       </ion-item>
 
-  </ion-item-group>
+    </ion-item-group>
 
-  <a margin-top ion-item style="font-size: 1.5rem;" (click)="presentModal()">
+    <a margin-top ion-item style="font-size: 1.5rem;" (click)="presentModal()">
       添加货物
-  </a>
+    </a>
 
-  <ion-list id="listProduct" >
-    <ion-card *ngFor="let product of listProduct" (click) = "presentModal(product, listProduct.indexOf(product))"> 
-      <ion-card-header>
-        {{product.nameProduct}}
-      </ion-card-header>
-      <ion-card-content>
-        <ion-grid>
-          <ion-row inline>
-            <ion-col col-8 >数量 : {{product.numberProduct}} {{product.unitProduct}}</ion-col>
-            <ion-col col-4 pull-3>单价 : {{product.priceProduct}}</ion-col>
-            
-          </ion-row>
-          <ion-row>
-            <ion-col col-5>金额 : {{product.priceProduct*product.numberProduct}} 元</ion-col>
-            <ion-col col-7>交货日期 : {{product.datePayProduct}} </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>备注 : {{product.descriptProduct}} </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
-  <button *ngIf="readModel && !hadSubmit" ion-button full color="secondary" (click)="valideSalesOrder()">提交订单</button>
-</div>
+    <ion-list id="listProduct">
+      <ion-card *ngFor="let product of listProduct" (click)="presentModal(product, listProduct.indexOf(product))">
+        <ion-card-header>
+          {{product.nameProduct}}
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row inline>
+              <ion-col col-8>数量 : {{product.numberProduct}} {{product.unitProduct}}</ion-col>
+              <ion-col col-4 pull-3>单价 : {{product.priceProduct}}</ion-col>
+
+            </ion-row>
+            <ion-row>
+              <ion-col col-5>金额 : {{product.priceProduct*product.numberProduct}} 元</ion-col>
+              <ion-col col-7>交货日期 : {{product.datePayProduct}} </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>备注 : {{product.descriptProduct}} </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+    <!-- && !hadSubmit -->
+    <button *ngIf="readModel " ion-button full color="secondary" (click)="valideSalesOrder()">
+       {{validationContentAction}}
+    </button>
+  </div>
 </ion-content>

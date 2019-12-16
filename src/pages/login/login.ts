@@ -98,7 +98,8 @@ export class LoginPage extends BaseUI {
       },
       error => {
         loading.dismiss();
-        alert(error);//TODO remove
+        super.showToast(this.toastCtrl, error.Msg);
+        //alert(error);//TODO remove
       });
     }
     else{
@@ -123,7 +124,9 @@ export class LoginPage extends BaseUI {
            loading.dismiss();
            if(f["Success"]==true){
             this.storage.set("userId",userTosend[0].id);
+            this.storage.set("username",userTosend[0].username);
             this.storage.set("token",f["Data"].token);
+            this.storage.set("permission",JSON.stringify(f["Data"].permission));
             this.navCtrl.setRoot('SettingsPage');
            }
            else{
@@ -131,7 +134,7 @@ export class LoginPage extends BaseUI {
            }
          },
          error => {
-           alert(error);//TODO remove
+          super.showToast(this.toastCtrl, error.Msg);
          });
         }
         else{

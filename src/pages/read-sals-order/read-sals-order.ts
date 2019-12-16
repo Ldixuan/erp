@@ -24,7 +24,9 @@ export class ReadSalsOrderPage extends BaseUI{
   private userId : string;
   private hasChangeData = false;
   CategoryId : string;
-
+  CommandTypeId : string;
+  commandTypeLabel : string;
+  labelColor: string;
  loading : boolean = false;
 
   constructor(
@@ -36,6 +38,9 @@ export class ReadSalsOrderPage extends BaseUI{
     public network: Network) {
       super();
       this.CategoryId = this.navParams.get('cateogryId');
+      this.CommandTypeId = this.navParams.get('commandTypeId');
+      this.commandTypeLabel = this.navParams.get('commandTypeLabel');
+      this.labelColor= this.CommandTypeId=='O'? 'primary':'secondary';
       this.initSalsOrdersData();
   }
 
@@ -44,7 +49,8 @@ export class ReadSalsOrderPage extends BaseUI{
       this.userId = val;
       this.loading = true;
       if(this.network.type !='none'){
-        this.rest.GetOrdersByUserId(this.userId,this.CategoryId,"O")
+        
+        this.rest.GetOrdersByUserId(this.userId,this.CategoryId, this.CommandTypeId) //TODO: change
             .subscribe(
               (f : any) => {     
                 if(f.Success){
@@ -55,7 +61,11 @@ export class ReadSalsOrderPage extends BaseUI{
                 this.loading = false;
               },
               error => {
-                alert(error); //TODO change to toast
+                if(error.Type =='401'){
+                  super.logout(this.toastCtrl,this.navCtrl);
+                }else{
+                  super.showToast(this.toastCtrl, error.Msg);
+                }
                 this.loading = false;
               }
             );

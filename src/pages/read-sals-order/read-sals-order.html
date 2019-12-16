@@ -10,7 +10,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title align-title="center">订单详情</ion-title>
+    <ion-title align-title="center">{{commandTypeLabel}}订单</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -23,10 +23,14 @@
 <ion-content>
     <ion-card *ngFor="let order of salsOrders" (click) = "presentOrderPage(order, salsOrders.indexOf(order))"> 
         <ion-card-header style="margin-bottom: 5px; padding-bottom: 5px;">
-          订单编号 : {{order.commandeId}}
+          <span> 订单编号 : {{order.commandeId}}</span>
+          <span float-right><ion-badge [color]='labelColor'>{{commandTypeLabel}}</ion-badge></span>
         </ion-card-header>
         <ion-card-content>
           <ion-grid style="padding-top: 0px;">
+            <ion-row inline>
+              <ion-col>修改日期 : {{order.updateOn}}</ion-col>
+            </ion-row>
             <ion-row inline>
               <ion-col>收取人 : {{order.receiver}}</ion-col>
             </ion-row>
@@ -37,7 +41,7 @@
               <ion-col>订单日期 : {{order.commandeCreateDate}} </ion-col>
             </ion-row>
             <ion-row>
-                <ion-col>订单创建人 : {{userId}} </ion-col>
+                <ion-col>订单创建人 : {{order.creator}} </ion-col>
                 <ion-col>订单状态 : {{order.status}} </ion-col>
             </ion-row>
             
