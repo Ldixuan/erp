@@ -14,6 +14,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { RestProvider } from '../providers/rest/rest';
 import { AppVersion } from '@ionic-native/app-version';
 
+import {CodePush} from "@ionic-native/code-push";
+
 @NgModule({
   declarations: [
     MyApp
@@ -32,6 +34,7 @@ import { AppVersion } from '@ionic-native/app-version';
   providers: [
     StatusBar,
     SplashScreen,
+    CodePush,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RestProvider,
     Network,
