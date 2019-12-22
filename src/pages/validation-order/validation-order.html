@@ -1,15 +1,9 @@
-<!--
-  Generated template for the ValidationOrderPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
   <ion-navbar>
     <ion-title>审核订单</ion-title>
-    <ion-buttons  end> <button ion-button [disabled]='(senderContent==null||senderContent=="")
-      &&(senderContent!=""||senderContent!=null)
-      &&(senderContent!=""||senderContent!=null)' 
+    <ion-buttons  end> <button ion-button [disabled]='senderContent==null||senderContent.length<=0'
+      [hidden]='(statusId!=1&&statusId!=3&&statusId!=0)&&((statusId==1&&!hasFinancialPermission)||(statusId==3&&!hasManagerPermission))'
       (click)="valideSalesOrder()" color="primary">提交</button>
     </ion-buttons>
   </ion-navbar>
@@ -19,16 +13,16 @@
 
   <ion-item>
     <ion-label stacked>发起人申请内容</ion-label>
-    <ion-textarea [(ngModel)]="senderContent" rows="3"></ion-textarea>
+    <ion-textarea [(ngModel)]="senderContent" rows="3" [disabled]='senderDisable'></ion-textarea>
   </ion-item>
   
   <ion-item>
       <ion-label stacked>财务审批内容</ion-label>
-      <ion-textarea [(ngModel)]="financialContent" rows="3" disabled></ion-textarea>
+      <ion-textarea [(ngModel)]="financialContent" rows="3" [disabled]='financialDisable&&!hasFinancialPermission'></ion-textarea>
     </ion-item>
     
   <ion-item>
       <ion-label stacked>经理审批内容</ion-label>
-      <ion-textarea [(ngModel)]="managerContent" rows="3" disabled></ion-textarea>
+      <ion-textarea [(ngModel)]="managerContent" rows="3" [disabled]='managerDisable&&!hasManagerPermission'></ion-textarea>
     </ion-item>
 </ion-content>

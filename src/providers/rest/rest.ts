@@ -24,9 +24,9 @@ export class RestProvider {
   }
 
   //private host = "http://3.90.11.160/";
-  private host = "https://api.europetechs.com/";
-  //private host = "http://localhost/LjWebApplication/";
-  private apiUrlGetCargoByName = this.host + 'api/cargo';
+  //private host = "https://api.europetechs.com/";
+  private host = "http://localhost/LjWebApplication/";
+  private apiUrlGetCargoByName = this.host + 'api/cargo/GetCargo';
   private apiUrlGetOrdersByUserId = this.host + 'api/SalesOrder/GetSalesOrderByUserId';
   private apiUrlGetSalesOrderCategoriesByUserId = this.host + 'api/SalesOrder/GetSalesOrderCategoriesByUserId';
   private apiUrlGetDeptByName = this.host + 'api/Client';
@@ -37,11 +37,22 @@ export class RestProvider {
   private apiUrlUpdateSalesOrderStatut = this.host + "api/SalesOrder/UpdateSalesOrderStatut";
   private apiUrlCheckAvailabilityOfToken = this.host + "api/Auth/CheckAvailabilityOfToken";
   private apiUrlGetSalesOrderValidationContent = this.host + 'api/SalesOrder/GetSalesOrderValidationContent';
+  private apiUrlGetCompanyName = this.host + 'api/Version/GetCompanyName';
+  private apiUrlGetSalesOrderValidationList = this.host + 'api/SalesOrder/GetSalesOrderValidationList';
+  private apiUrlGetUnitList = this.host + 'api/cargo/GetUnitList';
   /*
   * With auth services 
   */
   GetCargoByName(limit:number):Observable<any>{
       return this.getUrlReturn(this.apiUrlGetCargoByName+"?limit="+limit);
+  }
+
+  GetSalesOrderValidationList(categoryId:number,type:string):Observable<any>{
+    return this.postUrlReturn(this.apiUrlGetSalesOrderValidationList,{categoryId:categoryId,type:type});
+  }
+
+  GetUnitList():Observable<any>{
+    return this.getUrlReturn(this.apiUrlGetUnitList);
   }
 
   GetSalesOrderValidationContent(orderId:string):Observable<any>{
@@ -67,8 +78,12 @@ export class RestProvider {
   InsertSalesOrderByOrderId(orderInfo, products:Array<any>):Observable<any>{
     return this.postUrlReturn(this.apiUrlInsertSalesOrderByOrderId, {orderInfo:orderInfo,products:products});
   }
-  UpdateSalesOrderStatut(userId,orderId, applicationContent,statusCode):Observable<any>{
+  UpdateSalesOrderStatut(userId,orderId, applicationContent, statusCode):Observable<any>{
     return this.postUrlReturn(this.apiUrlUpdateSalesOrderStatut, {userId:userId,applicationContent:applicationContent,orderId:orderId,statutCode:statusCode});
+  }
+
+  GetCompanyName():Observable<any>{
+    return this.getUrlReturn(this.apiUrlGetCompanyName);
   }
 
   /**

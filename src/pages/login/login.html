@@ -2,14 +2,14 @@
   <div class="loginZone" >
       <ion-list  margin-bottom>
           <ion-item style="padding-left:0px; border: 0px;">
-              <ion-label stacked>用户名(*)</ion-label>
+              <ion-label stacked>用户名</ion-label>
               <ion-select [(ngModel)]="selectedUserId" interface="action-sheet" disabled="{{hasLogUserList}}">
                 <ion-option *ngFor="let user of userList"  [value]="user.id">{{user.id}} - {{user.username}}</ion-option>
               </ion-select>
           </ion-item>
         
           <ion-item lines="none" style="padding-top:10px; padding-left:0px ;">
-            <ion-label stacked>密码(*)</ion-label>
+            <ion-label stacked>密码</ion-label>
             <ion-input type="password" [(ngModel)]="password"></ion-input>
           </ion-item>
         </ion-list>

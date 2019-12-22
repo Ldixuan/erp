@@ -58,8 +58,7 @@
     <ion-item>
       <ion-label color="primary" interface="action-sheet" stacked>价类</ion-label>
       <ion-select (value)="unitPriceType">
-        <ion-option value="unit">单位价</ion-option>
-        <ion-option value="meter">米价</ion-option>
+        <ion-option *ngFor="let item of unitList" (value)="item.equivalence">{{item.label}}</ion-option>
       </ion-select>
     </ion-item>
 

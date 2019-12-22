@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, AlertController, NavParams,ViewController,ToastController, NavController} from 'ionic-angular';
+import { IonicPage, AlertController, NavParams,ViewController,ToastController, NavController, List} from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { RestProvider} from '../../providers/rest/rest';
 import { BaseUI } from '../../app/common/baseui';
 import { Network } from '@ionic-native/network';
+import { Storage } from '@ionic/storage';
 /**
  * Generated class for the ProductModelPage page.
  *
@@ -25,7 +26,7 @@ export class ProductModelPage extends BaseUI {
   modifMod = false;
   productSelect : any;
   hadSubmit = false;
-  
+  unitList:Array<any> = []
 
   constructor(public viewCtrl: ViewController, 
     private formBuilder: FormBuilder, 
@@ -34,7 +35,8 @@ export class ProductModelPage extends BaseUI {
     public rest: RestProvider,
     public alerCtrl: AlertController,
     public toastCtrl : ToastController,
-    public network: Network) {
+    public network: Network,
+    public storage: Storage) {
     super();
     
     
@@ -77,27 +79,30 @@ export class ProductModelPage extends BaseUI {
   }
 
   initProducts(){
-    if(this.network.type !='none'){
-      this.rest.GetCargoByName(-1) // 填写url的参数
-            .subscribe(
-            (f : any) => {
-              if(f.Success){
-                this.products = f.Data;
-              }else{
-                super.showToast(this.toastCtrl, f.Msg);
-              }
-            },
-            error => {
-              if(error.Type =='401'){
-                super.logout(this.toastCtrl,this.navCtrl);
-              }else{
-                super.showToast(this.toastCtrl, error.Msg);
-              }
-            });
-    }
-    else{
-      super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
-    }
+    this.storage.get('unitList').then(p=>{
+      this.unitList = JSON.parse(p).filter(x=>x.label!=null&&x.equivalence!=null);
+      if(this.network.type !='none'){
+        this.rest.GetCargoByName(-1) // 填写url的参数
+              .subscribe(
+              (f : any) => {
+                if(f.Success){
+                  this.products = f.Data;
+                }else{
+                  super.showToast(this.toastCtrl, f.Msg);
+                }
+              },
+              error => {
+                if(error.Type =='401'){
+                  super.logout(this.toastCtrl,this.navCtrl);
+                }else{
+                  super.showToast(this.toastCtrl, error.Msg);
+                }
+              });
+      }
+      else{
+        super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+      }
+    })
   }
 
   changeProduct(){
