@@ -4,7 +4,8 @@ import { BaseUI } from '../../app/common/baseui';
 import { Network } from '@ionic-native/network';
 import { RestProvider } from '../../providers/rest/rest';
 import { Storage } from '@ionic/storage';
-import { SettingsPage } from '../settings/settings';
+import { Observable } from 'rxjs/Observable';
+
 
 
 /**
@@ -81,18 +82,18 @@ export class LoginPage extends BaseUI {
 
   loadUserList(loading){
     if(this.network.type !='none'){
-      this.rest.GetUserList() 
-      .subscribe(
-      (f : any) => {
-        if(f.Success){
-          this.userList = f.Data;
+      Observable.forkJoin([this.rest.GetUserList() , this.rest.GetUnitList()])
+      .subscribe( (f : any) => {
+        if(f[0].Success&&f[1].Success){
+          this.userList = f[0].Data;
+          this.storage.set('unitList',JSON.stringify(f[1].Data));
         }else{
           super.showToast(this.toastCtrl, f.Msg);
         }
         if(this.userList.length != 0){
           this.hasLogUserList = false;
         }else{
-          super.showToast(this.toastCtrl, "用户名获取失败");
+          super.showToast(this.toastCtrl, "用户名获取失败或单位获取失败");
         }
         loading.dismiss();
       },
@@ -141,8 +142,6 @@ export class LoginPage extends BaseUI {
           super.showToast(this.toastCtrl,"请输入正确的账号及密码");
         }
        }
-      
-    
     }
     else{
       super.showToast(this.toastCtrl, "您处于离线状态，请连接网络!");

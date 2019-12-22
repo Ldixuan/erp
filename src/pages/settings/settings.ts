@@ -16,11 +16,28 @@ import { Storage } from '@ionic/storage';
 })
 export class SettingsPage {
 username : string;
+financialPermission:boolean = false;
+managerPermission:boolean = false;
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage :Storage) {
   }
 
   ionViewDidLoad() {
     this.storage.get('username').then(p=>this.username=p);
+    this.storage.get('permission').then(p=>{
+     var permission = JSON.parse(p);
+
+     if(permission!=null && permission.length>0){
+      permission.forEach(val => {
+        if(val.permissionCode== 'OrderModule_financialValidation'){
+          this.financialPermission =true;
+        }
+        if(val.permissionCode== 'OrderModule_managerValidation'){
+          this.managerPermission = true;
+        }
+      });
+     }
+ 
+    });
   }
   logout(){
     Promise.all([this.storage.remove("userId"),this.storage.remove("token")]).then(values => {
@@ -46,6 +63,6 @@ username : string;
     this.navCtrl.push('SalsOrderPage');
   }
   valideOrder(){
-    
+    this.navCtrl.push('ValidationOrderListPage');
   }
 }

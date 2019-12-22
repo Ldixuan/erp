@@ -13,6 +13,12 @@ import { Storage } from '@ionic/storage';
 export class ValidationOrderPage extends BaseUI {
   commandeId:string;
   validationContent: any;
+  validationStaus : number;
+  senderDisable : boolean = true;
+  financialDisable:boolean = true;
+  managerDisable : boolean = true;
+  statusId: string='1';
+
   public applicationSenderContent: string;
   senderContent: string;
   managerContent: string;
@@ -31,35 +37,72 @@ export class ValidationOrderPage extends BaseUI {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ValidationOrderPage');
     this.commandeId = this.navParams.get('commandeId');
-
-    if(this.network.type !='none'){
-      var loading =  super.showLoading(this.loadingCtrl,"正在加载，请稍等");
-        this.rest.GetSalesOrderValidationContent(this.commandeId).subscribe(
-          f => {
-            if(f.Success){
-              if(f['Data']!=null && f['Data']!={})
-                this.validationContent = f['Data'];
-                this.senderContent = this.validationContent.senderContent['content'];
-                this.financialContent = this.validationContent.financialContent['content'];
-                this.managerContent = this.validationContent.managerContent['content'];
+    this.storage.get('permission').then(p=>{
+      var permission = JSON.parse(p);
+      var hasFinancialPermission= false;
+      var hasManagerPermission= false;
+      permission.map(p=>{
+        if(p.permissionCode=='OrderModule_financialValidation')
+        {
+          hasFinancialPermission = true;
+        }
+        if(p.permissionCode=='OrderModule_managerValidation'){
+          hasManagerPermission = true;
+        }
+      });
+      this.statusId = this.navParams.get('statusId');
+      this.validationStaus = this.navParams.get('validationStaus');// 0:未保存 , 1:已保存未提交, 2:已提交, 3:可审核
+      switch(this.validationStaus){
+        case 1: 
+          this.senderDisable = false;
+          this.financialDisable = true;
+          this.managerDisable = true;
+          break;
+        case 2 : 
+          this.senderDisable = true;
+          this.financialDisable = true;
+          this.managerDisable = true;
+          break;
+        case 3 : 
+          this.senderDisable = true;
+          this.financialDisable = false;
+          this.managerDisable = false;
+          break;
+        default :
+          this.senderDisable = true;
+          this.financialDisable = true;
+          this.managerDisable = true;
+          break;
+      }
+      if(this.network.type !='none'){
+        var loading =  super.showLoading(this.loadingCtrl,"正在加载，请稍等");
+          this.rest.GetSalesOrderValidationContent(this.commandeId).subscribe(
+            f => {
+              if(f.Success){
+                if(f['Data']!=null && f['Data']!={})
+                  this.validationContent = f['Data'];
+                  this.senderContent = this.validationContent.senderContent['content'];
+                  this.financialContent = this.validationContent.financialContent['content'];
+                  this.managerContent = this.validationContent.managerContent['content'];
+              }
+              loading.dismiss();
+            },
+            error => {
+              loading.dismiss();
+              if(error.Type =='401'){
+                super.logout(this.toastCtrl,this.navCtrl);
+              }else{
+                super.showToast(this.toastCtrl, error.Msg);
+              }
             }
-            loading.dismiss();
-          },
-          error => {
-            loading.dismiss();
-            if(error.Type =='401'){
-              super.logout(this.toastCtrl,this.navCtrl);
-            }else{
-              super.showToast(this.toastCtrl, error.Msg);
-            }
-          }
-        )
-    }
-    else{
-      super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
-    }
-
-    this.rest.GetSalesOrderValidationContent(this.commandeId).subscribe()
+          )
+      }
+      else{
+        super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+      }
+  
+      this.rest.GetSalesOrderValidationContent(this.commandeId).subscribe()
+    });
   }
   
   valideSalesOrder(){
@@ -91,14 +134,33 @@ export class ValidationOrderPage extends BaseUI {
         var loading =  super.showLoading(this.loadingCtrl,"正在提交，请稍等");
         this.storage.get("userId").then(p=>{
           var userId = p;
-          this.rest.UpdateSalesOrderStatut(userId,this.commandeId,this.senderContent ,"1")//1: 提交到财务
+          var submitStatusId;
+          var submitContent = "";
+          switch(parseInt(this.statusId)){
+              case 0:
+                submitStatusId = 1;
+                submitContent = this.senderContent;
+                break;
+              case 1:
+                submitStatusId = 3;
+                submitContent = this.financialContent;
+                break;
+              case 3:
+                submitStatusId = 5;
+                submitContent = this.managerContent;
+                break;
+              default:
+                submitStatusId = this.statusId;
+                break;
+          }
+          this.rest.UpdateSalesOrderStatut(userId,this.commandeId,submitContent,submitStatusId)//1: 提交到财务
           .subscribe(
             f => {
               if(f.Success){
                 super.showToast(this.toastCtrl,"提交成功");
                 this.navCtrl.setRoot('SettingsPage');
               }else{
-               // alert("保存失敗 : "+f.msg);
+             
                super.showToast(this.toastCtrl, "提交失敗 : "+f.Msg); 
               }
               loading.dismiss();

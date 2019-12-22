@@ -25,6 +25,8 @@ export class SalsOrderPage extends BaseUI {
   hadSubmit = false;
   disableDepts = false;
   loading = false;
+  validationStaus = 0; // 0:未保存 , 1:已保存未提交, 2:已提交, 3:可审核
+
   validationContentAction: string;
   constructor(
     private formBuilder: FormBuilder,
@@ -67,7 +69,7 @@ export class SalsOrderPage extends BaseUI {
 
     this.storage.get("username").then((val) => {
       var temp = this.orderForm.value;
-      temp.receiver = val;
+      temp.sender = val;
       this.orderForm.setValue(temp);
     });
 
@@ -76,6 +78,31 @@ export class SalsOrderPage extends BaseUI {
       temp.userId = val;
       this.orderForm.setValue(temp);
     });
+
+    if (this.network.type != 'none') {
+      this.rest.GetCompanyName()
+        .subscribe(
+          f => {
+            if (f.Success) {
+              var temp = this.orderForm.value;
+              temp.entrepriseName = f.Data;
+              this.orderForm.setValue(temp);
+            } else {
+              super.showToast(this.toastCtrl, f.Msg);
+            }
+          },
+          error => {
+            if (error.Type == '401') {
+              super.logout(this.toastCtrl, this.navCtrl);
+            } else {
+              super.showToast(this.toastCtrl, error.Msg);
+            }
+          });
+    }
+    else {
+      super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! ");
+    }
+
 
     let title = this.navParams.get('title');
     if (title != undefined) {
@@ -143,14 +170,29 @@ export class SalsOrderPage extends BaseUI {
               temp.remarkCorrige = orderDetail.MrmkPo;
               temp.entrepriseName = orderDetail.entrepriseName;
               this.orderForm.setValue(temp);
-              if (Number.parseInt(orderDetail.status) != 0) {
-                this.hadSubmit = true;
-                this.validationContentAction ="观看审核";
-              }
-              else {
-                this.hadSubmit = false;
-                this.validationContentAction ="提交审核";
-              }
+
+              this.storage.get('permission').then(p=>{
+                var permission = JSON.parse(p);
+                var hasPermission= false;
+                permission.map(p=>{
+                  if(p.permissionCode=='OrderModule_financialValidation'||p.permissionCode=='OrderModule_managerValidation')
+                  {
+                    hasPermission = true;
+                  }
+                });
+               var status = Number.parseInt(orderDetail.status);
+                if(status != 0){
+                  this.hadSubmit = true;
+                  this.validationStaus= (hasPermission&&(status==1||status ==3) )?3:2;
+                  this.validationContentAction = (hasPermission&&(status==1||status ==3) )?'审核':'查看审核';
+                }
+                else{
+                  this.hadSubmit = false;
+                  this.validationStaus=1;
+                  this.validationContentAction ="提交审核";
+                }
+              });
+         
               this.deptSelect = { id: orderDetail.departmentId, name: orderDetail.departmentLabel };
 
               let productsInfo = f.Data.cargo;
@@ -320,10 +362,10 @@ export class SalsOrderPage extends BaseUI {
     this.orderForm.setValue(temp);
   }
 
-  valideSalesOrder() {
-    var commandeId = this.orderId
+  valideSalesOrder(validationStaus) {
+    var commandeId = this.orderId;
     if (commandeId != null && commandeId != "" && this.readModel) {
-      this.navCtrl.push('ValidationOrderPage', { commandeId: commandeId });
+      this.navCtrl.push('ValidationOrderPage', { statusId:this.orderForm.get('status').value ,commandeId: commandeId ,validationStaus:validationStaus });
     }
   }
 
