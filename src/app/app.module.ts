@@ -1,3 +1,4 @@
+import { JpushProvider } from './../providers/jpush/jpush';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -13,6 +14,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { RestProvider } from '../providers/rest/rest';
 import { AppVersion } from '@ionic-native/app-version';
+import { JPush } from 'ionic3-jpush';
 
 import {CodePush} from "@ionic-native/code-push";
 
@@ -35,7 +37,9 @@ import {CodePush} from "@ionic-native/code-push";
     StatusBar,
     SplashScreen,
     CodePush,
+    JPush,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    JpushProvider,
     RestProvider,
     Network,
     AppVersion
