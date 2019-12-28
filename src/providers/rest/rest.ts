@@ -1,5 +1,5 @@
 
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable  } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { timeout, catchError, mergeMap } from 'rxjs/operators'
 import { Http, Response, Headers, RequestOptions } from '@angular/http';

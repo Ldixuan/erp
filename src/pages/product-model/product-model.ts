@@ -140,8 +140,7 @@ export class ProductModelPage extends BaseUI {
         }
       ]
     });
-    confirm.present()
-    
+    confirm.present();
   }
 
 

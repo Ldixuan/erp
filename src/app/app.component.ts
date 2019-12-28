@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, LoadingController } from 'ionic-angular';
+import { Nav, Platform, LoadingController} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { CodePush, InstallMode } from '@ionic-native/code-push';
@@ -18,7 +18,13 @@ export class MyApp {
 
   listShow: { [key: string]: boolean } = {};
 
-  constructor(public rest: RestProvider,public loadingCtrl: LoadingController, public codePush: CodePush, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public rest: RestProvider,
+    public loadingCtrl: LoadingController, 
+    public codePush: CodePush, 
+    public platform: Platform, 
+    public statusBar: StatusBar, 
+    public plt : Platform,
+    public splashScreen: SplashScreen) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -38,6 +44,7 @@ export class MyApp {
       { title: '查看采购订单', component: 'ReadSalsOrderCategoriesPage', icon: 'document', param: { commandTypeId: 'I', commandTypeLabel: '采购' } },
       { title: '编辑出货订单', component: 'AddDeliveryOrderPage', icon: 'create', param: null },
       { title: '查看出货订单', component: 'ReadDeliveryOrderPage', icon: 'document', param: null },
+      { title: '审核销售/采购订单', component: 'ValidationOrderListPage', icon: 'arrow-dropdown-circle', param: null },
       // { title: 'Home', component: HomePage , icon:'document'},
       // { title: 'List', component: ListPage , icon:'document'},
       { title: '销售排行', component: 'SalesPerformanceRewardPage', icon: 'star', param: null },
@@ -53,7 +60,9 @@ export class MyApp {
     this.platform.ready().then(() => {
      this.statusBar.styleDefault();
      this.splashScreen.hide();
-     this.checkCodePush();
+     if(this.plt.is('cordova')){
+        this.checkCodePush();
+     }
     });
   }
 
