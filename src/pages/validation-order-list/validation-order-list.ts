@@ -18,6 +18,7 @@ import { Network } from '@ionic-native/network';
 })
 export class ValidationOrderListPage extends BaseUI {
   List:Array<any>= [];
+  noData:boolean = false;
   constructor(public toastCtrl:ToastController,public network: Network ,public navCtrl: NavController, public navParams: NavParams, public rest: RestProvider) {
     super();
   }
@@ -33,6 +34,7 @@ export class ValidationOrderListPage extends BaseUI {
               });
               validationList.map(p=>p.labelColor=(p.commandeTypeId=='I'?'primary':'secondary'));
               this.List = validationList;
+              this.noData = this.List.length<=0? true : false;
             } else {
               super.showToast(this.toastCtrl, f.Msg);
             }

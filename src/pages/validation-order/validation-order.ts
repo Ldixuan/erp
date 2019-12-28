@@ -17,6 +17,7 @@ export class ValidationOrderPage extends BaseUI {
   senderDisable : boolean = true;
   financialDisable:boolean = true;
   managerDisable : boolean = true;
+  isHidden : boolean = false;
   statusId: string='1';
 
   public applicationSenderContent: string;
@@ -35,7 +36,6 @@ export class ValidationOrderPage extends BaseUI {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ValidationOrderPage');
     this.commandeId = this.navParams.get('commandeId');
     this.storage.get('permission').then(p=>{
       var permission = JSON.parse(p);
@@ -50,6 +50,9 @@ export class ValidationOrderPage extends BaseUI {
           hasManagerPermission = true;
         }
       });
+      // if(hasFinancialPermission&&){
+
+      // }
       this.statusId = this.navParams.get('statusId');
       this.validationStaus = this.navParams.get('validationStaus');// 0:未保存 , 1:已保存未提交, 2:已提交, 3:可审核
       switch(this.validationStaus){
@@ -79,11 +82,12 @@ export class ValidationOrderPage extends BaseUI {
           this.rest.GetSalesOrderValidationContent(this.commandeId).subscribe(
             f => {
               if(f.Success){
-                if(f['Data']!=null && f['Data']!={})
+                if(f['Data']!=null && f['Data']!={}){
                   this.validationContent = f['Data'];
                   this.senderContent = this.validationContent.senderContent['content'];
                   this.financialContent = this.validationContent.financialContent['content'];
                   this.managerContent = this.validationContent.managerContent['content'];
+                }
               }
               loading.dismiss();
             },
@@ -106,10 +110,6 @@ export class ValidationOrderPage extends BaseUI {
   }
   
   valideSalesOrder(){
-    // super.showAlert(this.alertCtrl,'提示','确认提交此订单吗?',this.saveSalesOrder(),p=>{
-    //   return;
-    // });
-
     let confirm = this.alertCtrl.create({
       title: '提示',
       message: '确认提交此订单吗',
@@ -158,7 +158,7 @@ export class ValidationOrderPage extends BaseUI {
             f => {
               if(f.Success){
                 super.showToast(this.toastCtrl,"提交成功");
-                this.navCtrl.setRoot('SettingsPage');
+                this.navCtrl.setRoot('ValidationOrderListPage');// TODO： Add into into the validation list
               }else{
              
                super.showToast(this.toastCtrl, "提交失敗 : "+f.Msg); 
@@ -175,7 +175,6 @@ export class ValidationOrderPage extends BaseUI {
             }
           )
         })
-    
       }
       else{
         super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 

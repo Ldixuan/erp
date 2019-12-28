@@ -16,7 +16,7 @@
     <ion-title align-title="center">审核订单</ion-title>
   </ion-navbar>
 </ion-header>
-<div *ngIf="List.length<=0" class="spinner">
+<div *ngIf="List.length<=0&&!noData" class="spinner">
   <ion-spinner center></ion-spinner>
   <p text-center font-size-small>加载中...</p>
 </div>
@@ -33,6 +33,7 @@
   </ion-refresher-content>
   </ion-refresher>
   
+  <p *ngIf="noData" text-center>暂无数据</p>
   <div *ngFor="let item of List" padding>
     <h6 text-center style="font-weight: bold;">{{item.commandTypeLabel}} -- {{item.statusLabel}}</h6>
     <ion-card *ngFor="let i of item.commandDetails" (click)='showCommandDetail(i)' style="margin-left: 0px; margin-right: 0px; width: 100%;">

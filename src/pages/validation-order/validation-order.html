@@ -3,14 +3,13 @@
   <ion-navbar>
     <ion-title>审核订单</ion-title>
     <ion-buttons  end> <button ion-button [disabled]='senderContent==null||senderContent.length<=0'
-      [hidden]='(statusId!=1&&statusId!=3&&statusId!=0)&&((statusId==1&&!hasFinancialPermission)||(statusId==3&&!hasManagerPermission))'
+      [hidden]= 'isHidden'
       (click)="valideSalesOrder()" color="primary">提交</button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-
   <ion-item>
     <ion-label stacked>发起人申请内容</ion-label>
     <ion-textarea [(ngModel)]="senderContent" rows="3" [disabled]='senderDisable'></ion-textarea>
