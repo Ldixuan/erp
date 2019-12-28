@@ -1,10 +1,12 @@
+
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, ViewController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, ViewController, LoadingController, Platform } from 'ionic-angular';
 import { BaseUI } from '../../app/common/baseui';
 import { Network } from '@ionic-native/network';
 import { RestProvider } from '../../providers/rest/rest';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
+import {JpushProvider} from '../../providers/jpush/jpush';
 
 
 
@@ -33,7 +35,9 @@ export class LoginPage extends BaseUI {
               public toastCtrl : ToastController,
               public viewCtrl : ViewController,
               public storage : Storage,
-              public loadingCtrl: LoadingController) {
+              public loadingCtrl: LoadingController,
+              public jpush : JpushProvider,
+              public plt : Platform) {
     super();
   }
 
@@ -124,6 +128,10 @@ export class LoginPage extends BaseUI {
          (f : any) => {
            loading.dismiss();
            if(f["Success"]==true){
+             if(this.plt.is("cordova")){
+              this.jpush.initJpush();
+              this.jpush.setAlias(userTosend[0].username);
+             }
             this.storage.set("userId",userTosend[0].id);
             this.storage.set("username",userTosend[0].username);
             this.storage.set("token",f["Data"].token);

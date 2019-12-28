@@ -24,8 +24,8 @@ export class RestProvider {
   }
 
   //private host = "http://3.90.11.160/";
-  //private host = "https://api.europetechs.com/";
-  private host = "http://localhost/LjWebApplication/";
+  private host = "https://api.europetechs.com/";
+  //private host = "http://localhost/LjWebApplication/";
   private apiUrlGetCargoByName = this.host + 'api/cargo/GetCargo';
   private apiUrlGetOrdersByUserId = this.host + 'api/SalesOrder/GetSalesOrderByUserId';
   private apiUrlGetSalesOrderCategoriesByUserId = this.host + 'api/SalesOrder/GetSalesOrderCategoriesByUserId';

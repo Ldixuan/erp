@@ -104,4 +104,12 @@
     <plugin name="cordova-plugin-device" spec="~1.1.4" />
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.1" />
     <plugin name="cordova-plugin-network-information" spec="~2.0.2" />
+    <plugin name="jpush-phonegap-plugin" spec="~3.7.3">
+        <variable name="APP_KEY" value="e2aa5d34daf49acee401a7cb" />
+    </plugin>
+    <engine name="browser" />
+    <plugin name="cordova-plugin-file-transfer" spec="^1.6.3" />
+    <plugin name="cordova-plugin-zip" spec="^3.1.0" />
+    <engine name="android" spec="8.1.0" />
+    <engine name="ios" spec="^5.1.1" />
 </widget>
