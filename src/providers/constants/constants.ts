@@ -20,3 +20,8 @@
 //   }
 // };
 
+// 单位转换值
+export const unitConvert = {
+    meter : 0,
+    yard : 0.91440
+}

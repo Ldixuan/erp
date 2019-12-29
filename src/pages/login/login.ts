@@ -130,7 +130,7 @@ export class LoginPage extends BaseUI {
            if(f["Success"]==true){
              if(this.plt.is("cordova")){
               this.jpush.initJpush();
-              this.jpush.setAlias(userTosend[0].username);
+              this.jpush.setAlias(userTosend[0].id);
              }
             this.storage.set("userId",userTosend[0].id);
             this.storage.set("username",userTosend[0].username);

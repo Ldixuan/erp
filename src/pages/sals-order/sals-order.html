@@ -78,7 +78,7 @@
       <ion-item>
         <ion-label color="primary" stacked>单位*</ion-label>
         <ionic-selectable item-content [(ngModel)]="deptSelect" [ngModelOptions]="{standalone: true}" [items]="depts"
-          itemTextField="name" [canSearch]="true" [disabled]="this.depts.length == 0" (onChange)="changeDept()">
+          itemTextField="name" [canSearch]="true" [disabled]="this.depts.length == 0||hadSubmit" (onChange)="changeDept()">
         </ionic-selectable>
       </ion-item>
       <ion-item>

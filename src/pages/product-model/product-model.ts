@@ -5,6 +5,7 @@ import { RestProvider} from '../../providers/rest/rest';
 import { BaseUI } from '../../app/common/baseui';
 import { Network } from '@ionic-native/network';
 import { Storage } from '@ionic/storage';
+import { unitConvert } from '../../providers/constants/constants';
 /**
  * Generated class for the ProductModelPage page.
  *
@@ -75,9 +76,7 @@ export class ProductModelPage extends BaseUI {
      if(isNaN(Number.parseInt(val))){
       this.productForm.controls[name].setValue('');
      }
-     
   }
-
   initProducts(){
     this.storage.get('unitList').then(p=>{
       this.unitList = JSON.parse(p).filter(x=>x.label!=null&&x.equivalence!=null);
