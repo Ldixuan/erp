@@ -17,11 +17,11 @@
   
   <ion-item>
       <ion-label stacked>财务审批内容</ion-label>
-      <ion-textarea [(ngModel)]="financialContent" rows="3" [disabled]='financialDisable&&!hasFinancialPermission'></ion-textarea>
+      <ion-textarea [(ngModel)]="financialContent" rows="3" [disabled]='financialDisable'></ion-textarea>
     </ion-item>
     
   <ion-item>
       <ion-label stacked>经理审批内容</ion-label>
-      <ion-textarea [(ngModel)]="managerContent" rows="3" [disabled]='managerDisable&&!hasManagerPermission'></ion-textarea>
+      <ion-textarea [(ngModel)]="managerContent" rows="3" [disabled]='managerDisable'></ion-textarea>
     </ion-item>
 </ion-content>

@@ -4,7 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { CodePush, InstallMode } from '@ionic-native/code-push';
 import { RestProvider } from '../providers/rest/rest'
-
+import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
 
 @Component({
   templateUrl: 'app.html'
@@ -24,7 +24,8 @@ export class MyApp {
     public platform: Platform, 
     public statusBar: StatusBar, 
     public plt : Platform,
-    public splashScreen: SplashScreen) {
+    public splashScreen: SplashScreen,
+    public mobileAccessibility: MobileAccessibility) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -58,6 +59,7 @@ export class MyApp {
 
   initializeApp() {
     this.platform.ready().then(() => {
+     this.mobileAccessibility.usePreferredTextZoom(false);
      this.statusBar.styleDefault();
      this.splashScreen.hide();
      if(this.plt.is('cordova')){

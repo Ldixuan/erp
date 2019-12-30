@@ -18,6 +18,8 @@ import { JPush } from 'ionic3-jpush';
 
 import {CodePush} from "@ionic-native/code-push";
 
+import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
+
 @NgModule({
   declarations: [
     MyApp
@@ -42,7 +44,8 @@ import {CodePush} from "@ionic-native/code-push";
     JpushProvider,
     RestProvider,
     Network,
-    AppVersion
+    AppVersion,
+    MobileAccessibility
   ]
 })
 export class AppModule {}
