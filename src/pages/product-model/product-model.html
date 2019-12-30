@@ -57,7 +57,7 @@
 
     <ion-item>
       <ion-label color="primary" interface="action-sheet" stacked>价类 (无法提交)</ion-label>
-      <ion-select formControlName="unitPriceType">
+      <ion-select [disabled]="hadSubmit" formControlName="unitPriceType">
         <ion-option *ngFor="let item of unitList" value="{{item.equivalence}}">{{item.label}}</ion-option>
       </ion-select>
     </ion-item>
