@@ -41,7 +41,7 @@
 
       <ion-item *ngIf="readModel">
         <ion-label color="primary" stacked>订单编号</ion-label>
-        <ion-input type="text" [disabled]="true" formControlName="title"></ion-input>
+        <ion-input type="text" readonly="true" formControlName="title"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -61,17 +61,17 @@
 
       <ion-item>
         <ion-label color="primary" stacked>收取人</ion-label>
-        <ion-input type="text" [disabled]="hadSubmit" formControlName="receiver"></ion-input>
+        <ion-input type="text" readonly={{hadSubmit}} formControlName="receiver"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label color="primary" stacked>传真</ion-label>
-        <ion-input type="tel" [disabled]="hadSubmit" formControlName="faxSender"></ion-input>
+        <ion-input type="tel" readonly={{hadSubmit}} formControlName="faxSender"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label color="primary" stacked>电话</ion-label>
-        <ion-input type="tel" [disabled]="hadSubmit" formControlName="telSender"></ion-input>
+        <ion-input type="tel" readonly={{hadSubmit}} formControlName="telSender"></ion-input>
       </ion-item>
 
 
@@ -83,36 +83,36 @@
       </ion-item>
       <ion-item>
         <ion-label color="primary" stacked>发送人</ion-label>
-        <ion-input type="text" [disabled]="hadSubmit" formControlName="sender" autocorrect="on"></ion-input>
+        <ion-input type="text" readonly={{hadSubmit}} formControlName="sender" autocorrect="on"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label color="primary" stacked>订单公司名称</ion-label>
-        <ion-input type="text" [disabled]="hadSubmit" formControlName="entrepriseName" autocorrect="on"></ion-input>
+        <ion-input type="text" readonly={{hadSubmit}} formControlName="entrepriseName" autocorrect="on"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label color="primary" stacked>传真</ion-label>
-        <ion-input type="tel" [disabled]="hadSubmit" formControlName="faxReceiver" autocorrect="on"></ion-input>
+        <ion-input type="tel" readonly={{hadSubmit}} formControlName="faxReceiver" autocorrect="on"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label color="primary" stacked>电话</ion-label>
-        <ion-input type="tel" [disabled]="hadSubmit" formControlName="telReceiver" autocorrect="on"></ion-input>
+        <ion-input type="tel" readonly={{hadSubmit}} formControlName="telReceiver" autocorrect="on"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label color="primary" stacked>备注</ion-label>
-        <ion-textarea [disabled]="hadSubmit" formControlName="descript"></ion-textarea>
+        <ion-textarea readonly={{hadSubmit}} formControlName="descript"></ion-textarea>
       </ion-item>
 
       <ion-item>
         <ion-label color="primary" stacked>更正说明</ion-label>
-        <ion-textarea [disabled]="hadSubmit" formControlName="remarkCorrige"></ion-textarea>
+        <ion-textarea readonly={{hadSubmit}} formControlName="remarkCorrige"></ion-textarea>
       </ion-item>
 
       <ion-item>
         <ion-label color="primary" stacked>回传说明</ion-label>
-        <ion-textarea [disabled]="hadSubmit" formControlName="remarkfeedback"></ion-textarea>
+        <ion-textarea readonly={{hadSubmit}} formControlName="remarkfeedback"></ion-textarea>
       </ion-item>
 
       <ion-item no-lines margin-top>
@@ -140,7 +140,7 @@
 
             </ion-row>
             <ion-row>
-              <ion-col col-5>金额 : {{product.priceProduct*product.numberProduct}} 元</ion-col>
+              <ion-col col-5>金额 : {{product.totalPrice}} 元</ion-col>
               <ion-col col-7>交货日期 : {{product.datePayProduct}} </ion-col>
             </ion-row>
             <ion-row>

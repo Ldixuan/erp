@@ -1,6 +1,6 @@
 import { JpushProvider } from './../../providers/jpush/jpush';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams , Platform} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 /**
@@ -19,7 +19,7 @@ export class SettingsPage {
 username : string;
 financialPermission:boolean = false;
 managerPermission:boolean = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage :Storage,public jpush : JpushProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage :Storage,public jpush : JpushProvider,public plt : Platform) {
   }
 
   ionViewDidLoad() {
@@ -42,7 +42,9 @@ managerPermission:boolean = false;
   }
   logout(){
     Promise.all([this.storage.remove("userId"),this.storage.remove("token")]).then(values => {
-        this.jpush.deleteAlias();
+      if(this.plt.is("cordova")){
+        this.jpush.deleteTags();
+      }
         this.navCtrl.setRoot('LoginPage');
     });
   }
