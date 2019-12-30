@@ -41,6 +41,7 @@ export class JpushProvider {
     )
 
   }
+
   //设置极光推送应用别名，添加标签
   /* tslint:disable */
   setAlias(userId) {
@@ -61,35 +62,23 @@ export class JpushProvider {
     })
   }
 
-  // setTags(tags: Array<string> = []) {
-  //   if (!this.nativeService.isMobile()) {
-  //     return;
-  //   }
-  //   if (this.nativeService.isAndroid()) {
-  //     tags.push('android');
-  //   }
-  //   if (this.nativeService.isIos()) {
-  //     tags.push('ios');
-  //   }
-  //   this.jPush.setTags({sequence: 3, tags}).then(result => {
-  //     console.log('jpush-设置标签成功:');
-  //     console.log(result);
-  //   }, error => {
-  //     console.log('jpush-设置标签失败:', error);
-  //   })
-  // }
+  setTags(tags: Array<string> = []) {
+    this.jPush.setTags({sequence: 3, tags}).then(result => {
+      console.log('jpush-设置标签成功:');
+      console.log(result);
+    }, error => {
+      console.log('jpush-设置标签失败:', error);
+    })
+  }
 
-  // deleteTags(tags: Array<string> = []) {
-  //   if (!this.nativeService.isMobile()) {
-  //     return;
-  //   }
-  //   this.jPush.deleteTags({sequence: 4, tags}).then(result => {
-  //     console.log('jpush-删除标签成功:');
-  //     console.log(result);
-  //   }, error => {
-  //     console.log('jpush-删除标签失败:', error);
-  //   })
-  // }
+  deleteTags(tags: Array<string> = []) {
+    this.jPush.deleteTags({sequence: 4}).then(result => {
+      console.log('jpush-删除标签成功:');
+      console.log(result);
+    }, error => {
+      console.log('jpush-删除标签失败:', error);
+    })
+  }
 
   // // 设置ios应用角标数量
   // setIosIconBadgeNumber(badgeNumber) {

@@ -5,7 +5,7 @@ import { RestProvider} from '../../providers/rest/rest';
 import { BaseUI } from '../../app/common/baseui';
 import { Network } from '@ionic-native/network';
 import { Storage } from '@ionic/storage';
-import { unitConvert } from '../../providers/constants/constants';
+//import { unitConvert } from '../../providers/constants/constants';
 /**
  * Generated class for the ProductModelPage page.
  *
@@ -51,7 +51,9 @@ export class ProductModelPage extends BaseUI {
       priceProduct: ['', Validators.required],
       datePayProduct:['',Validators.required],
       hadPaidProduct:[''],
-      descriptProduct:['']
+      descriptProduct:[''],
+      unitPriceType:[''],
+      totalPrice:['']
     });
 
     this.products = [];
@@ -80,6 +82,7 @@ export class ProductModelPage extends BaseUI {
   initProducts(){
     this.storage.get('unitList').then(p=>{
       this.unitList = JSON.parse(p).filter(x=>x.label!=null&&x.equivalence!=null);
+      console.log(this.unitList);
       if(this.network.type !='none'){
         this.rest.GetCargoByName(-1) // 填写url的参数
               .subscribe(
@@ -104,6 +107,10 @@ export class ProductModelPage extends BaseUI {
     })
   }
 
+  changeTotalPrice(){
+    this.productForm.get('totalPrice').setValue(this.productForm.value.priceProduct *  this.productForm.value.numberProduct);
+  }
+
   changeProduct(){
     let productTmp = this.productForm.value;
       productTmp["idProduct"] = this.productSelect.id;
@@ -118,6 +125,7 @@ export class ProductModelPage extends BaseUI {
   }
 
   logProductForm() {
+    console.log(this.productForm.value);
     this.viewCtrl.dismiss({action : 1, content : this.productForm.value});
   }
 
