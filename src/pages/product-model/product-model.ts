@@ -52,8 +52,8 @@ export class ProductModelPage extends BaseUI {
       datePayProduct:['',Validators.required],
       hadPaidProduct:[''],
       descriptProduct:[''],
-      unitPriceType:[''],
-      totalPrice:['']
+      unitPriceType:[0],
+      totalPrice:['',Validators.required]
     });
 
     this.products = [];
@@ -79,6 +79,13 @@ export class ProductModelPage extends BaseUI {
       this.productForm.controls[name].setValue('');
      }
   }
+
+  fixeNumber(name:string){
+    var val = this.productForm.value[name];
+    this.productForm.controls[name].setValue(Number(val).toFixed(2));
+    console.log("val : "+val+" fixe : "+Number(val).toFixed(2));
+  }
+
   initProducts(){
     this.storage.get('unitList').then(p=>{
       this.unitList = JSON.parse(p).filter(x=>x.label!=null&&x.equivalence!=null);
@@ -108,7 +115,7 @@ export class ProductModelPage extends BaseUI {
   }
 
   changeTotalPrice(){
-    this.productForm.get('totalPrice').setValue(this.productForm.value.priceProduct *  this.productForm.value.numberProduct);
+    this.productForm.get('totalPrice').setValue((this.productForm.value.priceProduct *  this.productForm.value.numberProduct).toFixed(2));
   }
 
   changeProduct(){
