@@ -19,7 +19,8 @@ export class ValidationOrderPage extends BaseUI {
   managerDisable: boolean = true;
   isHidden: boolean = true;
   statusId: string = '1';
-
+  hasFinancialPermission :boolean = false;
+  hasManagerPermission :boolean = false;
   public applicationSenderContent: string;
   senderContent: string;
   managerContent: string;
@@ -39,26 +40,25 @@ export class ValidationOrderPage extends BaseUI {
     this.commandeId = this.navParams.get('commandeId');
     this.storage.get('permission').then(p => {
       var permission = JSON.parse(p);
-      var hasFinancialPermission = false;
-      var hasManagerPermission = false;
+     
       permission.map(p => {
         if (p.permissionCode == 'OrderModule_financialValidation') {
-          hasFinancialPermission = true;
+          this.hasFinancialPermission = true;
         }
         if (p.permissionCode == 'OrderModule_managerValidation') {
-          hasManagerPermission = true;
+          this.hasManagerPermission = true;
         }
       });
 
       this.statusId = this.navParams.get('statusId');
       this.validationStaus = this.navParams.get('validationStaus');// 0:未保存 , 1:已保存未提交, 2:已提交, 3:可审核
-      if (hasFinancialPermission && this.statusId == '1') {
+      if (this.hasFinancialPermission && this.statusId == '1') {
         this.isHidden = false;
         this.senderDisable = true;
         this.financialDisable = false;
         this.managerDisable = true;
       }
-      else if (hasManagerPermission && this.statusId == '3') {
+      else if (this.hasManagerPermission && this.statusId == '3') {
         this.isHidden = false;
         this.senderDisable = true;
         this.financialDisable = true;
@@ -175,9 +175,14 @@ export class ValidationOrderPage extends BaseUI {
             f => {
               if (f.Success) {
                 super.showToast(this.toastCtrl, "提交成功");
-                this.navCtrl.setRoot('ValidationOrderListPage');// TODO： Add into into the validation list
+                if(this.hasManagerPermission ||this.hasFinancialPermission ){
+                  this.navCtrl.setRoot('ValidationOrderListPage');// TODO： Add into into the validation list
+                }
+                else{
+                  this.navCtrl.setRoot('SettingsPage');
+                }
+              
               } else {
-
                 super.showToast(this.toastCtrl, "提交失敗 : " + f.Msg);
               }
               loading.dismiss();

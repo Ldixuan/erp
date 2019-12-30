@@ -25,3 +25,8 @@ export const unitConvert = {
     meter : 0,
     yard : 0.91440
 }
+
+export const permission = {
+     financialPermission: {code:'OrderModule_financialValidation',label:'财务权限'},
+     managerPermission: {code:'OrderModule_managerValidation',label:'经理权限'}
+}
