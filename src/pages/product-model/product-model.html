@@ -28,7 +28,7 @@
 
 
     <ion-item>
-      <ion-label color="primary" stacked>产地 (无法提交)</ion-label>
+      <ion-label color="primary" stacked>产地</ion-label>
       <ion-input type="text" readonly={{hadSubmit}} formControlName="adresseProduct"></ion-input>
     </ion-item>
 
@@ -57,14 +57,14 @@
 
     <ion-item>
       <ion-label color="primary" interface="action-sheet" stacked>价类 (无法提交)</ion-label>
-      <ion-select formControlName="unitPriceType">
+      <ion-select [disabled]="hadSubmit" formControlName="unitPriceType">
         <ion-option *ngFor="let item of unitList" value="{{item.equivalence}}">{{item.label}}</ion-option>
       </ion-select>
     </ion-item>
 
     <ion-item>
       <ion-label color="primary" stacked>金额*</ion-label>
-      <ion-input type="text" readonly={{hadSubmit}} (change)="checkNumber('totalPrice')" formControlName="totalPrice"></ion-input>
+      <ion-input type="text" readonly={{hadSubmit}} (change)="checkNumber('totalPrice');fixeNumber('totalPrice')" formControlName="totalPrice"></ion-input>
     </ion-item>
 
     <ion-item>
