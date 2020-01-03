@@ -80,6 +80,24 @@ export class JpushProvider {
     })
   }
 
+  getAllTags(){
+    this.jPush.getAllTags({sequence: 5}).then(result => {
+      console.log("my tags : ");
+      console.log(result);
+    }, error => {
+      console.log('error :', error);
+    });
+  }
+
+  cleanTags(){
+    this.jPush.cleanTags({sequence: 6}).then(result => {
+      console.log("clean tags : ");
+      console.log(result);
+    },error =>{
+      console.log("error : ",error);
+    })
+  }
+
   // // 设置ios应用角标数量
   // setIosIconBadgeNumber(badgeNumber) {
   //   if (this.nativeService.isIos()) {

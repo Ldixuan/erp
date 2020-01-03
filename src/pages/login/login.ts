@@ -136,6 +136,7 @@ export class LoginPage extends BaseUI {
               }
               this.jpush.setTags(tags);
              }
+              
             this.storage.set("userId",userTosend[0].id);
             this.storage.set("username",userTosend[0].username);
             this.storage.set("token",f["Data"].token);

@@ -36,7 +36,7 @@ managerPermission:boolean = false;
   logout(){
     Promise.all([this.storage.remove("userId"),this.storage.remove("token")]).then(values => {
       if(this.plt.is("cordova")){
-        this.jpush.deleteTags();
+        this.jpush.cleanTags();
       }
         this.navCtrl.setRoot('LoginPage');
     });
