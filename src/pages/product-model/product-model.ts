@@ -68,9 +68,6 @@ export class ProductModelPage extends BaseUI {
       };
       this.modifMod = true;
     }
-    let tempHadSubmit = this.navParams.get('hadSubmit');
-    if(tempHadSubmit != undefined) this.hadSubmit = tempHadSubmit;
-    if(!this.hadSubmit) this.initProducts();
   }
 
   checkNumber(name:string){
@@ -88,14 +85,15 @@ export class ProductModelPage extends BaseUI {
 
   initProducts(){
     this.storage.get('unitList').then(p=>{
-      this.unitList = JSON.parse(p).filter(x=>x.label!=null&&x.equivalence!=null);
-      console.log(this.unitList);
+      // this.unitList = JSON.parse(p).filter(x=>x.label!=null&&x.equivalence!=null);
+      // console.log(this.unitList);
       if(this.network.type !='none'){
         this.rest.GetCargoByName(-1) // 填写url的参数
               .subscribe(
               (f : any) => {
                 if(f.Success){
                   this.products = f.Data;
+                  this.storage.set('productList',JSON.stringify(f.Data));
                 }else{
                   super.showToast(this.toastCtrl, f.Msg);
                 }
@@ -160,6 +158,18 @@ export class ProductModelPage extends BaseUI {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProductModelPage');
+    let tempHadSubmit = this.navParams.get('hadSubmit');
+    if(tempHadSubmit != undefined) this.hadSubmit = tempHadSubmit;
+    if(!this.hadSubmit) {
+      this.storage.get('productList').then(p=>{
+        if(JSON.parse(p)!=null&&JSON.parse(p).length>0){
+          this.products =JSON.parse(p);
+        }
+        else{
+          this.initProducts();
+        }
+      });
+    }
   }
 
 
