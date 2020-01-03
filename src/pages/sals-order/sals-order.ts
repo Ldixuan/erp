@@ -102,15 +102,6 @@ export class SalsOrderPage extends BaseUI {
     else {
       super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! ");
     }
-
-
-    let title = this.navParams.get('title');
-    if (title != undefined) {
-      this.initOrderInfo(title);
-      this.readModel = true;
-    } else {
-      this.initDepts();
-    }
   }
 
   initDepts() {
@@ -120,6 +111,7 @@ export class SalsOrderPage extends BaseUI {
           f => {
             if (f.Success) {
               this.depts = f.Data;
+              this.storage.set('departmentList',JSON.stringify(f.Data));
             } else {
               super.showToast(this.toastCtrl, f.Msg);
             }
@@ -134,6 +126,7 @@ export class SalsOrderPage extends BaseUI {
     }
     else {
       super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! ");
+      
     }
   }
 
@@ -328,6 +321,20 @@ export class SalsOrderPage extends BaseUI {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SalsOrderPage');
+    let title = this.navParams.get('title');
+    if (title != undefined) {
+      this.initOrderInfo(title);
+      this.readModel = true;
+    } else {
+      this.storage.get('departmentList').then(p=>{
+        if(JSON.parse(p)==null||JSON.parse(p).length<=0){
+          this.initDepts();
+        }
+        else{
+          this.depts =JSON.parse(p);
+        }
+      });
+    }
   }
 
   presentModal(infoProduct?, index?) {
