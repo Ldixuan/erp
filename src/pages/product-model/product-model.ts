@@ -52,7 +52,7 @@ export class ProductModelPage extends BaseUI {
       datePayProduct:['',Validators.required],
       hadPaidProduct:[''],
       descriptProduct:[''],
-      unitPriceType:[0],
+      unitPriceType:[''],
       totalPrice:['',Validators.required]
     });
 

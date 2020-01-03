@@ -216,7 +216,7 @@ export class SalsOrderPage extends BaseUI {
                 productTemp['unitProduct'] = productsInfo[index].cargoUnit;
                 productTemp['priceProduct'] = productsInfo[index].cargoUnitPrice || 0;
                 productTemp['datePayProduct'] = productsInfo[index].scheduleCargoDate;
-                productTemp['unitPriceType'] =  productsInfo[index].unitPriceType || 1;
+                productTemp['unitPriceType'] =  productsInfo[index].unitPriceType || '';
                 productTemp['adresseProduct'] = productsInfo[index].cargoAdresseProduct || "";
                 productTemp['nameOffical'] = productsInfo[index].cargoNameOfiice || "";
                 productTemp['hadPaidProduct'] = "";
