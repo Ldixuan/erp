@@ -142,6 +142,15 @@ export class LoginPage extends BaseUI {
             this.storage.set("username",userTosend[0].username);
             this.storage.set("token",f["Data"].token);
             this.storage.set("permission",JSON.stringify(f["Data"].permission));
+          
+            if(f["Data"].entrepriseType!=null){
+              this.storage.set("entrepriseType",f["Data"].entrepriseType);
+            }
+            if(f["Data"].accountInfo!=null){
+              f["Data"].accountInfo.entrepriseFax!=null? this.storage.set("fax",f["Data"].accountInfo.entrepriseFax):null;
+              f["Data"].accountInfo.entrepriseTel!=null? this.storage.set("telephone",f["Data"].accountInfo.entrepriseTel): null;
+              f["Data"].accountInfo.entrepriseName!=null? this.storage.set("entrepriseName",f["Data"].accountInfo.entrepriseName): null;
+            }
             this.navCtrl.setRoot('SettingsPage');
            }
            else{

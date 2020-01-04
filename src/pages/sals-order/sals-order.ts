@@ -62,7 +62,8 @@ export class SalsOrderPage extends BaseUI {
       seal: [''],
       copyAfterCheck: [false],
       remarkCorrige: [''],
-      entrepriseName : ['']
+      entrepriseName : [''],
+      entrepriseType:['']
     });
     this.depts = [];
     this.listProduct = new Array<any>();
@@ -76,6 +77,24 @@ export class SalsOrderPage extends BaseUI {
     this.storage.get("userId").then((val) => {
       var temp = this.orderForm.value;
       temp.userId = val;
+      this.orderForm.setValue(temp);
+    });
+
+    this.storage.get("fax").then((val) => {
+      var temp = this.orderForm.value;
+      temp.faxSender = val;
+      this.orderForm.setValue(temp);
+    });
+
+    this.storage.get("telephone").then((val) => {
+      var temp = this.orderForm.value;
+      temp.telSender = val;
+      this.orderForm.setValue(temp);
+    });
+
+    this.storage.get("entrepriseType").then((val) => {
+      var temp = this.orderForm.value;
+      temp.entrepriseType = val;
       this.orderForm.setValue(temp);
     });
 

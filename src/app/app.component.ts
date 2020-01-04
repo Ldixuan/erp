@@ -19,7 +19,7 @@ export class MyApp {
     type : string ,
     icon : string,
     singleComponent : {component: string, param: object},
-    multComponent : [{title: string, component: string, icon: any, param: object}] }> = []; 
+    multComponent : any }> = []; 
     //Array<{title: string, componentPages: Array<{pageTitle: string, component: any}>}>;
 
   listShow: { [key: string]: boolean } = {};
