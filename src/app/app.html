@@ -19,7 +19,7 @@
           <ion-icon name="ios-arrow-forward" item-right *ngIf="!listShow[p.title]"></ion-icon>
         </ion-item>
         <ion-grid *ngIf="listShow[p.title]" >
-            <ion-row *ngFor="let i of p.multComponent" class="secondMenu">
+            <ion-row style="margin-left: 4vw;" *ngFor="let i of p.multComponent" class="secondMenu">
             <a menuClose ion-item (click)="openPage(i.component,i.param)" class="fontSecondMenu">
                 {{i.title}}
              </a>
