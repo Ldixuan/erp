@@ -120,13 +120,12 @@ export class ProductModelPage extends BaseUI {
         this.productForm.get('equivalenceValue').setValue(1);
       }
       
-    }else if(this.productForm.value['unitPriceType'] == '1'){
+    }else if(this.productForm.value['unitPriceType'] == '2'){
       this.productForm.get('equivalenceValue').setValue(1);
     }
   }
 
   changeTotalPrice(){
-    console.log("equiv : " + this.productForm.value.equivalenceValue);
     this.productForm.get('totalPrice').setValue(
       (this.productForm.value.priceProduct *  this.productForm.value.numberProduct * this.productForm.value.equivalenceValue).toFixed(2)
       );
