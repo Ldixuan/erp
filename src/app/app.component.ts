@@ -61,7 +61,7 @@ export class MyApp {
     if(current.length != 0){
       current[0]['multComponent'].push({title:secondTitle, component : component,icon : icon, param : param});
     }else{
-      throw "没有初始化二级目录";
+      throw "没有初始化二级目录 : " + firstTitle;
     }
   }
 
