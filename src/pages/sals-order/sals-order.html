@@ -5,23 +5,23 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar mode="ios" *ngIf="!readModel">
-    <button ion-button menuToggle>
+  <ion-navbar mode="ios" >
+    <button *ngIf="!readModel" ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title text-center>销售/采购订单</ion-title>
     <ion-buttons end>
-      <button ion-button [disabled]="!orderForm.valid" (click)="logForm()">保存</button>
+      <button ion-button *ngIf="!hadSubmit" [disabled]="!orderForm.valid" (click)="logForm()">保存</button>
     </ion-buttons>
   </ion-navbar>
 
-  <ion-navbar *ngIf="readModel">
+  <!-- <ion-navbar *ngIf="readModel">
     <ion-title align-title="center">销售/采购订单</ion-title>
     <ion-buttons end>
       <button ion-button *ngIf="!hadSubmit" [disabled]="!orderForm.valid" (click)="logForm()">保存</button>
     </ion-buttons>
   </ion-navbar>
-</ion-header>
+</ion-header> -->
 
 <div *ngIf="loading" class="spinner">
   <ion-spinner center></ion-spinner>
