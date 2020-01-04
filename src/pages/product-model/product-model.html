@@ -21,7 +21,7 @@
     <ion-item style="border: 0px!important;">
       <ion-label color="primary" stacked>货物名称*</ion-label>
       <ionic-selectable item-content [(ngModel)]="productSelect" [ngModelOptions]="{standalone: true}"
-        [items]="products" itemTextField="name" [canSearch]="true" (onChange)="changeProduct()"
+        [items]="products" itemTextField="name" [canSearch]="true" (onChange)="changeProduct();changeUnitPriceType()"
         [disabled]="products.length == 0">
       </ionic-selectable>
     </ion-item>
@@ -57,7 +57,7 @@
 
     <ion-item>
       <ion-label color="primary" interface="action-sheet" stacked>价类</ion-label>
-      <ion-select [disabled]="hadSubmit" formControlName="unitPriceType">
+      <ion-select [disabled]="hadSubmit" formControlName="unitPriceType" (ionChange)="changeUnitPriceType();changeTotalPrice()">
         <ion-option  value="1">米价</ion-option>
         <ion-option  value="2">单位价</ion-option>
       </ion-select>

@@ -1,3 +1,4 @@
+import { permission } from './../providers/constants/constants';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, LoadingController} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -5,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { CodePush, InstallMode } from '@ionic-native/code-push';
 import { RestProvider } from '../providers/rest/rest'
 import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
+import { Storage } from '@ionic/storage';
 
 @Component({
   templateUrl: 'app.html'
@@ -31,35 +33,41 @@ export class MyApp {
     public statusBar: StatusBar, 
     public plt : Platform,
     public splashScreen: SplashScreen,
-    public mobileAccessibility: MobileAccessibility) {
+    public mobileAccessibility: MobileAccessibility,
+    public storage : Storage) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
-      this.initMultMenu('销售管理', 'create');
-      this.addMultMenu('销售管理', '编辑销售', 'SalsOrderPage', 'create', null);
-      this.addMultMenu('销售管理', '查看销售订单', 'ReadSalsOrderCategoriesPage', 'document', { commandTypeId: 'O', commandTypeLabel: '销售' });
-      this.addMultMenu( '销售管理',  '审核销售', 'ValidationOrderListPage',  'arrow-dropdown-circle',  null );
+    this.initMultMenu('采购订单', 'document');
+    this.addMultMenu('采购订单', '编辑销售/采购订单', 'SalsOrderPage',  null);
+    this.addMultMenu('采购订单', '查看采购订单', 'ReadSalsOrderCategoriesPage',  { commandTypeId: 'I', commandTypeLabel: '采购' });
 
-      this.addSingleMenu( '编辑销售/采购订单', 'SalsOrderPage', 'create', null );
-      this.addSingleMenu( '查看销售订单', 'ReadSalsOrderCategoriesPage', 'document', { commandTypeId: 'O', commandTypeLabel: '销售' } );
-      this.addSingleMenu( '查看采购订单', 'ReadSalsOrderCategoriesPage', 'document', { commandTypeId: 'I', commandTypeLabel: '采购' } );
-      this.addSingleMenu(  '编辑出货订单',  'AddDeliveryOrderPage', 'create', null );
-      this.addSingleMenu( '查看出货订单', 'ReadDeliveryOrderPage', 'document', null );
-      this.addSingleMenu( '审核销售/采购订单',  'ValidationOrderListPage',  'arrow-dropdown-circle',  null ),
-      this.addSingleMenu( '销售排行', 'SalesPerformanceRewardPage',  'star',  null );
-      this.addSingleMenu( '我的设置', 'SettingsPage',  'settings',  null );
+    this.initMultMenu('销售订单', 'document');
+    this.addMultMenu('销售订单', '编辑销售/采购订单', 'SalsOrderPage',  null);
+    this.addMultMenu('销售订单', '查看销售订单', 'ReadSalsOrderCategoriesPage',  { commandTypeId: 'O', commandTypeLabel: '销售' });
+
+    //this.addSingleMenu( '编辑销售/采购订单', 'SalsOrderPage', 'create', null );
+    //this.addSingleMenu( '查看销售订单', 'ReadSalsOrderCategoriesPage', 'document', { commandTypeId: 'O', commandTypeLabel: '销售' } );
+    //this.addSingleMenu( '查看采购订单', 'ReadSalsOrderCategoriesPage', 'document', { commandTypeId: 'I', commandTypeLabel: '采购' } );
+    this.addSingleMenu(  '编辑出货订单',  'AddDeliveryOrderPage', 'create', null );
+    this.addSingleMenu( '查看出货订单', 'ReadDeliveryOrderPage', 'document', null );
+    this.addSingleMenu( '审核销售/采购订单',  'ValidationOrderListPage',  'arrow-dropdown-circle',  null );
+    this.addSingleMenu( '销售排行', 'SalesPerformanceRewardPage',  'star',  null );
+    this.addSingleMenu( '我的设置', 'SettingsPage',  'settings',  null );
 
     for (let index = 0; index < this.pages.length; index++) {
       if(this.pages[index].type == 'mult'){
         this.listShow[this.pages[index].title] = false;
       }
     }
+
+    
   }
 
-  addMultMenu(firstTitle:string, secondTitle : string, component:string,icon : string, param:any){
+  addMultMenu(firstTitle:string, secondTitle : string, component:string, param:any){
     var current = this.pages.filter( item => item.title == firstTitle);
     if(current.length != 0){
-      current[0]['multComponent'].push({title:secondTitle, component : component,icon : icon, param : param});
+      current[0]['multComponent'].push({title:secondTitle, component : component, param : param});
     }else{
       throw "没有初始化二级目录 : " + firstTitle;
     }

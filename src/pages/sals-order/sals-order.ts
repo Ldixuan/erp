@@ -220,7 +220,8 @@ export class SalsOrderPage extends BaseUI {
                   datePayProduct: "",
                   hadPaidProduct: "",
                   descriptProduct: "",
-                  unitPriceType:""
+                  unitPriceType:"",
+                  equivalenceValue:""
                 };
                 productTemp['idProduct'] = productsInfo[index].cargoId;
                 productTemp['nameProduct'] = productsInfo[index].cargoName;
@@ -233,7 +234,8 @@ export class SalsOrderPage extends BaseUI {
                 productTemp['nameOffical'] = productsInfo[index].cargoNameOfiice || "";
                 productTemp['hadPaidProduct'] = "";
                 productTemp['descriptProduct'] = productsInfo[index].CargoDescripe || "";
-                productTemp['totalPrice'] = productsInfo[index].totalPrice || 0;
+                productTemp['totalPrice'] = Number(productsInfo[index].totalPrice).toFixed(2) || 0;
+                productTemp['equivalenceValue'] = productsInfo[index].equivalenceValue || 1;
                 this.listProduct.push(productTemp);
               }
               if (!this.hadSubmit) {

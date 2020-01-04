@@ -1,3 +1,4 @@
+import { permission } from './../../providers/constants/constants';
 
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, ViewController, LoadingController, Platform } from 'ionic-angular';
@@ -142,6 +143,11 @@ export class LoginPage extends BaseUI {
             this.storage.set("username",userTosend[0].username);
             this.storage.set("token",f["Data"].token);
             this.storage.set("permission",JSON.stringify(f["Data"].permission));
+
+            var pemisson = f["Data"].permission.find( i => i.permissionCode == 'OrderModule_financialValidation' || i.permissionCode == 'OrderModule_managerValidation')
+            if(pemisson==null){
+              document.getElementById('审核销售/采购订单').style.display = 'none';
+            }
           
             if(f["Data"].entrepriseType!=null){
               this.storage.set("entrepriseType",f["Data"].entrepriseType);

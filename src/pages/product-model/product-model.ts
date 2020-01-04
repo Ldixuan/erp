@@ -1,3 +1,4 @@
+import { unitConvert } from './../../providers/constants/constants';
 import { Component } from '@angular/core';
 import { IonicPage, AlertController, NavParams,ViewController,ToastController, NavController, List} from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
@@ -5,7 +6,6 @@ import { RestProvider} from '../../providers/rest/rest';
 import { BaseUI } from '../../app/common/baseui';
 import { Network } from '@ionic-native/network';
 import { Storage } from '@ionic/storage';
-//import { unitConvert } from '../../providers/constants/constants';
 /**
  * Generated class for the ProductModelPage page.
  *
@@ -27,7 +27,7 @@ export class ProductModelPage extends BaseUI {
   modifMod = false;
   productSelect : any;
   hadSubmit = false;
-  unitList:Array<any> = []
+  unitList:Array<any> = unitConvert;
 
   constructor(public viewCtrl: ViewController, 
     private formBuilder: FormBuilder, 
@@ -52,8 +52,9 @@ export class ProductModelPage extends BaseUI {
       datePayProduct:['',Validators.required],
       hadPaidProduct:[''],
       descriptProduct:[''],
-      unitPriceType:[''],
-      totalPrice:['',Validators.required]
+      unitPriceType:['1'],
+      totalPrice:['',Validators.required],
+      equivalenceValue:[1]
     });
 
     this.products = [];
@@ -80,13 +81,9 @@ export class ProductModelPage extends BaseUI {
   fixeNumber(name:string){
     var val = this.productForm.value[name];
     this.productForm.controls[name].setValue(Number(val).toFixed(2));
-    console.log("val : "+val+" fixe : "+Number(val).toFixed(2));
   }
 
   initProducts(){
-    this.storage.get('unitList').then(p=>{
-      // this.unitList = JSON.parse(p).filter(x=>x.label!=null&&x.equivalence!=null);
-      // console.log(this.unitList);
       if(this.network.type !='none'){
         this.rest.GetCargoByName(-1) // 填写url的参数
               .subscribe(
@@ -109,11 +106,30 @@ export class ProductModelPage extends BaseUI {
       else{
         super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
       }
-    })
+  }
+
+  changeUnitPriceType(){
+    if(this.productForm.value['unitPriceType'] == '1'){
+      console.log(this.productForm.value['unitProduct']);
+      var temp = this.unitList.find(u => u.label == this.productForm.value['unitProduct']);
+      if(temp){
+        if(temp.equivalence){
+          this.productForm.get('equivalenceValue').setValue(temp.equivalence);
+        }
+      }else{
+        this.productForm.get('equivalenceValue').setValue(1);
+      }
+      
+    }else if(this.productForm.value['unitPriceType'] == '1'){
+      this.productForm.get('equivalenceValue').setValue(1);
+    }
   }
 
   changeTotalPrice(){
-    this.productForm.get('totalPrice').setValue((this.productForm.value.priceProduct *  this.productForm.value.numberProduct).toFixed(2));
+    console.log("equiv : " + this.productForm.value.equivalenceValue);
+    this.productForm.get('totalPrice').setValue(
+      (this.productForm.value.priceProduct *  this.productForm.value.numberProduct * this.productForm.value.equivalenceValue).toFixed(2)
+      );
   }
 
   changeProduct(){

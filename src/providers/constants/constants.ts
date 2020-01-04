@@ -21,10 +21,13 @@
 // };
 
 // 单位转换值
-export const unitConvert = {
-    meter : 0,
-    yard : 0.91440
-}
+export const unitConvert = [
+    {label : "公斤", equivalence : null},
+    {label : "件", equivalence : null},
+    {label : "码", equivalence : 0.91440},
+    {label : "米", equivalence : 0},
+    {label : "匹",equivalence : null},
+]
 
 export const permission = {
      financialPermission: {code:'OrderModule_financialValidation',label:'财务权限'},
