@@ -40,11 +40,26 @@ export class RestProvider {
   private apiUrlGetCompanyName = this.host + 'api/Version/GetCompanyName';
   private apiUrlGetSalesOrderValidationList = this.host + 'api/SalesOrder/GetSalesOrderValidationList';
   private apiUrlGetUnitList = this.host + 'api/cargo/GetUnitList';
+
+  private apiUrlGetPermissionList= this.host + 'api/Permission/GetPermissionList';
+  private apiUrlGetUserPermissionById= this.host + 'api/Permission/GetUserPermissionById';
+  private apiUrlSaveUserPermission = this.host + 'api/Permission/SaveUserPermission';
   /*
   * With auth services 
   */
+
+ SaveUserPermission(UserPermissionParam:object):Observable<any>{
+  return this.postUrlReturn(this.apiUrlSaveUserPermission, UserPermissionParam);
+  }
   GetCargoByName(limit:number):Observable<any>{
       return this.getUrlReturn(this.apiUrlGetCargoByName+"?limit="+limit);
+  }
+
+  GetPermissionList():Observable<any>{
+    return this.getUrlReturn(this.apiUrlGetPermissionList);
+  }
+  GetUserPermissionById(userId:string):Observable<any>{
+    return this.getUrlReturn(this.apiUrlGetUserPermissionById+'?userId='+userId);
   }
 
   GetSalesOrderValidationList(categoryId:number,type:string):Observable<any>{

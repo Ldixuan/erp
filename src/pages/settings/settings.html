@@ -10,7 +10,7 @@
 <ion-content>
 
     <ion-list style="margin-top: 32px;">
-        <button ion-item class="AccountDetail">
+        <button ion-item class="AccountDetail" (click)="myInfo()">
           <ion-avatar item-start>
             <img src="assets/imgs/portrait.jpg">
           </ion-avatar>
@@ -40,8 +40,14 @@
       </ion-list>
   
       <ion-list>
+
+        <button ion-item (click)="setPermission()" [hidden]='adminPermission==false'>
+          <ion-icon class="iconStyle" name="alert" item-start></ion-icon>
+          权限设置
+        </button>
+
         <button ion-item>
-          <ion-icon class="iconStyle" name="chatbubbles" (click)="myInfo()" item-start></ion-icon>
+          <ion-icon class="iconStyle" name="chatbubbles" item-start></ion-icon>
           我的信息
         </button>
         <button ion-item (click)="newFunctionality()">

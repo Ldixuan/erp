@@ -9,6 +9,7 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'settings.html',
 })
 export class SettingsPage {
+adminPermission:boolean = false;
 username : string;
 financialPermission:boolean = false;
 managerPermission:boolean = false;
@@ -17,6 +18,7 @@ managerPermission:boolean = false;
 
   ionViewDidLoad() {
     this.storage.get('username').then(p=>this.username=p);
+    this.storage.get('userId').then(p=>this.adminPermission = p=='Admi'?true:false);
     this.storage.get('permission').then(p=>{
      var permission = JSON.parse(p);
 
@@ -30,7 +32,6 @@ managerPermission:boolean = false;
         }
       });
      }
- 
     });
   }
   logout(){
@@ -65,5 +66,8 @@ managerPermission:boolean = false;
 
   myInfo(){
     this.navCtrl.push('MyInfoPage');
+  }
+  setPermission(){
+    this.navCtrl.push('SetPermissionPage');
   }
 }
