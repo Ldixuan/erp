@@ -14,7 +14,13 @@ export class MyApp {
 
   rootPage: any = 'LoginPage';
 
-  pages: Array<{ title: string, component: any, icon: any, param: object }>; //Array<{title: string, componentPages: Array<{pageTitle: string, component: any}>}>;
+  pages: Array<{ 
+    title : string,
+    type : string ,
+    icon : string,
+    singleComponent : {component: string, param: object},
+    multComponent : [{title: string, component: string, icon: any, param: object}] }> = []; 
+    //Array<{title: string, componentPages: Array<{pageTitle: string, component: any}>}>;
 
   listShow: { [key: string]: boolean } = {};
 
@@ -29,32 +35,53 @@ export class MyApp {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
-    this.pages = [
-      // { title: '销售管理', componentPages: [
-      //   {pageTitle: '销售订单', component: SalsOrderPage},
-      //   {pageTitle: '查看订单', component: ReadSalsOrderCategoriesPage}
-      // ] },
-      // { title: 'Home', componentPages: [
-      //   {pageTitle: 'Home', component : HomePage}
-      // ] },
-      // { title: 'List', componentPages: [
-      //   {pageTitle: 'List', component : ListPage}
-      // ]}
-      { title: '编辑销售/采购订单', component: 'SalsOrderPage', icon: 'create', param: null },
-      { title: '查看销售订单', component: 'ReadSalsOrderCategoriesPage', icon: 'document', param: { commandTypeId: 'O', commandTypeLabel: '销售' } },
-      { title: '查看采购订单', component: 'ReadSalsOrderCategoriesPage', icon: 'document', param: { commandTypeId: 'I', commandTypeLabel: '采购' } },
-      { title: '编辑出货订单', component: 'AddDeliveryOrderPage', icon: 'create', param: null },
-      { title: '查看出货订单', component: 'ReadDeliveryOrderPage', icon: 'document', param: null },
-      { title: '审核销售/采购订单', component: 'ValidationOrderListPage', icon: 'arrow-dropdown-circle', param: null },
-      // { title: 'Home', component: HomePage , icon:'document'},
-      // { title: 'List', component: ListPage , icon:'document'},
-      { title: '销售排行', component: 'SalesPerformanceRewardPage', icon: 'star', param: null },
-      { title: '我的设置', component: 'SettingsPage', icon: 'settings', param: null }
-    ];
+      this.initMultMenu('销售管理', 'create');
+      this.addMultMenu('销售管理', '编辑销售', 'SalsOrderPage', 'create', null);
+      this.addMultMenu('销售管理', '查看销售订单', 'ReadSalsOrderCategoriesPage', 'document', { commandTypeId: 'O', commandTypeLabel: '销售' });
+      this.addMultMenu( '销售管理',  '审核销售', 'ValidationOrderListPage',  'arrow-dropdown-circle',  null );
+
+      this.addSingleMenu( '编辑销售/采购订单', 'SalsOrderPage', 'create', null );
+      this.addSingleMenu( '查看销售订单', 'ReadSalsOrderCategoriesPage', 'document', { commandTypeId: 'O', commandTypeLabel: '销售' } );
+      this.addSingleMenu( '查看采购订单', 'ReadSalsOrderCategoriesPage', 'document', { commandTypeId: 'I', commandTypeLabel: '采购' } );
+      this.addSingleMenu(  '编辑出货订单',  'AddDeliveryOrderPage', 'create', null );
+      this.addSingleMenu( '查看出货订单', 'ReadDeliveryOrderPage', 'document', null );
+      this.addSingleMenu( '审核销售/采购订单',  'ValidationOrderListPage',  'arrow-dropdown-circle',  null ),
+      this.addSingleMenu( '销售排行', 'SalesPerformanceRewardPage',  'star',  null );
+      this.addSingleMenu( '我的设置', 'SettingsPage',  'settings',  null );
 
     for (let index = 0; index < this.pages.length; index++) {
-      this.listShow[this.pages[index].title] = false;
+      if(this.pages[index].type == 'mult'){
+        this.listShow[this.pages[index].title] = false;
+      }
     }
+  }
+
+  addMultMenu(firstTitle:string, secondTitle : string, component:string,icon : string, param:any){
+    var current = this.pages.filter( item => item.title == firstTitle);
+    if(current.length != 0){
+      current[0]['multComponent'].push({title:secondTitle, component : component,icon : icon, param : param});
+    }else{
+      throw "没有初始化二级目录";
+    }
+  }
+
+  initMultMenu(title : string, icon : string){
+    this.pages.push({ 
+      title : title,
+      type : "mult", 
+      icon : icon,
+      singleComponent : null,
+      multComponent : [] });
+  }
+
+  addSingleMenu(title : string, component : string, icon : string, param:any){
+    this.pages.push({
+      title:title,
+      type:'single',
+      icon : icon,
+      singleComponent : {component : component,  param:param},
+      multComponent : null
+    });
   }
 
   initializeApp() {
@@ -68,14 +95,14 @@ export class MyApp {
     });
   }
 
-  openPage(page) {
+  openPage(component : string, param) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    if (page.param == null) {
-      this.nav.setRoot(page.component);
+    if (param == null) {
+      this.nav.setRoot(component);
     }
     else {
-      this.nav.setRoot(page.component, page.param);
+      this.nav.setRoot(component, param);
     }
   }
   checkCodePush() {
