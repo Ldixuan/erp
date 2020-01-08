@@ -74,8 +74,8 @@ export class RestProvider {
     return this.getUrlReturn(this.apiUrlGetSalesOrderValidationContent+"?orderId="+orderId);
   }
 
-  GetOrdersByUserId(userId:string, categoryId: string, type: string ):Observable<any>{
-    return this.getUrlReturn(this.apiUrlGetOrdersByUserId+"?userId="+userId+"&categoryId="+categoryId+"&type="+type);
+  GetOrdersByUserId(userId:string, categoryId: string, type: string, step:number, begin:number ):Observable<any>{
+    return this.getUrlReturn(this.apiUrlGetOrdersByUserId+"?userId="+userId+"&categoryId="+categoryId+"&type="+type+"&step="+step + "&begin="+begin);
   }
 
   GetSalesOrderCategoriesByUserId(userId:string, type : string):Observable<any>{

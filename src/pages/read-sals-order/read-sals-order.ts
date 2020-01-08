@@ -20,6 +20,8 @@ import { Network } from '@ionic-native/network';
 })
 export class ReadSalsOrderPage extends BaseUI{
 
+  private step:number = 7;
+  private counter:number = 0;
   private salsOrders : Array<any>;
   private userId : string;
   private hasChangeData = false;
@@ -50,11 +52,11 @@ export class ReadSalsOrderPage extends BaseUI{
       this.loading = true;
       if(this.network.type !='none'){
         
-        this.rest.GetOrdersByUserId(this.userId,this.CategoryId, this.CommandTypeId) //TODO: change
+        this.rest.GetOrdersByUserId(this.userId,this.CategoryId, this.CommandTypeId,this.step,this.counter) //TODO: change
             .subscribe(
               (f : any) => {     
                 if(f.Success){
-                  this.salsOrders = f["Data"];
+                  this.salsOrders = f["Data"].data!=null?f["Data"].data:[];
                 }else{
                   super.showToast(this.toastCtrl, f.Msg);
                 }
@@ -97,5 +99,45 @@ export class ReadSalsOrderPage extends BaseUI{
   presentOrderPage(infoOrder, index:number){
     this.navCtrl.push('SalsOrderPage',{title : infoOrder.commandeId,callback:this.myCallbackFunction});
   }
+
+  doInfinite(infiniteScroll){
+    console.log(infiniteScroll);
+    this.storage.get("userId").then((val) => {
+      this.userId = val;
+      if(this.network.type !='none'){
+        this.counter= this.counter+1;
+        this.rest.GetOrdersByUserId(this.userId,this.CategoryId, this.CommandTypeId,this.step,this.counter) //TODO: change
+            .subscribe(
+              (f : any) => {     
+                if(f.Success){
+                  if (f["Data"].totalCount <= this.step*this.counter) {
+                    infiniteScroll.enable(false);   //没有数据的时候隐藏 ion-infinate-scroll
+                  }
+                  else{
+                    this.salsOrders= this.salsOrders.concat(f["Data"].data!=null ?f["Data"].data:[]);
+                    infiniteScroll.complete(); 
+                  }
+                }else{
+                  super.showToast(this.toastCtrl, f.Msg);
+                }
+              },
+              error => {
+                if(error.Type =='401'){
+                  super.logout(this.toastCtrl,this.navCtrl);
+                }else{
+                  super.showToast(this.toastCtrl, error.Msg);
+                }
+              }
+            );
+      }
+      else{
+        super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+      }
+    }
+  );
+ 
+   
+}  
+
 
 }
