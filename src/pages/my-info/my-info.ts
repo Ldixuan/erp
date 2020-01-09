@@ -32,14 +32,14 @@ export class MyInfoPage {
          if(val.permissionCode== 'OrderModule_managerValidation'){
           this.permissionList.push(permission.managerPermission.label);
          }
-         else{
-          this.permissionList.push('普通权限');
-         }
        });
        if(values[5]=='Admi'){
         this.permissionList.push("管理员权限");
        }
       }
+      else{
+        this.permissionList.push('普通权限');
+       }
       var username ="用户名: " + values[1];
       var entrepriseName ="公司名: "+ values[2];
       var fax = "传真: " + values[3];
