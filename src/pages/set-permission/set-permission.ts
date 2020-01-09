@@ -74,7 +74,7 @@ export class SetPermissionPage extends BaseUI{
   }
 
   savePermission(){
-   if(this.userId!=null && this.permissionIds!=null && this.permissionIds.length>0 ){
+   if(this.userId!=null && this.permissionIds!=null ){
     if(this.network.type !='none'){
       var loading =  super.showLoading(this.loadingCtrl,"保存中...");
       var criteria = {
