@@ -29,7 +29,7 @@ export class ReadSalsOrderPage extends BaseUI{
   CommandTypeId : string;
   commandTypeLabel : string;
   labelColor: string;
- loading : boolean = false;
+  loading : boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -135,8 +135,6 @@ export class ReadSalsOrderPage extends BaseUI{
       }
     }
   );
- 
-   
 }  
 
 

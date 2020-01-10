@@ -20,6 +20,9 @@ export class ViewCommandWithFilterPage extends BaseUI {
 
   public orderList : Array<any>;
 
+  private step : number=7;
+  private counter: number=0;
+
   private searchCriteria: any = {};
 
   constructor(public navCtrl: NavController,
@@ -44,9 +47,13 @@ export class ViewCommandWithFilterPage extends BaseUI {
   }
 
   changeCriteria(criteriaLabel,criteriaValue){
+      this.counter = 0;
+      this.searchCriteria['begin'] = this.counter;
       this.searchCriteria[criteriaLabel] = criteriaValue;
   }
   resetCriteria(managerPermission){
+    this.counter = 0;
+    this.searchCriteria['begin'] = this.counter;
     if(managerPermission==true){
       this.searchCriteria = {};
     }
@@ -59,9 +66,10 @@ export class ViewCommandWithFilterPage extends BaseUI {
   }
   
   refreshData(){//Array<any>
-    console.log(this.searchCriteria);
     if (this.network.type != 'none') {
       var loading = super.showLoading(this.loadingCtrl, "正在获取数据...");
+      this.searchCriteria['step'] = this.step;
+      this.searchCriteria['begin'] = this.counter;
         this.rest.AdvancedSalesOrderSearch(this.searchCriteria)
           .subscribe(
             f => {
@@ -88,4 +96,40 @@ export class ViewCommandWithFilterPage extends BaseUI {
   viewDetail(item){
     this.navCtrl.push('SalsOrderPage',{title : item});
   }
+
+  doInfinite(infiniteScroll){
+    console.log(infiniteScroll);
+      if(this.network.type !='none'){
+        this.counter= this.counter+1;
+        this.searchCriteria['step'] = this.step;
+        this.searchCriteria['begin'] = this.counter;
+        this.rest.AdvancedSalesOrderSearch(this.searchCriteria) //TODO: change
+            .subscribe(
+              (f : any) => {     
+                if(f.Success){
+                  if (f["Data"].totalCount <= this.step*this.counter) {
+                    infiniteScroll.enable(false);   //没有数据的时候隐藏 ion-infinate-scroll
+                  }
+                  else{
+                    this.orderList= this.orderList.concat(f["Data"].data!=null ?f["Data"].data:[]);
+                    infiniteScroll.complete(); 
+                  }
+                }else{
+                  super.showToast(this.toastCtrl, f.Msg);
+                }
+              },
+              error => {
+                if(error.Type =='401'){
+                  super.logout(this.toastCtrl,this.navCtrl);
+                }else{
+                  super.showToast(this.toastCtrl, error.Msg);
+                }
+              }
+            );
+      }
+      else{
+        super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! "); 
+      }
+}  
+
 }
