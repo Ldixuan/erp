@@ -21,7 +21,7 @@
       <ion-list>
         <ion-list-header>
           <span> 我的订单 </span>
-          <a class="viewAll"  float-right>观看所有</a>
+          <a class="viewAll"  float-right (click)='viewCommandWithFilterPage()'>观看所有</a>
         </ion-list-header>
         <button ion-item (click)='showSalesOrder()'>
           <ion-icon name="document" item-start></ion-icon>

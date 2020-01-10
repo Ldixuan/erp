@@ -1,0 +1,35 @@
+<ion-list>
+  <ion-list-header>筛选条件</ion-list-header>
+  <ion-item>
+    <ion-label>创建人</ion-label>
+    <ion-select  multiple="true" [(ngModel)]="filterUserList" (ngModelChange)='changeOrderCreateId()'>
+      <ion-option value="f">Female</ion-option>
+      <ion-option value="m">Male</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>起始日期</ion-label>
+    <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="filterFromDate" (ngModelChange)='changeOrderFromDate()'></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>结束日期</ion-label>
+    <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="filterToDate" (ngModelChange)='changeOrderToDate()'></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>订单类型</ion-label>
+    <ion-select multiple="true" [(ngModel)]="filterOrderTypeList" (ngModelChange)='changeOrderType()'>
+      <ion-option *ngFor="let type of orderType" [value]="type.code" >{{type.label}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>订单状态</ion-label>
+    <ion-select  multiple="true" [(ngModel)]="filterOrderStatusList" (ngModelChange)='changeOrderStatus()'>
+      <ion-option *ngFor="let status of orderStatus" [value]="status.code">{{status.label}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-input placeholder="订单编号" clearInput [(ngModel)]="filterOrderId" (ngModelChange)='changeOrderId()'></ion-input>
+  </ion-item>
+  <button ion-item (click)='lauchSearch()'>搜索</button>
+  <button ion-item (click)='resetAllCriteria()'>重置</button>
+</ion-list>

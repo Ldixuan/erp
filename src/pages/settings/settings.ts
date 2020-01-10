@@ -70,4 +70,7 @@ managerPermission:boolean = false;
   setPermission(){
     this.navCtrl.push('SetPermissionPage');
   }
+  viewCommandWithFilterPage(){
+    this.navCtrl.push('ViewCommandWithFilterPage');
+  }
 }
