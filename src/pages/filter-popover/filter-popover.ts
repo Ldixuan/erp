@@ -17,6 +17,8 @@ import { Storage } from '@ionic/storage';
 export class FilterPopoverPage {
 private orderStatus:any;
 private orderType:any;
+private userList:any;
+
 private filterOrderTypeList: Array<string>;
 private filterOrderStatusList: Array<string>;
 private filterUserList: Array<string>;
@@ -24,6 +26,9 @@ private filterOrderId:string;
 private filterFromDate: Date;
 private filterToDate: Date;
 private ViewCommandWithFilterPage: any;
+
+private managerPermission : boolean = false;
+
   constructor(public viewCtrl: ViewController,public navParams: NavParams,public storage: Storage) {
     this.orderStatus = orderStatus;
     this.orderType = orderType;
@@ -35,10 +40,11 @@ private ViewCommandWithFilterPage: any;
   resetAllCriteria(){
     this.filterOrderTypeList=[];
     this.filterOrderStatusList=[];
-    this.filterUserList=[];
+    this.managerPermission!=false?this.filterUserList=[]:null;
     this.filterOrderId = null;
     this.filterFromDate = null;
     this.filterToDate = null;
+    this.ViewCommandWithFilterPage.resetCriteria(this.managerPermission);
   }
 
   changeOrderType(){
@@ -74,6 +80,7 @@ private ViewCommandWithFilterPage: any;
 
   lauchSearch(){
       this.ViewCommandWithFilterPage.refreshData();// return the retrive data
+      this.viewCtrl.dismiss();
   }
   
   ionViewDidLoad() {
@@ -85,6 +92,26 @@ private ViewCommandWithFilterPage: any;
     this.filterOrderId = searchCriteria['orderId'];
     this.filterOrderStatusList = searchCriteria['orderStatus'];
     this.filterOrderTypeList = searchCriteria['orderTypes'];
+    this.storage.get('userList').then(p=>{
+        this.userList = JSON.parse(p);
+    });
+    this.storage.get('permission').then(p=>{
+      var permission = JSON.parse(p);
+      this.managerPermission = false;
+      if(permission!=null && permission.length>0){
+       permission.forEach(val => {
+         if(val.permissionCode== 'OrderModule_managerValidation'){
+          this.managerPermission = true;
+         }
+       });
+      }
+      if(!this.managerPermission){
+        this.storage.get('userId').then(x=>{
+          this.filterUserList = [x];
+          this.ViewCommandWithFilterPage.changeCriteria('userIds',this.filterUserList);
+        });
+      }
+    });
   }
 
 }

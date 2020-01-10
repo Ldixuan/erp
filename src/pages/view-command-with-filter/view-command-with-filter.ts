@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, PopoverController, ToastController
 import { BaseUI } from '../../app/common/baseui';
 import { Network } from '@ionic-native/network';
 import { RestProvider } from '../../providers/rest/rest';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -17,6 +18,8 @@ export class ViewCommandWithFilterPage extends BaseUI {
   private filterFromDate: Date;
   private filterToDate: Date;
 
+  public orderList : Array<any>;
+
   private searchCriteria: any = {};
 
   constructor(public navCtrl: NavController,
@@ -25,7 +28,8 @@ export class ViewCommandWithFilterPage extends BaseUI {
      public toastCtrl: ToastController,
      public loadingCtrl : LoadingController,
      public network: Network,
-     public rest : RestProvider) {
+     public rest : RestProvider,
+     public storage: Storage) {
        super();
   }
 
@@ -42,16 +46,29 @@ export class ViewCommandWithFilterPage extends BaseUI {
   changeCriteria(criteriaLabel,criteriaValue){
       this.searchCriteria[criteriaLabel] = criteriaValue;
   }
+  resetCriteria(managerPermission){
+    if(managerPermission==true){
+      this.searchCriteria = {};
+    }
+    else{
+      this.storage.get('userId').then(p=>{
+          this.searchCriteria = { userIds :JSON.parse(p) };
+      });
+    }
+
+  }
   
   refreshData(){//Array<any>
     console.log(this.searchCriteria);
     if (this.network.type != 'none') {
       var loading = super.showLoading(this.loadingCtrl, "正在获取数据...");
-        this.rest.AdvancedSalesOrderSearch(this.searchCriteria)//1: 提交到财务
+        this.rest.AdvancedSalesOrderSearch(this.searchCriteria)
           .subscribe(
             f => {
               if (f.Success) {
-               console.log(f.Data);//todo
+                if(f.Data!=null&&f.Data.data!=null){
+                    this.orderList = f.Data.data;
+                }
               }
             loading.dismiss();
           },
@@ -67,5 +84,8 @@ export class ViewCommandWithFilterPage extends BaseUI {
     else {
       super.showToast(this.toastCtrl, "您处于离线状态，请连接网络! ");
     }
+  }
+  viewDetail(item){
+    this.navCtrl.push('SalsOrderPage',{title : item});
   }
 }

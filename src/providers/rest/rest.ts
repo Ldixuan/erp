@@ -44,6 +44,8 @@ export class RestProvider {
   private apiUrlGetPermissionList= this.host + 'api/Permission/GetPermissionList';
   private apiUrlGetUserPermissionById= this.host + 'api/Permission/GetUserPermissionById';
   private apiUrlSaveUserPermission = this.host + 'api/Permission/SaveUserPermission';
+
+  private apiUrlAdvancedSalesOrderSearch = this.host + "api/SalesOrder/AdvancedSalesOrderSearch";
   /*
   * With auth services 
   */
@@ -64,6 +66,10 @@ export class RestProvider {
 
   GetSalesOrderValidationList(categoryId:number,type:string):Observable<any>{
     return this.postUrlReturn(this.apiUrlGetSalesOrderValidationList,{categoryId:categoryId,type:type});
+  }
+
+  AdvancedSalesOrderSearch(criteria:object):Observable<any>{
+    return this.postUrlReturn(this.apiUrlAdvancedSalesOrderSearch,criteria);
   }
 
   GetUnitList():Observable<any>{

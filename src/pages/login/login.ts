@@ -139,6 +139,7 @@ export class LoginPage extends BaseUI {
              }
             // clean all data before insert
             this.storage.clear();
+            this.storage.set('userList',JSON.stringify(this.userList));
             this.storage.set("userId",userTosend[0].id);
             this.storage.set("username",userTosend[0].username);
             this.storage.set("token",f["Data"].token);
