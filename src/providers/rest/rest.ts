@@ -22,7 +22,7 @@ export class RestProvider {
    ) {
    
   }
-  private host = "http://47.100.137.77/";
+  private host = "https://47.100.137.77/";
   //private host = "http://3.90.11.160/";
   //private host = "https://api.europetechs.com/";
   //private host = "http://localhost/LjWebApplication/";
