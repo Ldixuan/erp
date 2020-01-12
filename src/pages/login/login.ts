@@ -8,6 +8,7 @@ import { RestProvider } from '../../providers/rest/rest';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 import {JpushProvider} from '../../providers/jpush/jpush';
+import { AppVersion } from '@ionic-native/app-version';
 
 
 
@@ -28,7 +29,7 @@ export class LoginPage extends BaseUI {
   password : string;
   hasLogUserList : boolean = true;
   valided : boolean = false;
-
+  versionCode : string;
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 
               public network : Network,
@@ -38,7 +39,8 @@ export class LoginPage extends BaseUI {
               public storage : Storage,
               public loadingCtrl: LoadingController,
               public jpush : JpushProvider,
-              public plt : Platform) {
+              public plt : Platform,
+              public appVersion: AppVersion) {
     super();
   }
 
@@ -47,6 +49,10 @@ export class LoginPage extends BaseUI {
   }
 
   ionViewDidEnter(){
+    if(this.plt.is('cordova')){
+      this.appVersion.getVersionCode().then(p => this.versionCode = p.toString());
+    }
+
     var userId;
     var token;
     var loading =  super.showLoading(this.loadingCtrl,"加载中...");
