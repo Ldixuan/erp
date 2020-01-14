@@ -10,14 +10,14 @@
 <ion-content padding>
   <ion-item>
     <ion-label stacked>用户</ion-label>
-    <ion-select [(ngModel)]="userId" interface="action-sheet" (ngModelChange)="onChangeUser()">
+    <ion-select cancelText="取消" okText="确定" [(ngModel)]="userId" interface="action-sheet" (ngModelChange)="onChangeUser()">
       <ion-option  *ngFor="let user of userList" [value]="user.id">{{user.id}} - {{user.username}}</ion-option>
     </ion-select>
   </ion-item>
 
   <ion-item>
     <ion-label stacked>权限</ion-label>
-    <ion-select multiple="true" [(ngModel)]="permissionIds">
+    <ion-select cancelText="取消" okText="确定" multiple="true" [(ngModel)]="permissionIds">
       <ion-option  *ngFor="let permission of permissionList" [value]="permission.Id">
         {{permission.Label}}
       </ion-option>

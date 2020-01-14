@@ -2,27 +2,27 @@
   <ion-list-header mode="ios">筛选条件</ion-list-header>
   <ion-item>
     <ion-label mode="ios">创建人</ion-label>
-    <ion-select  multiple="true" [(ngModel)]="filterUserList" (ngModelChange)='changeOrderCreateId()' [disabled]='userList==null||userList.length<=0||!managerPermission' >
+    <ion-select cancelText="取消" okText="确定" multiple="true" [(ngModel)]="filterUserList" (ngModelChange)='changeOrderCreateId()' [disabled]='userList==null||userList.length<=0||!managerPermission' >
       <ion-option *ngFor="let u of userList" [value]="u.id" >{{u.username}}</ion-option>
     </ion-select>
   </ion-item>
   <ion-item>
     <ion-label mode="ios">从(日期)</ion-label>
-    <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="filterFromDate" (ngModelChange)='changeOrderFromDate()'></ion-datetime>
+    <ion-datetime cancelText="取消" doneText="确定" displayFormat="MM/DD/YYYY" [(ngModel)]="filterFromDate" (ngModelChange)='changeOrderFromDate()'></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label mode="ios">到(日期)</ion-label>
-    <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="filterToDate" (ngModelChange)='changeOrderToDate()'></ion-datetime>
+    <ion-datetime cancelText="取消" doneText="确定" displayFormat="MM/DD/YYYY" [(ngModel)]="filterToDate" (ngModelChange)='changeOrderToDate()'></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label mode="ios">订单类型</ion-label>
-    <ion-select multiple="true" [(ngModel)]="filterOrderTypeList" (ngModelChange)='changeOrderType()'>
+    <ion-select cancelText="取消" okText="确定" multiple="true" [(ngModel)]="filterOrderTypeList" (ngModelChange)='changeOrderType()'>
       <ion-option *ngFor="let type of orderType" [value]="type.code" >{{type.label}}</ion-option>
     </ion-select>
   </ion-item>
   <ion-item>
     <ion-label mode="ios">订单状态</ion-label>
-    <ion-select  multiple="true" [(ngModel)]="filterOrderStatusList" (ngModelChange)='changeOrderStatus()'>
+    <ion-select cancelText="取消" okText="确定"  multiple="true" [(ngModel)]="filterOrderStatusList" (ngModelChange)='changeOrderStatus()'>
       <ion-option *ngFor="let status of orderStatus" [value]="status.code">{{status.label}}</ion-option>
     </ion-select>
   </ion-item>

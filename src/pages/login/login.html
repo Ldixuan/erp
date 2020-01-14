@@ -3,7 +3,7 @@
       <ion-list  margin-bottom>
           <ion-item style="padding-left:0px; border: 0px;">
               <ion-label stacked>用户名</ion-label>
-              <ion-select [(ngModel)]="selectedUserId" interface="action-sheet" disabled="{{hasLogUserList}}">
+              <ion-select cancelText="取消" okText="确定" [(ngModel)]="selectedUserId" interface="action-sheet" disabled="{{hasLogUserList}}">
                 <ion-option *ngFor="let user of userList"  [value]="user.id">{{user.id}} - {{user.username}}</ion-option>
               </ion-select>
           </ion-item>
