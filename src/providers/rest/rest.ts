@@ -22,9 +22,9 @@ export class RestProvider {
    ) {
    
   }
-  private host = "http://47.100.137.77/";
+  //private host = "http://47.100.137.77/";
   //private host = "http://3.90.11.160/";
-  //private host = "https://api.europetechs.com/";
+  private host = "https://api.europetechs.com/";
   //private host = "http://localhost/LjWebApplication/";
   private apiUrlGetCargoByName = this.host + 'api/cargo/GetCargo';
   private apiUrlGetOrdersByUserId = this.host + 'api/SalesOrder/GetSalesOrderByUserId';

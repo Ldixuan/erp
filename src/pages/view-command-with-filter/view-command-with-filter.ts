@@ -38,6 +38,8 @@ export class ViewCommandWithFilterPage extends BaseUI {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ViewCommandWithFilterPage');
+
+   
   }
   presentPopover(myEvent) {
     let popover = this.popoverCtrl.create('FilterPopoverPage', {ViewCommandWithFilterPage: this, searchCriteria:this.searchCriteria} , { cssClass: 'custom-popover'});

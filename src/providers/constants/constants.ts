@@ -46,6 +46,6 @@ export const orderStatus = [
 ]
 
 export const orderType = [
-    {code:'O',label:'销售订单'},
-    {code:'I',label:'采购订单'}
+    {code:'O',label:'销售订单',disabled:true},
+    {code:'I',label:'采购订单',disabled:true}
 ]
