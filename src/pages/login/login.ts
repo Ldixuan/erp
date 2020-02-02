@@ -142,6 +142,8 @@ export class LoginPage extends BaseUI {
                 tags.push(f["Data"].permission[index]['permissionCode']);
               }
               this.jpush.setTags(tags);
+              console.log('already login');
+              this.jpush.getAllTags();
              }
             // clean all data before insert
             this.storage.clear();
