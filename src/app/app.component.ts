@@ -138,6 +138,8 @@ export class MyApp {
             dismissOnPageChange: true
         });
         loading.present();
+        this.storage.clear();
+        this.nav.setRoot('LoginPage');
         }
         //0:应用程序是最新的
         //1:*更新是可用的，它已被下载，解压缩并复制到部署文件夹,在使用SycStasUs.UpDeaTyEnter调用回调完成后，应用程序将重新加载更新的代码和资源。

@@ -123,11 +123,8 @@
 
     </ion-item-group>
 
-    <a margin-top ion-item style="font-size: 1.5rem;" (click)="presentModal()">
-      添加货物
-    </a>
-
     <ion-list id="listProduct">
+     
       <ion-card *ngFor="let product of listProduct" (click)="presentModal(product, listProduct.indexOf(product))">
         <ion-card-header>
           {{product.nameProduct}}
@@ -150,8 +147,12 @@
         </ion-card-content>
       </ion-card>
     </ion-list>
+
+    <button *ngIf="!readModel||!hadSubmit" ion-button full margin-top style="font-size: 1.5rem;" (click)="presentModal()">
+      添加货物
+  </button>
     <!-- && !hadSubmit -->
-    <button *ngIf="readModel " ion-button full color="secondary" (click)="valideSalesOrder(validationStaus)">
+    <button *ngIf="readModel" ion-button full color="secondary" (click)="valideSalesOrder(validationStaus)">
        {{validationContentAction}}
     </button>
   </div>

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ViewController, List } from 'ionic-angular';
+import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 import { orderStatus, orderType} from '../../providers/constants/constants'
 import { Storage } from '@ionic/storage';
+import { UtilsProvider } from '../../providers/utils/utils';
 /**
  * Generated class for the FilterPopoverPage page.
  *
@@ -19,7 +20,7 @@ private orderStatus:any;
 private orderType:any;
 private userList:any;
 
-private filterOrderTypeList: Array<string>;
+private filterOrderTypeList: string[]=[];
 private filterOrderStatusList: Array<string>;
 private filterUserList: Array<string>;
 private filterOrderId:string;
@@ -27,24 +28,26 @@ private filterFromDate: Date;
 private filterToDate: Date;
 private ViewCommandWithFilterPage: any;
 
-private managerPermission : boolean = false;
+private reviewSalesOrder : boolean = false;
+private reviewPurchaseOrder : boolean = false;
 
-  constructor(public viewCtrl: ViewController,public navParams: NavParams,public storage: Storage) {
+  constructor(public viewCtrl: ViewController,public navParams: NavParams,public storage: Storage, public utils:UtilsProvider) {
     this.orderStatus = orderStatus;
     this.orderType = orderType;
   }
 
   close() {
-    //this.viewCtrl.dismiss();
+    
   }
+
   resetAllCriteria(){
     this.filterOrderTypeList=[];
     this.filterOrderStatusList=[];
-    this.managerPermission!=false?this.filterUserList=[]:null;
+    (this.reviewSalesOrder!=false||this.reviewPurchaseOrder!=false)?this.filterUserList=[]:null;
     this.filterOrderId = null;
     this.filterFromDate = null;
     this.filterToDate = null;
-    this.ViewCommandWithFilterPage.resetCriteria(this.managerPermission);
+    //this.ViewCommandWithFilterPage.resetCriteria(this.managerPermission);
   }
 
   changeOrderType(){
@@ -84,6 +87,8 @@ private managerPermission : boolean = false;
   }
   
   ionViewDidLoad() {
+    this.filterOrderTypeList=[];
+
     this.ViewCommandWithFilterPage = this.navParams.get('ViewCommandWithFilterPage');
     var searchCriteria = this.navParams.get('searchCriteria');
     this.filterUserList = searchCriteria['userIds'];
@@ -91,25 +96,31 @@ private managerPermission : boolean = false;
     this.filterToDate = searchCriteria['toDate'];
     this.filterOrderId = searchCriteria['orderId'];
     this.filterOrderStatusList = searchCriteria['orderStatus'];
-    this.filterOrderTypeList = searchCriteria['orderTypes'];
+    this.filterOrderTypeList = searchCriteria['orderTypes']!=null?searchCriteria['orderTypes']:[];
     this.storage.get('userList').then(p=>{
         this.userList = JSON.parse(p);
     });
     this.storage.get('permission').then(p=>{
       var permission = JSON.parse(p);
-      this.managerPermission = false;
-      if(permission!=null && permission.length>0){
-       permission.forEach(val => {
-         if(val.permissionCode== 'OrderModule_managerValidation'){
-          this.managerPermission = true;
-         }
-       });
-      }
-      if(!this.managerPermission){
+
+      this.reviewSalesOrder = this.utils.hasPermission(permission,'OrderModule_reviewSalesOrder');
+      this.reviewPurchaseOrder = this.utils.hasPermission(permission ,'OrderModule_reviewPurchaseOrder');
+      
+      if(!this.reviewSalesOrder&&!this.reviewPurchaseOrder){
         this.storage.get('userId').then(x=>{
           this.filterUserList = [x];
           this.ViewCommandWithFilterPage.changeCriteria('userIds',this.filterUserList);
         });
+        this.userList.forEach(p => {
+          p.disabled = true;
+        });
+      }
+
+      if(this.reviewSalesOrder){
+       this.filterOrderTypeList = this.filterOrderTypeList.concat(['O']);
+      }
+      if(this.reviewPurchaseOrder){
+       this.filterOrderTypeList = this.filterOrderTypeList.concat(['I'])
       }
     });
   }

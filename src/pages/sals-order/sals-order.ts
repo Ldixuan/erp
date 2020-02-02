@@ -232,7 +232,7 @@ export class SalsOrderPage extends BaseUI {
                 productTemp['unitPriceType'] =  productsInfo[index].unitPriceType || '';
                 productTemp['adresseProduct'] = productsInfo[index].cargoAdresseProduct || "";
                 productTemp['nameOffical'] = productsInfo[index].cargoNameOfiice || "";
-                productTemp['hadPaidProduct'] = "";
+                productTemp['hadPaidProduct'] = productsInfo[index].hadPaidProduct || "";;
                 productTemp['descriptProduct'] = productsInfo[index].CargoDescripe || "";
                 productTemp['totalPrice'] = Number(productsInfo[index].totalPrice).toFixed(2) || 0;
                 productTemp['equivalenceValue'] = productsInfo[index].equivalenceValue || 1;
