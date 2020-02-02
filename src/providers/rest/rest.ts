@@ -22,8 +22,9 @@ export class RestProvider {
    ) {
    
   }
+  // Production env 
   //private host = "http://47.100.137.77/";
-  //private host = "http://3.90.11.160/";
+  // Test env
   private host = "https://api.europetechs.com/";
   //private host = "http://localhost/LjWebApplication/";
   private apiUrlGetCargoByName = this.host + 'api/cargo/GetCargo';
