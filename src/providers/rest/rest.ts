@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { timeout, catchError, mergeMap } from 'rxjs/operators'
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Storage } from '@ionic/storage';
+import { ENV } from '@app/env';
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/Rx';
@@ -25,8 +26,9 @@ export class RestProvider {
   // Production env 
   //private host = "http://47.100.137.77/";
   // Test env
-  private host = "https://api.europetechs.com/";
+  //private host = "https://api.europetechs.com/";
   //private host = "http://localhost/LjWebApplication/";
+  private host = ENV.SERVER_API_URL;
   private apiUrlGetCargoByName = this.host + 'api/cargo/GetCargo';
   private apiUrlGetOrdersByUserId = this.host + 'api/SalesOrder/GetSalesOrderByUserId';
   private apiUrlGetSalesOrderCategoriesByUserId = this.host + 'api/SalesOrder/GetSalesOrderCategoriesByUserId';

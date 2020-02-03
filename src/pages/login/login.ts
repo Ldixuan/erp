@@ -9,7 +9,7 @@ import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 import {JpushProvider} from '../../providers/jpush/jpush';
 import { AppVersion } from '@ionic-native/app-version';
-
+import { ENV } from '@app/env';
 
 
 /**
@@ -30,6 +30,7 @@ export class LoginPage extends BaseUI {
   hasLogUserList : boolean = true;
   valided : boolean = false;
   versionCode : string;
+  Environment : string = ENV.LABEL ;
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 
               public network : Network,
